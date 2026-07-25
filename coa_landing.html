@@ -18,9 +18,9 @@
   "email": "info@coa-egypt.com",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Block 1 Ninth District - Africa Street, Extended From Mustafa El Nahas Street",
-    "addressLocality": "Nasr City",
-    "addressRegion": "Cairo",
+    "streetAddress": "11 Gamal Salem St., Off Mossadak St.",
+    "addressLocality": "Dokki",
+    "addressRegion": "Giza",
     "addressCountry": "EG"
   }
 }
@@ -35,6 +35,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -1448,43 +1449,49 @@ footer ul a:hover { color: var(--coa-red); }
     <h2 class="cta-title">احجز <span style="color:var(--coa-red)">الديمو المجاني</span> وتأكيد الخصم 20%</h2>
     <p class="cta-sub">سيتواصل معك أحد استشاريي Odoo في COA Egypt خلال 15 دقيقة فقط لتأكيد العرض وتحديد موعد الديمو.</p>
     
-    <form class="lead-form-grid" onsubmit="handleFormSubmit(event)">
+    <form class="lead-form-grid" id="leadForm" onsubmit="handleFormSubmit(event)">
       <div class="form-group">
         <label>الاسم بالكامل *</label>
-        <input type="text" class="form-input" required placeholder="مثال: م. أحمد عبد العزيز"/>
+        <input type="text" id="leadName" class="form-input" required placeholder="مثال: م. أحمد عبد العزيز"/>
       </div>
       <div class="form-group">
         <label>رقم الهاتف / الواتساب المباشر *</label>
-        <input type="tel" class="form-input" required placeholder="مثال: 01013907174"/>
+        <input type="tel" id="leadPhone" class="form-input" required placeholder="مثال: 01013907174"/>
       </div>
       <div class="form-group">
         <label>اسم الشركة / المؤسسة *</label>
-        <input type="text" class="form-input" required placeholder="مثال: شركة أطياف للصناعات"/>
+        <input type="text" id="leadCompany" class="form-input" required placeholder="مثال: شركة أطياف للصناعات"/>
       </div>
       <div class="form-group">
         <label>الدولة *</label>
-        <select class="form-input" required>
-          <option value="مصر">جمهورية مصر العربية 🇪🇬</option>
-          <option value="السعودية">المملكة العربية السعودية 🇸🇦</option>
-          <option value="الإمارات">الإمارات العربية المتحدة 🇦🇪</option>
-          <option value="الكويت">دولة الكويت 🇰🇼</option>
-          <option value="أخرى">دولة أخرى</option>
+        <select id="leadCountry" class="form-input" required>
+          <option value="جمهورية مصر العربية 🇪🇬">جمهورية مصر العربية 🇪🇬</option>
+          <option value="المملكة العربية السعودية 🇸🇦">المملكة العربية السعودية 🇸🇦</option>
+          <option value="الإمارات العربية المتحدة 🇦🇪">الإمارات العربية المتحدة 🇦🇪</option>
+          <option value="دولة الكويت 🇰🇼">دولة الكويت 🇰🇼</option>
+          <option value="دولة أخرى">دولة أخرى</option>
         </select>
       </div>
       <div class="form-group full">
         <label>الموديول المطلوب في Odoo</label>
-        <select class="form-input">
-          <option value="full">نظام متكامل (حسابات + مبيعات + مخازن + HR)</option>
-          <option value="acc">الحسابات والمالية والفاتورة الإلكترونية</option>
-          <option value="mfg">التصنيع وسلاسل الإمداد (MRP)</option>
-          <option value="hr">الموارد البشرية والمرتبات (HR &amp; Payroll)</option>
+        <select id="leadModule" class="form-input">
+          <option value="نظام متكامل (حسابات + مبيعات + مخازن + HR)">نظام متكامل (حسابات + مبيعات + مخازن + HR)</option>
+          <option value="الحسابات والمالية والفاتورة الإلكترونية">الحسابات والمالية والفاتورة الإلكترونية</option>
+          <option value="التصنيع وسلاسل الإمداد (MRP)">التصنيع وسلاسل الإمداد (MRP)</option>
+          <option value="الموارد البشرية والمرتبات (HR &amp; Payroll)">الموارد البشرية والمرتبات (HR &amp; Payroll)</option>
         </select>
       </div>
       <button type="submit" class="submit-btn">🚀 تأكيد طلب العرض بخصم 20% والديمو المجاني</button>
     </form>
     
-    <div style="margin-top:2.5rem;text-align:center;font-size:0.88rem;color:var(--text-sub)">
-      📍 <strong>المقر الرئيسي (مدينة نصر):</strong> بلوك 1 الحي التاسع - شارع أفريقيا، امتداد شارع مصطفى النحاس، مدينة نصر، القاهرة.<br/>
+    <div style="margin-top:1.5rem;text-align:center;">
+      <button type="button" onclick="exportLeadsToExcel()" style="background:rgba(13, 51, 78, 0.06);color:var(--coa-navy);border:1.5px dashed var(--border-light);padding:8px 18px;border-radius:50px;font-size:0.82rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all 0.3s ease;">
+        📊 تحميل سجل المسجلين كملف Excel (.xlsx)
+      </button>
+    </div>
+
+    <div style="margin-top:2rem;text-align:center;font-size:0.88rem;color:var(--text-sub)">
+      📍 <strong>المقر الرئيسي (الدقي):</strong> 11 جمال سالم، متفرع من شارع مصدق، الدقي، الجيزة.<br/>
       📞 <strong>الهاتف المباشر:</strong> <a href="tel:+201013907174" dir="ltr" style="color:var(--coa-red);text-decoration:none;font-weight:800;display:inline-block;direction:ltr;">+20 10 13907174</a> | ✉️ <strong>info@coa-egypt.com</strong>
     </div>
   </div>
@@ -1501,11 +1508,23 @@ footer ul a:hover { color: var(--coa-red); }
 
 <!-- SUCCESS MODAL -->
 <div id="success-modal">
-  <div class="modal-box">
-    <div style="font-size:3.5rem;margin-bottom:1rem">🎉</div>
-    <h3 style="font-size:1.8rem;margin-bottom:0.8rem;color:var(--text-dark)">تم تسجيل طلب العرض بنجاح!</h3>
-    <p style="color:var(--text-sub);margin-bottom:1.8rem">تم تثبيت خصم الـ 20% وتأكيد تفعيل التجربة المجانية 15 يوماً. سيتواصل معك أحد استشاريي أودو خلال دقائق.</p>
-    <button type="button" onclick="closeModal()" class="btn-main" style="border:none;cursor:pointer;width:100%;justify-content:center">تم، شكراً لكم</button>
+  <div class="modal-box" style="max-width:520px;text-align:center;padding:2.2rem;">
+    <div style="font-size:3.5rem;margin-bottom:0.5rem">🎉</div>
+    <h3 style="font-size:1.6rem;margin-bottom:0.6rem;color:var(--text-dark)">تم تسجيل طلب العرض بنجاح!</h3>
+    <p style="color:var(--text-sub);margin-bottom:1.4rem;font-size:0.92rem;line-height:1.6">
+      تم حفظ بياناتك وتجهيز رسالة التأكيد المباشرة للمبيعات على الواتساب. يتم الآن فتح الواتساب تلقائياً لتأكيد الخصم والديمو المجاني.
+    </p>
+
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:1.5rem">
+      <a id="modalWhatsappBtn" href="#" target="_blank" class="btn-main" style="background:#25D366;color:#fff;text-decoration:none;justify-content:center;font-weight:800;padding:12px 20px;border-radius:50px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 15px rgba(37,211,102,0.3);font-size:0.95rem">
+        💬 فتح الواتساب وتأكيد الطلب الآن
+      </a>
+      <button type="button" onclick="exportLeadsToExcel()" style="background:var(--coa-navy);color:#fff;border:none;padding:11px 20px;border-radius:50px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:0.88rem;box-shadow:0 4px 15px rgba(13,51,78,0.2)">
+        📊 تحميل كافة المسجلين كملف Excel (.xlsx)
+      </button>
+    </div>
+
+    <button type="button" onclick="closeModal()" style="background:transparent;border:1.5px solid var(--border-light);color:var(--text-sub);padding:9px 20px;border-radius:50px;cursor:pointer;font-family:inherit;font-weight:800;width:100%;font-size:0.85rem">إغلاق</button>
   </div>
 </div>
 
@@ -2322,14 +2341,100 @@ function closeProfileModal() {
 </script>
 
 <script>
-// 4. FORM & MODAL HANDLER
+// 4. FORM & MODAL HANDLER (DATA EXPORT TO EXCEL & WHATSAPP REDIRECT)
+const GOOGLE_SHEETS_WEBHOOK_URL = ''; // يمكنك إضافة رابط Google Apps Script Webhook هنا للربط السحابي المباشر
+
 function handleFormSubmit(e) {
   e.preventDefault();
+  
+  const nameInput = document.getElementById('leadName');
+  const phoneInput = document.getElementById('leadPhone');
+  const companyInput = document.getElementById('leadCompany');
+  const countryInput = document.getElementById('leadCountry');
+  const moduleInput = document.getElementById('leadModule');
+
+  const name = nameInput ? nameInput.value.trim() : '';
+  const phone = phoneInput ? phoneInput.value.trim() : '';
+  const company = companyInput ? companyInput.value.trim() : '';
+  const country = countryInput ? countryInput.value : '';
+  const moduleVal = moduleInput ? moduleInput.value : '';
+  const dateStr = new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' });
+
+  const newLead = {
+    "الاسم بالكامل": name,
+    "رقم الواتساب": phone,
+    "اسم الشركة": company,
+    "الدولة": country,
+    "الموديول المطلوب": moduleVal,
+    "تاريخ ووقت التسجيل": dateStr
+  };
+
+  // 1. Save Lead locally to LocalStorage
+  const existingLeads = JSON.parse(localStorage.getItem('coa_leads') || '[]');
+  existingLeads.push(newLead);
+  localStorage.setItem('coa_leads', JSON.stringify(existingLeads));
+
+  // 2. Send to Webhook (if URL configured)
+  if (GOOGLE_SHEETS_WEBHOOK_URL) {
+    try {
+      fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newLead)
+      });
+    } catch(err) { console.warn('Sheets Webhook failed:', err); }
+  }
+
+  // 3. Format WhatsApp Message for COA Sales (+201013907174)
+  const salesPhone = "201013907174";
+  const waText = `مرحباً COA Egypt 👋\nأود تأكيد طلب ديمو Odoo ERP وخصم 20% ببياناتي التالية:\n\n👤 *الاسم:* ${name}\n📱 *الهاتف:* ${phone}\n🏢 *الشركة:* ${company}\n🌍 *الدولة:* ${country}\n⚙️ *الموديول المطلوب:* ${moduleVal}\n⏰ *تاريخ الطلب:* ${dateStr}`;
+
+  const waUrl = `https://wa.me/${salesPhone}?text=${encodeURIComponent(waText)}`;
+
+  // Update modal button
+  const modalWaBtn = document.getElementById('modalWhatsappBtn');
+  if (modalWaBtn) {
+    modalWaBtn.href = waUrl;
+  }
+
+  // Show Modal & Open WhatsApp automatically
   document.getElementById('success-modal').classList.add('open');
+  window.open(waUrl, '_blank');
 }
 
 function closeModal() {
   document.getElementById('success-modal').classList.remove('open');
+}
+
+// 4.1 EXPORT LEADS TO EXCEL SHEET (.XLSX)
+function exportLeadsToExcel() {
+  const leads = JSON.parse(localStorage.getItem('coa_leads') || '[]');
+  if (leads.length === 0) {
+    alert('⚠️ لا يوجد مسجلين حالياً لتصديرهم إلى ملف إكسيل.');
+    return;
+  }
+
+  if (typeof XLSX === 'undefined') {
+    alert('⏳ جارٍ تحميل مكتبة الإكسيل، يرجى المحاولة مرة أخرى بعد ثوانٍ...');
+    return;
+  }
+
+  const worksheet = XLSX.utils.json_to_sheet(leads);
+  worksheet['!cols'] = [
+    { wch: 25 }, // الاسم
+    { wch: 18 }, // الهاتف
+    { wch: 25 }, // الشركة
+    { wch: 18 }, // الدولة
+    { wch: 35 }, // الموديول
+    { wch: 25 }  // التاريخ
+  ];
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "مسجلو COA Egypt");
+
+  const today = new Date().toISOString().slice(0, 10);
+  XLSX.writeFile(workbook, `COA_Leads_${today}.xlsx`);
 }
 
 // 5. COUNTDOWN TIMER
