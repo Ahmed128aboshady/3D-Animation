@@ -45,7 +45,7 @@
   --coa-red-dark: #C41C27;
   --gold: #D97706;
   
-  /* DEFAULT LIGHT THEME TOKENS */
+  /* PURE LIGHT THEME TOKENS */
   --bg-main: #F8FAFC;
   --bg-card: #FFFFFF;
   --bg-card-border: rgba(13, 51, 78, 0.08);
@@ -58,18 +58,6 @@
   --grad-coa: linear-gradient(135deg, #0D334E 0%, #E52531 100%);
   --grad-btn: linear-gradient(135deg, #E52531 0%, #C41C27 100%);
   --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* DARK THEME OVERRIDE */
-[data-theme="dark"] {
-  --bg-main: #0B1724;
-  --bg-card: #132235;
-  --bg-card-border: rgba(255, 255, 255, 0.08);
-  --text-dark: #F8FAFC;
-  --text-sub: #94A3B8;
-  --border-light: rgba(255, 255, 255, 0.12);
-  --nav-bg: rgba(11, 23, 36, 0.92);
-  --glass-bg: rgba(19, 34, 53, 0.75);
 }
 
 html { scroll-behavior: auto; }
@@ -1234,12 +1222,7 @@ footer ul a:hover { color: var(--coa-red); }
     <li><a href="#s-why">فريقنا</a></li>
     <li><a href="#s-cta">حجز الديمو والخصم</a></li>
   </ul></nav>
-  <div style="display:flex;align-items:center;gap:14px;">
-    <button type="button" class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="تبديل المظهر">
-      <span id="themeIcon">🌙</span> <span id="themeText">وضع داكن</span>
-    </button>
-    <a href="#s-cta" class="nav-btn">احجز استشارة مجانية 🚀</a>
-  </div>
+  <a href="#s-cta" class="nav-btn">احجز استشارة مجانية 🚀</a>
   <!-- Mobile Hamburger -->
   <button class="hamburger-btn" id="hamburgerBtn" aria-label="القائمة" onclick="toggleMobileMenu()">
     <span></span><span></span><span></span>
@@ -1248,9 +1231,6 @@ footer ul a:hover { color: var(--coa-red); }
 
 <!-- Mobile Drawer Menu -->
 <div class="mobile-drawer" id="mobileDrawer">
-  <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" style="margin: 0 auto 1rem; width: fit-content;">
-    <span class="mobileThemeIcon">🌙</span> <span class="mobileThemeText">وضع داكن</span>
-  </button>
   <a href="#s-services" onclick="toggleMobileMenu()">خدماتنا</a>
   <a href="#s-globe" onclick="toggleMobileMenu()">عملاؤنا وتواجدنا الدولي</a>
   <a href="#s-why" onclick="toggleMobileMenu()">فريقنا</a>
@@ -2335,40 +2315,6 @@ function toggleMobileMenu() {
   document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 
-// 9. DARK/LIGHT THEME SWITCHER LOGIC
-function toggleTheme() {
-  const html = document.documentElement;
-  const currentTheme = html.getAttribute('data-theme') || 'light';
-  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-  
-  html.setAttribute('data-theme', newTheme);
-  localStorage.setItem('coa_theme', newTheme);
-  
-  const icon = newTheme === 'dark' ? '☀️' : '🌙';
-  const text = newTheme === 'dark' ? 'وضع أبيض' : 'وضع داكن';
-  
-  const themeIconEl = document.getElementById('themeIcon');
-  const themeTextEl = document.getElementById('themeText');
-  if (themeIconEl) themeIconEl.textContent = icon;
-  if (themeTextEl) themeTextEl.textContent = text;
-
-  document.querySelectorAll('.mobileThemeIcon').forEach(el => el.textContent = icon);
-  document.querySelectorAll('.mobileThemeText').forEach(el => el.textContent = text);
-}
-
-// Restore saved theme on page load (Default is Light)
-(function initTheme() {
-  const saved = localStorage.getItem('coa_theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
-  if (saved === 'dark') {
-    const themeIconEl = document.getElementById('themeIcon');
-    const themeTextEl = document.getElementById('themeText');
-    if (themeIconEl) themeIconEl.textContent = '☀️';
-    if (themeTextEl) themeTextEl.textContent = 'وضع أبيض';
-    document.querySelectorAll('.mobileThemeIcon').forEach(el => el.textContent = '☀️');
-    document.querySelectorAll('.mobileThemeText').forEach(el => el.textContent = 'وضع أبيض');
-  }
-})();
 </script>
 </body>
 </html>
