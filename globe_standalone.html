@@ -66,15 +66,15 @@ html, body {
   overflow: hidden;
 }
 
-/* VIBRANT RED HIGH-TECH FLOATING GLASS BADGES */
+/* VIBRANT BLUE HIGH-TECH FLOATING GLASS BADGES (iCONSULT BRAND) */
 .floating-glass-badge {
   position: absolute;
   top: 0; left: 0;
   display: flex;
   align-items: center;
   gap: 7px;
-  background: rgba(14, 5, 8, 0.92);
-  border: 1.5px solid rgba(255, 45, 85, 0.6);
+  background: rgba(3, 12, 24, 0.92);
+  border: 1.5px solid rgba(0, 174, 239, 0.6);
   color: #FFFFFF;
   padding: 6px 14px;
   border-radius: 20px;
@@ -83,7 +83,7 @@ html, body {
   letter-spacing: 0.3px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 45, 85, 0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 174, 239, 0.35);
   pointer-events: auto;
   cursor: pointer;
   transition: opacity 0.25s ease, border-color 0.3s, background 0.3s, box-shadow 0.3s;
@@ -94,17 +94,17 @@ html, body {
 }
 
 .floating-glass-badge:hover, .floating-glass-badge.active {
-  background: rgba(255, 45, 85, 0.95);
-  border-color: #FF6B8B;
+  background: rgba(0, 174, 239, 0.95);
+  border-color: #00D4FF;
   color: #FFFFFF;
-  box-shadow: 0 8px 30px rgba(255, 45, 85, 0.9);
+  box-shadow: 0 8px 30px rgba(0, 174, 239, 0.9);
 }
 
 .floating-glass-badge .badge-dot {
   width: 7px; height: 7px;
-  background: var(--red);
+  background: var(--blue);
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--red);
+  box-shadow: 0 0 8px var(--blue);
 }
 
 /* Zoom Controls (+ / -) on Left Side */
@@ -250,26 +250,47 @@ html, body {
 }
 
 @media(max-width:850px){
+  #globe-badges-container, .floating-glass-badge { display: none !important; }
   .mobile-card-close, .mobile-card-handle { display: flex; }
 
   .globe-card-stage {
+    position: fixed !important;
     right: 0; left: 0;
-    top: auto; bottom: 20px;
-    transform: translateY(130%);
+    top: auto; bottom: 16px;
+    transform: translateY(140%);
     opacity: 0;
-    max-width: 92%;
+    max-width: calc(100% - 24px);
+    width: calc(100% - 24px);
     margin: 0 auto;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    z-index: 9999 !important;
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.38s ease;
   }
   .globe-card-stage.mobile-open {
     transform: translateY(0);
     opacity: 1;
   }
-  .mobile-zoom-controls { left: 16px; top: 40%; }
+  .double-bezel-outer {
+    border-radius: 20px;
+    padding: 6px;
+    background: rgba(8, 14, 24, 0.96);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+  }
+  .double-bezel-inner {
+    border-radius: 16px;
+    padding: 18px 18px 24px;
+    min-height: auto;
+  }
+  .mobile-card-close {
+    top: 10px; right: 12px;
+    width: 28px; height: 28px;
+  }
+  .mobile-zoom-controls {
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+  }
 }
 @media(max-width:480px){
-  .globe-card-stage { max-width: 95%; bottom: 15px; }
-  .zoom-btn { width: 46px; height: 46px; font-size: 1.4rem; }
+  .zoom-btn { width: 44px; height: 44px; font-size: 1.3rem; }
 }
 </style>
 </head>
@@ -365,8 +386,8 @@ globeScene.add(globeGroup);
 
 function updateGlobeCam() {
     if (window.innerWidth < 850) {
-        globeGroup.position.set(0, 0.5, 0);
-        globeCamera.position.set(0, 0, 6.8);
+        globeGroup.position.set(0, 0, 0);
+        globeCamera.position.set(0, 0, 7.8);
     } else {
         globeGroup.position.set(-1.7, 0, 0);
         globeCamera.position.set(0, 0, 5.8);
@@ -619,6 +640,12 @@ globeCanvas.addEventListener('wheel', e => {
 
 const tempVec = new THREE.Vector3();
 function updateAllFloatingBadges() {
+    if (window.innerWidth <= 850) {
+        badgeElements.forEach(badge => {
+            if (badge) { badge.style.opacity = '0'; badge.style.pointerEvents = 'none'; }
+        });
+        return;
+    }
     beaconMeshes.forEach((bm, i) => {
         const badge = badgeElements[i];
         if (!badge) return;
