@@ -3,39 +3,18 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>COA Egypt & KSA | شريك أودو الذهبي للتراخيص والتنفيذ</title>
+<title>COA Egypt & KSA | العرض الحصري لتنفيذ نظام Odoo ERP للشركات</title>
 
-<!-- SEO & GEO Meta Tags -->
-<meta name="description" content="احجز نظام أودو Odoo ERP بخصم 20% وتجربة مجانية 15 يوم قبل ارتفاع الأسعار. COA شريك أودو الذهبي في مصر والسعودية لتنفيذ وتطوير الأنظمة الإدارية والمالية."/>
-<meta name="keywords" content="Odoo ERP, أودو مصر, أودو السعودية, تنفيذ أودو, COA Odoo, أسعار أودو, برنامج حسابات, تخطيط موارد المؤسسات"/>
-<meta property="og:title" content="عرض خاص: تنفيذ نظام Odoo ERP بخصم 20% | COA"/>
-<meta property="og:description" content="احصل على خصم 20% وتجربة مجانية 15 يوماً لنظام أودو المتكامل للشركات في مصر والسعودية قبل ارتفاع الأسعار."/>
-<meta property="og:type" content="website"/>
+<!-- Meta Tags for B2B SEO & GEO -->
+<meta name="description" content="عرض حصري لشركات ومؤسسات B2B: احصل على خصم 20% وتجربة مجانية 15 يوماً لنظام Odoo ERP من COA الشريك الذهبي في مصر والسعودية قبل ارتفاع الأسعار."/>
+<meta property="og:title" content="عرض B2B الحصري: تنفيذ Odoo ERP بخصم 20% | COA"/>
+<meta property="og:description" content="نحول مؤسستك بنظام Odoo ERP متكامل لجميع الأقسام بشراكة رسمية مع Odoo Gold Partner."/>
 <meta property="og:image" content="https://www.coa-egy.com/logo.png?company=1"/>
-
-<!-- JSON-LD Structured Data for SEO & AI Search (GEO) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "COA - Chartered Accountants & Odoo Gold Partner",
-  "url": "https://coa-egy.odoo.com/coa",
-  "logo": "https://www.coa-egy.com/logo.png?company=1",
-  "description": "Leading Odoo Gold Implementation Partner in Egypt and Saudi Arabia.",
-  "offers": {
-    "@type": "Offer",
-    "name": "20% Discount on Odoo Implementation",
-    "priceCurrency": "EGP",
-    "availability": "https://schema.org/InStock",
-    "validThrough": "2026-08-15"
-  }
-}
-</script>
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet"/>
 
 <!-- Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -47,17 +26,17 @@
 
 :root {
   --odoo-purple: #875A7B;
-  --odoo-dark: #6C4262;
+  --odoo-dark: #5B3852;
   --gold: #FFC107;
-  --gold-glow: rgba(255, 193, 7, 0.4);
+  --gold-glow: rgba(255, 193, 7, 0.45);
   --cyan: #00D4FF;
-  --navy: #090C15;
-  --card-dark: rgba(18, 24, 38, 0.92);
+  --navy: #060913;
+  --card-dark: rgba(14, 20, 32, 0.94);
   --border-line: rgba(135, 90, 123, 0.35);
   --red: #FF2D55;
   --white: #FFFFFF;
   --grad-odoo: linear-gradient(135deg, #875A7B 0%, #7C3AED 50%, #00AEEF 100%);
-  --grad-btn: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+  --grad-gold: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
   --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -80,43 +59,42 @@ body {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  background: linear-gradient(90deg, #E65100 0%, #D84315 50%, #B71C1C 100%);
+  background: linear-gradient(90deg, #D84315 0%, #B71C1C 50%, #880E4F 100%);
   color: white;
-  padding: 8px 15px;
-  font-size: 0.85rem;
-  font-weight: 700;
+  padding: 9px 15px;
+  font-size: 0.88rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  box-shadow: 0 4px 20px rgba(216, 67, 21, 0.5);
-  flex-wrap: wrap;
+  gap: 15px;
+  box-shadow: 0 4px 20px rgba(183, 28, 28, 0.6);
 }
 
 .countdown-box {
   display: inline-flex;
   gap: 6px;
-  background: rgba(0, 0, 0, 0.35);
-  padding: 3px 10px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 3px 12px;
   border-radius: 20px;
   font-family: 'Outfit', sans-serif;
+  color: var(--gold);
   letter-spacing: 1px;
 }
 
 /* ── NAVBAR ── */
 #nav {
   position: fixed;
-  top: 40px; left: 0; right: 0;
+  top: 42px; left: 0; right: 0;
   z-index: 999;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 3rem;
   height: 70px;
-  background: rgba(9, 12, 21, 0.85);
+  background: rgba(6, 9, 19, 0.88);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-line);
-  transition: var(--transition);
 }
 
 .logo-wrap {
@@ -132,23 +110,17 @@ body {
   padding: 6px 14px;
   border-radius: 8px;
   font-weight: 900;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   letter-spacing: 1px;
   box-shadow: 0 0 15px rgba(135, 90, 123, 0.6);
 }
 
-.logo-sub {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.7);
-  font-weight: 600;
-}
-
-nav ul { display: flex; gap: 2rem; list-style: none; }
+nav ul { display: flex; gap: 1.8rem; list-style: none; }
 nav ul a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.3s; }
 nav ul a:hover { color: var(--gold); }
 
 .nav-cta-btn {
-  background: var(--grad-btn);
+  background: var(--grad-gold);
   color: #000;
   text-decoration: none;
   padding: 0.55rem 1.4rem;
@@ -157,238 +129,14 @@ nav ul a:hover { color: var(--gold); }
   font-size: 0.88rem;
   box-shadow: 0 4px 20px var(--gold-glow);
   transition: var(--transition);
-  white-space: nowrap;
 }
 .nav-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--gold-glow); }
 
-/* ── HERO SECTION ── */
-#hero {
-  position: relative;
-  min-height: 100vh;
-  padding-top: 140px;
-  padding-bottom: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  overflow: hidden;
-}
-
-#bg-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.hero-content {
+/* ── SECTION COMMON STYLE ── */
+.b2b-section {
   position: relative;
   z-index: 10;
-  max-width: 900px;
-  padding: 0 1.5rem;
-}
-
-.gold-hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 193, 7, 0.12);
-  border: 1.5px solid var(--gold);
-  padding: 6px 18px;
-  border-radius: 50px;
-  font-size: 0.85rem;
-  color: var(--gold);
-  font-weight: 800;
-  margin-bottom: 1.8rem;
-  box-shadow: 0 0 20px rgba(255, 193, 7, 0.2);
-}
-
-.hero-title {
-  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
-  font-weight: 900;
-  line-height: 1.2;
-  margin-bottom: 1.4rem;
-}
-
-.hero-title .g-text {
-  background: var(--grad-odoo);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero-sub {
-  font-size: clamp(1rem, 1.6vw, 1.25rem);
-  color: rgba(255,255,255,0.7);
-  max-width: 700px;
-  margin: 0 auto 2.5rem;
-  font-weight: 400;
-}
-
-.hero-action-row {
-  display: flex;
-  gap: 1.2rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-}
-
-.btn-primary-gold {
-  background: var(--grad-btn);
-  color: #000;
-  padding: 1rem 2.5rem;
-  border-radius: 50px;
-  font-weight: 900;
-  font-size: 1.05rem;
-  text-decoration: none;
-  box-shadow: 0 8px 30px var(--gold-glow);
-  transition: var(--transition);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-.btn-primary-gold:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--gold-glow); }
-
-.btn-secondary-outline {
-  background: rgba(255,255,255,0.06);
-  border: 1.5px solid rgba(255,255,255,0.2);
-  color: white;
-  padding: 1rem 2.2rem;
-  border-radius: 50px;
-  font-weight: 700;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: var(--transition);
-  backdrop-filter: blur(10px);
-}
-.btn-secondary-outline:hover { border-color: var(--odoo-purple); background: rgba(135, 90, 123, 0.2); transform: translateY(-3px); }
-
-.hero-stats-pills {
-  display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.stat-pill {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 10px 22px;
-  border-radius: 16px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ── LEAD CAPTURE FORM SECTION ── */
-#s-lead-form {
-  position: relative;
-  z-index: 10;
-  padding: 5rem 1.5rem;
-  background: linear-gradient(180deg, transparent 0%, rgba(135, 90, 123, 0.08) 50%, transparent 100%);
-}
-
-.lead-box-wrapper {
-  max-width: 820px;
-  margin: 0 auto;
-  background: var(--card-dark);
-  border: 1.5px solid var(--border-line);
-  border-radius: 28px;
-  padding: 3rem 2.5rem;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 40px rgba(135, 90, 123, 0.2);
-  backdrop-filter: blur(20px);
-}
-
-.form-header {
-  text-align: center;
-  margin-bottom: 2.2rem;
-}
-
-.form-header h3 {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-  color: white;
-}
-
-.form-header p {
-  color: var(--gold);
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-.lead-form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.2rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  text-align: right;
-}
-
-.form-group.full { grid-column: span 2; }
-
-.form-group label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: rgba(255,255,255,0.85);
-}
-
-.form-input {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1.5px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  padding: 12px 16px;
-  color: white;
-  font-family: inherit;
-  font-size: 0.95rem;
-  outline: none;
-  transition: var(--transition);
-}
-
-.form-input:focus {
-  border-color: var(--gold);
-  background: rgba(255, 193, 7, 0.05);
-  box-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
-}
-
-.form-input option {
-  background: #121826;
-  color: white;
-}
-
-.submit-btn {
-  grid-column: span 2;
-  background: var(--grad-btn);
-  color: #000;
-  border: none;
-  padding: 1.1rem;
-  border-radius: 50px;
-  font-weight: 900;
-  font-size: 1.1rem;
-  cursor: pointer;
-  box-shadow: 0 8px 30px var(--gold-glow);
-  transition: var(--transition);
-  margin-top: 1rem;
-}
-
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 40px var(--gold-glow);
-}
-
-/* ── CLIENTS SHOWCASE SECTION (16 COMPANIES) ── */
-#s-clients {
   padding: 6rem 2rem;
-  position: relative;
-  z-index: 10;
 }
 
 .sec-title-wrap {
@@ -407,168 +155,413 @@ nav ul a:hover { color: var(--gold); }
 }
 
 .sec-main-title {
-  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
   font-weight: 900;
 }
 
-.clients-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.4rem;
-}
-
-.client-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1.5px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 1.6rem 1.2rem;
-  text-align: center;
+/* ═════════════════════════════════════════════════════════
+   SECTION 1: THE NO-BRAINER PROMOTIONAL OFFER & HERO (3D MESH)
+   ═════════════════════════════════════════════════════════ */
+#s-offer-hero {
   position: relative;
-  transition: var(--transition);
-  overflow: hidden;
-}
-
-.client-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; height: 3px;
-  background: var(--grad-odoo);
-  transform: scaleX(0);
-  transition: transform 0.4s;
-}
-
-.client-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--odoo-purple);
-  background: rgba(135, 90, 123, 0.1);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-}
-
-.client-card:hover::before { transform: scaleX(1); }
-
-.client-icon {
-  font-size: 2.2rem;
-  margin-bottom: 0.8rem;
-}
-
-.client-name {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: white;
-  margin-bottom: 0.4rem;
-}
-
-.hosting-tag {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 50px;
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.hosting-tag.sh {
-  background: rgba(0, 212, 255, 0.12);
-  color: var(--cyan);
-  border: 1px solid rgba(0, 212, 255, 0.3);
-}
-
-.hosting-tag.vps {
-  background: rgba(255, 193, 7, 0.12);
-  color: var(--gold);
-  border: 1px solid rgba(255, 193, 7, 0.3);
-}
-
-/* ── EXPERTISE & TEAM ── */
-#s-team {
-  padding: 5rem 2rem;
-  background: rgba(9, 12, 21, 0.7);
-  position: relative;
-  z-index: 10;
-}
-
-.team-grid {
-  max-width: 1000px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-
-.team-card {
-  background: var(--card-dark);
-  border: 1px solid var(--border-line);
-  border-radius: 22px;
-  padding: 2rem 1.5rem;
-  text-align: center;
-  transition: var(--transition);
-}
-
-.team-card:hover {
-  transform: translateY(-6px);
-  border-color: var(--gold);
-}
-
-.team-avatar {
-  width: 75px; height: 75px;
-  border-radius: 50%;
-  background: var(--grad-odoo);
-  margin: 0 auto 1.2rem;
+  min-height: 100vh;
+  padding-top: 150px;
+  padding-bottom: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  box-shadow: 0 0 20px rgba(135, 90, 123, 0.5);
+  text-align: center;
+  overflow: hidden;
 }
 
-.team-role {
-  font-size: 0.8rem;
-  color: var(--gold);
-  font-weight: 700;
-  margin-bottom: 0.4rem;
+#hero-3d-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
 }
 
-.team-title {
-  font-size: 1.2rem;
-  font-weight: 800;
-}
-
-/* ── 3D GLOBE IFRAME SECTION ── */
-#s-globe-section {
+.hero-content {
   position: relative;
   z-index: 10;
-  padding: 4rem 2rem;
-  text-align: center;
+  max-width: 920px;
+  padding: 0 1.5rem;
 }
 
-.globe-iframe-box {
+.offer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 193, 7, 0.12);
+  border: 1.5px solid var(--gold);
+  padding: 8px 22px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  color: var(--gold);
+  font-weight: 800;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 25px rgba(255, 193, 7, 0.25);
+}
+
+.hero-h1 {
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.hero-h1 .g-text {
+  background: var(--grad-odoo);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  color: rgba(255,255,255,0.75);
+  max-width: 750px;
+  margin: 0 auto 2.5rem;
+}
+
+.hero-action-row {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.btn-primary-gold {
+  background: var(--grad-gold);
+  color: #000;
+  padding: 1.1rem 2.6rem;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 8px 30px var(--gold-glow);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-primary-gold:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--gold-glow); }
+
+.btn-secondary-outline {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 1.1rem 2.2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+.btn-secondary-outline:hover { border-color: var(--odoo-purple); background: rgba(135, 90, 123, 0.2); transform: translateY(-3px); }
+
+/* ═════════════════════════════════════════════════════════
+   SECTION 2: WHO WE ARE & CREDIBILITY (3D MODULE SPHERES)
+   ═════════════════════════════════════════════════════════ */
+#s-who-we-are {
+  background: rgba(10, 15, 26, 0.8);
+}
+
+.who-grid {
+  max-width: 1150px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+#who-3d-canvas {
+  width: 100%;
+  height: 420px;
+  border-radius: 24px;
+  border: 1px solid var(--border-line);
+  background: rgba(6, 9, 19, 0.6);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.who-content h3 {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 1.2rem;
+  color: white;
+}
+
+.who-content p {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 1.8rem;
+  line-height: 1.8;
+}
+
+.credibility-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cred-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 14px 20px;
+  border-radius: 16px;
+}
+
+.cred-icon {
+  font-size: 1.8rem;
+  color: var(--gold);
+}
+
+.cred-text strong { display: block; font-size: 1rem; color: white; }
+.cred-text span { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+
+/* ═════════════════════════════════════════════════════════
+   SECTION 3: 3D EARTH GLOBE WITH ALL 16 CLIENT COMPANIES
+   ═════════════════════════════════════════════════════════ */
+#s-globe-clients {
+  padding: 6rem 2rem;
+  background: rgba(6, 9, 19, 0.95);
+}
+
+.globe-stage-wrapper {
+  max-width: 1250px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.3fr 0.9fr;
+  gap: 2rem;
+  align-items: center;
+  position: relative;
+}
+
+#globe-3d-canvas {
+  width: 100%;
+  height: 580px;
+  border-radius: 28px;
+  border: 1.5px solid var(--border-line);
+  background: rgba(3, 5, 11, 0.8);
+  touch-action: pan-y !important;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.9);
+}
+
+.clients-scroll-list {
+  max-height: 580px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-left: 8px;
+}
+
+.clients-scroll-list::-webkit-scrollbar { width: 4px; }
+.clients-scroll-list::-webkit-scrollbar-thumb { background: var(--odoo-purple); border-radius: 2px; }
+
+.client-item-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.client-item-card:hover, .client-item-card.active {
+  background: rgba(135, 90, 123, 0.18);
+  border-color: var(--gold);
+  transform: translateX(-6px);
+}
+
+.client-info h4 { font-size: 1.05rem; font-weight: 800; color: white; margin-bottom: 2px; }
+.client-info p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+.tag-badge {
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+.tag-badge.sh { background: rgba(0, 212, 255, 0.15); color: var(--cyan); border: 1px solid rgba(0, 212, 255, 0.3); }
+.tag-badge.vps { background: rgba(255, 193, 7, 0.15); color: var(--gold); border: 1px solid rgba(255, 193, 7, 0.3); }
+
+/* ═════════════════════════════════════════════════════════
+   SECTION 4: HIGH-CONVERTING B2B LEAD CAPTURE FORM (3D ENERGY GRID)
+   ═════════════════════════════════════════════════════════ */
+#s-b2b-form {
+  position: relative;
+  padding: 6rem 2rem;
+  background: linear-gradient(180deg, rgba(6, 9, 19, 0.95) 0%, rgba(135, 90, 123, 0.12) 50%, rgba(6, 9, 19, 0.95) 100%);
+  overflow: hidden;
+}
+
+#form-3d-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.b2b-form-container {
+  position: relative;
+  z-index: 10;
+  max-width: 880px;
+  margin: 0 auto;
+  background: var(--card-dark);
+  border: 1.5px solid var(--border-line);
+  border-radius: 30px;
+  padding: 3.5rem 3rem;
+  box-shadow: 0 35px 90px rgba(0,0,0,0.9), 0 0 50px rgba(135, 90, 123, 0.25);
+  backdrop-filter: blur(25px);
+}
+
+.b2b-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.4rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+}
+
+.form-group.full { grid-column: span 2; }
+
+.form-group label {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.9);
+}
+
+.form-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 14px 18px;
+  color: white;
+  font-family: inherit;
+  font-size: 0.98rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-input:focus {
+  border-color: var(--gold);
+  background: rgba(255, 193, 7, 0.06);
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.25);
+}
+
+.form-input option { background: #0E1420; color: white; }
+
+.submit-b2b-btn {
+  grid-column: span 2;
+  background: var(--grad-gold);
+  color: #000;
+  border: none;
+  padding: 1.2rem;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: 1.15rem;
+  cursor: pointer;
+  box-shadow: 0 8px 30px var(--gold-glow);
+  transition: var(--transition);
+  margin-top: 1.2rem;
+}
+
+.submit-b2b-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 45px var(--gold-glow);
+}
+
+.trust-badges-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  flex-wrap: wrap;
+}
+
+/* ═════════════════════════════════════════════════════════
+   SECTION 5: B2B PROCESS / CUSTOMER JOURNEY PIPELINE (3D PIPELINE)
+   ═════════════════════════════════════════════════════════ */
+#s-b2b-process {
+  padding: 6rem 2rem;
+  background: rgba(6, 9, 19, 0.9);
+}
+
+.process-grid {
   max-width: 1100px;
   margin: 0 auto;
-  height: 600px;
-  border-radius: 28px;
-  overflow: hidden;
-  border: 1.5px solid var(--border-line);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
 
-.globe-iframe-box iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+.process-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  padding: 2.2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  transition: var(--transition);
+}
+
+.process-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--odoo-purple);
+  background: rgba(135, 90, 123, 0.1);
+}
+
+.step-num {
+  font-size: 2.8rem;
+  font-weight: 900;
+  font-family: 'Outfit', sans-serif;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.step-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 0.6rem;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
 }
 
 /* FOOTER */
 footer {
   padding: 2.5rem 3rem;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.85);
   border-top: 1px solid rgba(255,255,255,0.08);
   text-align: center;
   font-size: 0.85rem;
   color: rgba(255,255,255,0.4);
 }
 
-/* SUCCESS MODAL */
+/* MODAL */
 #success-modal {
   position: fixed;
   inset: 0;
@@ -583,10 +576,7 @@ footer {
   transition: opacity 0.3s;
 }
 
-#success-modal.open {
-  opacity: 1;
-  pointer-events: auto;
-}
+#success-modal.open { opacity: 1; pointer-events: auto; }
 
 .modal-box {
   background: var(--card-dark);
@@ -598,19 +588,18 @@ footer {
   box-shadow: 0 20px 60px rgba(255, 193, 7, 0.4);
 }
 
-/* RESPONSIVE */
-@media(max-width:900px) {
-  #nav { padding: 0 1.2rem; top: 36px; }
+@media(max-width:950px) {
   nav ul { display: none; }
-  .clients-grid { grid-template-columns: repeat(2, 1fr); }
-  .team-grid { grid-template-columns: 1fr; }
-  .lead-form-grid { grid-template-columns: 1fr; }
-  .submit-btn, .form-group.full { grid-column: span 1; }
+  .who-grid, .globe-stage-wrapper { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: repeat(2, 1fr); }
+  .b2b-form-grid { grid-template-columns: 1fr; }
+  .submit-b2b-btn, .form-group.full { grid-column: span 1; }
+  #nav { padding: 0 1.2rem; top: 38px; }
+  #globe-3d-canvas { height: 420px; }
 }
 @media(max-width:480px) {
-  .clients-grid { grid-template-columns: 1fr; }
-  .lead-box-wrapper { padding: 2rem 1.2rem; }
-  .globe-iframe-box { height: 450px; }
+  .process-grid { grid-template-columns: 1fr; }
+  .b2b-form-container { padding: 2rem 1.2rem; }
 }
 </style>
 </head>
@@ -618,7 +607,7 @@ footer {
 
 <!-- URGENCY BAR -->
 <div id="urgency-bar">
-  <span>🚨 عرض خاص لفترة محدودة: احجز الآن قبل ارتفاع أسعار أودو - خصم 20% على تنفيذ Odoo ERP + تجربة مجانية 15 يوماً</span>
+  <span>🚨 عرض B2B حصري: احجز نظام Odoo ERP بخصم 20% + 15 يوماً تجربة مجانية قبل ارتفاع أسعار أودو الرسمية</span>
   <div class="countdown-box" id="timer">14 : 23 : 59 : 45</div>
 </div>
 
@@ -628,62 +617,123 @@ footer {
     <div class="logo-badge">COA</div>
     <div>
       <div style="font-weight:800;font-size:0.95rem">شريك أودو الذهبي</div>
-      <div class="logo-sub">Chartered Accountants &amp; Odoo Gold Partner</div>
+      <div style="font-size:0.75rem;color:rgba(255,255,255,0.6)">Chartered Accountants &amp; Odoo Gold Partner</div>
     </div>
   </a>
   <nav><ul>
-    <li><a href="#hero">الرئيسية</a></li>
-    <li><a href="#s-lead-form">حجز الديمو والخصم</a></li>
-    <li><a href="#s-clients">عملاؤنا (16 شركة)</a></li>
-    <li><a href="#s-team">فريق الخبراء</a></li>
-    <li><a href="#s-globe-section">تغطينا الإقليمية</a></li>
+    <li><a href="#s-offer-hero">العرض الحصري</a></li>
+    <li><a href="#s-who-we-are">من نحن</a></li>
+    <li><a href="#s-globe-clients">عملاؤنا الـ 16 والكرة الأرضية</a></li>
+    <li><a href="#s-b2b-form">طلب العرض</a></li>
+    <li><a href="#s-b2b-process">رحلة التنفيذ</a></li>
   </ul></nav>
-  <a href="#s-lead-form" class="nav-cta-btn">احجز ديمو مجاني 🚀</a>
+  <a href="#s-b2b-form" class="nav-cta-btn">احجز ديمو مجاني 🚀</a>
 </div>
 
-<!-- HERO SECTION -->
-<section id="hero">
-  <canvas id="bg-canvas"></canvas>
+<!-- ═════════════════════════════════════════════════════════
+     SECTION 1: THE NO-BRAINER PROMOTIONAL OFFER & HERO (3D MESH)
+     ═════════════════════════════════════════════════════════ -->
+<section id="s-offer-hero">
+  <canvas id="hero-3d-canvas"></canvas>
   <div class="hero-content">
-    <div class="gold-hero-badge">🏆 الشريك الذهبي المعتمد لنظام Odoo ERP في مصر والسعودية</div>
-    <h1 class="hero-title">
-      احجز نظام <span class="g-text">Odoo ERP</span> لشركتك<br/>
-      بخصم <span style="color:var(--gold)">20%</span> قبل ارتفاع الأسعار
+    <div class="offer-badge">🔥 العرض الحصري لمؤسسات B2B في مصر والسعودية</div>
+    <h1 class="hero-h1">
+      احجز نظام <span class="g-text">Odoo ERP</span> لمؤسستك<br/>
+      بخصم <span style="color:var(--gold)">20%</span> قبل ارتفاع الأسعار الرسمية
     </h1>
     <p class="hero-sub">
-      نربط جميع قطاعات مؤسستك (الحسابات، المبيعات، المخازن، الموارد البشرية، والتصنيع) في سيستم موحد واحد يضمن لك أقصى كفاءة وتشغيل بدون أخطاء.
+      نحول جميع قطاعات شركتك (الحسابات والمالية، المبيعات والـ CRM، المخازن وسلاسل الإمداد، الموارد البشرية والمرتبات) في نظام موحد واحد يضمن لك أقصى كفاءة تشغيلية بدون أخطاء.
     </p>
     <div class="hero-action-row">
-      <a href="#s-lead-form" class="btn-primary-gold">🔥 احجز ديمو مجاني واستفد بالخصم</a>
+      <a href="#s-b2b-form" class="btn-primary-gold">🔥 احجز ديمو مجاني وتأكيد الخصم 20%</a>
       <a href="https://wa.me/+201015380800" class="btn-secondary-outline" target="_blank">💬 استشارة فورية عبر واتساب</a>
-    </div>
-    <div class="hero-stats-pills">
-      <div class="stat-pill">✨ 200+ مشروع ناجح</div>
-      <div class="stat-pill">🏢 16+ شركة كبرى شريكة</div>
-      <div class="stat-pill">🎁 15 يوماً تجربة مجانية Free Demo</div>
     </div>
   </div>
 </section>
 
-<!-- LEAD CAPTURE FORM SECTION -->
-<section id="s-lead-form">
-  <div class="lead-box-wrapper">
-    <div class="form-header">
-      <h3>طلب استشارة وتجربة مجانية لنظام Odoo ERP</h3>
-      <p>ادخل بياناتك الآن ليقوم فريق خبراء COA بالتواصل معك وتفعيل خصم الـ 20%</p>
+<!-- ═════════════════════════════════════════════════════════
+     SECTION 2: WHO WE ARE & CREDIBILITY (3D ROTATING MODULES)
+     ═════════════════════════════════════════════════════════ -->
+<section class="b2b-section" id="s-who-we-are">
+  <div class="who-grid">
+    <div class="who-content">
+      <span class="sec-tag">من نحن - COA Gold Partner</span>
+      <h3>الشريك الذهبي المعتمد لتنفيذ وتطوير أودو في مصر والخليج</h3>
+      <p>
+        نحن في <strong>COA</strong> لسنا مجرد مزود برمجيات، بل بيت خبرة محاسبي واستشاري مرخص يجمع بين الفهم العميق للدورة المستندية والمحاسبية والمهارة التقنية الفائقة لتطبيق Odoo ERP في أكبر المؤسسات.
+      </p>
+      <div class="credibility-list">
+        <div class="cred-item">
+          <div class="cred-icon">🏅</div>
+          <div class="cred-text">
+            <strong>Odoo Certified Gold Partner</strong>
+            <span>شراكة ذهبية رسمية تضمن لك أعلى معايير الجودة والتراخيص الرسمية.</span>
+          </div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">📈</div>
+          <div class="cred-text">
+            <strong>200+ مشروع إداري ومالي ناجح</strong>
+            <span>خبرة عريقة في التحول الرقمي للقطاعات التجارية، الصناعية، والخدمية.</span>
+          </div>
+        </div>
+        <div class="cred-item">
+          <div class="cred-icon">🎧</div>
+          <div class="cred-text">
+            <strong>دعم فني وتدريب شامل 24/7</strong>
+            <span>فريق مخصص من المهندسين والمحاسبين المعتمدين لمتابعة تشغيل نظامك.</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <form id="coaForm" class="lead-form-grid" onsubmit="handleFormSubmit(event)">
+    <div>
+      <canvas id="who-3d-canvas"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════
+     SECTION 3: 3D EARTH GLOBE WITH ALL 16 CLIENT COMPANIES
+     ═════════════════════════════════════════════════════════ -->
+<section class="b2b-section" id="s-globe-clients">
+  <div class="sec-title-wrap">
+    <span class="sec-tag">سابق أعمالنا وحلفاؤنا في النجاح</span>
+    <h2 class="sec-main-title">شركات كبرى اعتمدت <span style="color:var(--odoo-purple)">COA</span> للتحول الرقمي</h2>
+    <p style="color:rgba(255,255,255,0.6);margin-top:8px">اضغط على أي شركة للتدوير الفوري للكرة الأرضية نحو موقعها المحدد 🌍</p>
+  </div>
+
+  <div class="globe-stage-wrapper">
+    <canvas id="globe-3d-canvas"></canvas>
+    <div class="clients-scroll-list" id="clientList">
+      <!-- 16 Clients generated via JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════
+     SECTION 4: HIGH-CONVERTING B2B LEAD CAPTURE FORM (3D WAVE GRID)
+     ═════════════════════════════════════════════════════════ -->
+<section class="b2b-section" id="s-b2b-form">
+  <canvas id="form-3d-canvas"></canvas>
+  <div class="b2b-form-container">
+    <div class="sec-title-wrap" style="margin-bottom:2rem">
+      <span class="sec-tag">طلب العرض والحجز الفوري</span>
+      <h2 style="font-size:2.2rem;font-weight:900">احجز الديمو المجاني وتأكيد الخصم 20%</h2>
+      <p style="color:var(--gold);font-weight:700;margin-top:6px">سيتواصل معك أحد استشاريي أودو في COA خلال 15 دقيقة فقط</p>
+    </div>
+
+    <form class="b2b-form-grid" onsubmit="handleB2BSubmit(event)">
       <div class="form-group">
-        <label>الاسم بالكامل *</label>
-        <input type="text" class="form-input" required placeholder="مثال: أحمد محمود"/>
+        <label>الاسم واللقب الوظيفي *</label>
+        <input type="text" class="form-input" required placeholder="مثال: م. أحمد عبد العزيز - المدير التنفيذي"/>
       </div>
       <div class="form-group">
-        <label>رقم الهاتف / الواتساب *</label>
-        <input type="tel" class="form-input" required placeholder="مثال: 01012345678"/>
+        <label>رقم الهاتف / الواتساب المباشر *</label>
+        <input type="tel" class="form-input" required placeholder="مثال: 01015380800"/>
       </div>
       <div class="form-group">
-        <label>اسم الشركة / المؤسسة *</label>
-        <input type="text" class="form-input" required placeholder="مثال: شركة النور للصناعة"/>
+        <label>اسم المؤسسة / الشركة *</label>
+        <input type="text" class="form-input" required placeholder="مثال: مجموعة أطياف للصناعات"/>
       </div>
       <div class="form-group">
         <label>الدولة *</label>
@@ -695,165 +745,65 @@ footer {
           <option value="أخرى">دولة أخرى</option>
         </select>
       </div>
-      <div class="form-group full">
-        <label>الموديولات المطلوب تطبيقها في Odoo</label>
+      <div class="form-group">
+        <label>حجم الشركة (عدد المستخدمين / الموظفين)</label>
         <select class="form-input">
-          <option value="all">الحسابات والمالية + المبيعات + المخازن + HR (برنامج شامل)</option>
-          <option value="erp">الحسابات والمالية فقط (Accounting &amp; Invoicing)</option>
-          <option value="mfg">التصنيع وسلاسل الإمداد (Manufacturing &amp; MRP)</option>
+          <option value="1-10">1 - 10 مستخدمين</option>
+          <option value="10-50">10 - 50 مستخدم</option>
+          <option value="50-200">50 - 200 مستخدم</option>
+          <option value="200+">أكثر من 200 مستخدم (Enterprise)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>الموديولات الأهم لمؤسستك</label>
+        <select class="form-input">
+          <option value="full">نظام شامل (حسابات + مبيعات + مخازن + HR)</option>
+          <option value="acc">الحسابات والمالية والفاتورة الإلكترونية</option>
+          <option value="mfg">التصنيع وسلاسل الإمداد (MRP)</option>
           <option value="hr">الموارد البشرية والمرتبات (HR &amp; Payroll)</option>
         </select>
       </div>
-      <button type="submit" class="submit-btn">🚀 احجز الديمو المجاني وتأكيد الخصم 20%</button>
+      <button type="submit" class="submit-b2b-btn">🚀 تأكيد حجز العرض بخصم 20% والديمو المجاني</button>
     </form>
-  </div>
-</section>
 
-<!-- CLIENTS SHOWCASE SECTION (16 COMPANIES FROM IMAGE) -->
-<section id="s-clients">
-  <div class="sec-title-wrap">
-    <span class="sec-tag">شركاء النجاح وحلفاؤنا</span>
-    <h2 class="sec-main-title">شركات وثقت في <span style="color:var(--odoo-purple)">COA</span> لنظام أودو</h2>
-  </div>
-
-  <div class="clients-grid">
-    <!-- 1 -->
-    <div class="client-card">
-      <div class="client-icon">🏢</div>
-      <div class="client-name">أرفاد (Arfad)</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 2 -->
-    <div class="client-card">
-      <div class="client-icon">🌾</div>
-      <div class="client-name">الرملة (Al-Ramlaa)</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 3 -->
-    <div class="client-card">
-      <div class="client-icon">🏭</div>
-      <div class="client-name">CFC Egypt (v18)</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 4 -->
-    <div class="client-card">
-      <div class="client-icon">🏗️</div>
-      <div class="client-name">Punalu (COA Eng)</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 5 -->
-    <div class="client-card">
-      <div class="client-icon">🥫</div>
-      <div class="client-name">أطياف للصناعات الغذائية</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 6 -->
-    <div class="client-card">
-      <div class="client-icon">🪵</div>
-      <div class="client-name">Odoo for Oud (عود)</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 7 -->
-    <div class="client-card">
-      <div class="client-icon">💊</div>
-      <div class="client-name">شفاء الدواء (Shefa)</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 8 -->
-    <div class="client-card">
-      <div class="client-icon">🌪️</div>
-      <div class="client-name">Tornado KSA (تورنيدو)</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 9 -->
-    <div class="client-card">
-      <div class="client-icon">🍞</div>
-      <div class="client-name">Wheat &amp; Butter</div>
-      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
-    </div>
-    <!-- 10 -->
-    <div class="client-card">
-      <div class="client-icon">📡</div>
-      <div class="client-name">بيكون (Beacon)</div>
-      <span class="hosting-tag vps">VPS Enterprise</span>
-    </div>
-    <!-- 11 -->
-    <div class="client-card">
-      <div class="client-icon">📦</div>
-      <div class="client-name">عرب باك (Arab Pack)</div>
-      <span class="hosting-tag vps">VPS Enterprise</span>
-    </div>
-    <!-- 12 -->
-    <div class="client-card">
-      <div class="client-icon">💳</div>
-      <div class="client-name">Cofinance</div>
-      <span class="hosting-tag vps">VPS Enterprise</span>
-    </div>
-    <!-- 13 -->
-    <div class="client-card">
-      <div class="client-icon">🌐</div>
-      <div class="client-name">Dottopia</div>
-      <span class="hosting-tag vps">VPS Enterprise</span>
-    </div>
-    <!-- 14 -->
-    <div class="client-card">
-      <div class="client-icon">⭐</div>
-      <div class="client-name">الرضا (El-Reda)</div>
-      <span class="hosting-tag vps">VPS Enterprise</span>
-    </div>
-    <!-- 15 -->
-    <div class="client-card">
-      <div class="client-icon">⚖️</div>
-      <div class="client-name">المخلف (El-Mokhalaf)</div>
-      <span class="hosting-tag vps">VPS Enterprise</span>
-    </div>
-    <!-- 16 -->
-    <div class="client-card">
-      <div class="client-icon">🛒</div>
-      <div class="client-name">حلال ماركت (Halal Market)</div>
-      <span class="hosting-tag vps">VPS Enterprise</span>
+    <div class="trust-badges-row">
+      <span>🔒 خوصية بياناتك محمية 100%</span>
+      <span>⚡ استجابة سريعة خلال 15 دقيقة</span>
+      <span>🏅 ضمان الجودة من Odoo Gold Partner</span>
     </div>
   </div>
 </section>
 
-<!-- EXPERTISE & TEAM SECTION -->
-<section id="s-team">
+<!-- ═════════════════════════════════════════════════════════
+     SECTION 5: B2B PROCESS / CUSTOMER JOURNEY PIPELINE (3D PIPELINE)
+     ═════════════════════════════════════════════════════════ -->
+<section class="b2b-section" id="s-b2b-process">
   <div class="sec-title-wrap">
-    <span class="sec-tag">نخبة المهندسين والخبراء</span>
-    <h2 class="sec-main-title">فريق عمل معتمد لدعم مؤسستك</h2>
+    <span class="sec-tag">رحلة عميل B2B معنا</span>
+    <h2 class="sec-main-title">كيف نحول مؤسستك إلى نظام <span style="color:var(--gold)">Odoo</span> متكامل؟</h2>
   </div>
 
-  <div class="team-grid">
-    <div class="team-card">
-      <div class="team-avatar">👨‍💼</div>
-      <div class="team-role">Odoo Certified Functional Architect</div>
-      <div class="team-title">استشاريو التحول الرقمي</div>
-      <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:8px">دراسة دورات العمل وتخصيص الموديولات المالية والإدارية بدقة متناهية.</p>
+  <div class="process-grid">
+    <div class="process-card">
+      <div class="step-num">01</div>
+      <h3 class="step-title">دراسة الدورة المستندية</h3>
+      <p class="step-desc">جلسة تحليل كاملة لدورة العمل والحسابات والمخازن لتحديد الموديولات بالضبط.</p>
     </div>
-    <div class="team-card">
-      <div class="team-avatar">💻</div>
-      <div class="team-role">Senior Odoo Developers</div>
-      <div class="team-title">مهندسو التطوير والربط</div>
-      <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:8px">برمجة الموديولات الخاصة وربط الفاتورة الإلكترونية والـ APIs مع الأنظمة الخارجية.</p>
+    <div class="process-card">
+      <div class="step-num">02</div>
+      <h3 class="step-title">التأهيل ونقل البيانات</h3>
+      <p class="step-desc">تخصيص نظام Odoo ونقل كافة البيانات السابقة بدون هدر أو فقدان أي سجلات.</p>
     </div>
-    <div class="team-card">
-      <div class="team-avatar">🎧</div>
-      <div class="team-role">24/7 Dedicated Support</div>
-      <div class="team-title">فريق الدعم الفني والتدريب</div>
-      <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:8px">تدريب كامل لموظفي الشركة وتوفير دعم فني فوري لضمان استقرار التشغيل.</p>
+    <div class="process-card">
+      <div class="step-num">03</div>
+      <h3 class="step-title">التدريب والتشغيل التجريبي</h3>
+      <p class="step-desc">تدريب كامل لفريق عملك مع تجربة مجانية 15 يوماً للتأكد من سهولة الاستخدام.</p>
     </div>
-  </div>
-</section>
-
-<!-- 3D GLOBE IFRAME SECTION -->
-<section id="s-globe-section">
-  <div class="sec-title-wrap">
-    <span class="sec-tag">تواجدنا في الشرق الأوسط والعالم</span>
-    <h2 class="sec-main-title">نخدم شركات كبرى في مصر، السعودية، والخليج</h2>
-  </div>
-
-  <div class="globe-iframe-box">
-    <iframe src="globe_standalone.html" title="COA 3D Global Presence"></iframe>
+    <div class="process-card">
+      <div class="step-num">04</div>
+      <h3 class="step-title">الانطلاق والدعم المستمر</h3>
+      <p class="step-desc">بدء العمل الفعلي مع توفير فريق دعم فني واستشاري مخصص لمؤسستك 24/7.</p>
+    </div>
   </div>
 </section>
 
@@ -862,73 +812,230 @@ footer {
   <p>© 2026 <strong>COA - Chartered Accountants &amp; Odoo Gold Partner</strong>. جميع الحقوق محفوظة.</p>
 </footer>
 
-<!-- SUCCESS MODAL -->
+<!-- MODAL -->
 <div id="success-modal">
   <div class="modal-box">
     <div style="font-size:3.5rem;margin-bottom:1rem">🎉</div>
-    <h3 style="font-size:1.8rem;margin-bottom:0.8rem;color:white">تم تسجيل طلبك بنجاح!</h3>
-    <p style="color:rgba(255,255,255,0.7);margin-bottom:1.8rem">تم حجز الخصم 20% وتفعيل التجربة المجانية 15 يوماً. سيتواصل معك أحد استشاريي أودو في COA خلال دقائق.</p>
+    <h3 style="font-size:1.8rem;margin-bottom:0.8rem;color:white">تم تسجيل طلب العرض بنجاح!</h3>
+    <p style="color:rgba(255,255,255,0.7);margin-bottom:1.8rem">تم تثبيت خصم الـ 20% وتأكيد تفعيل التجربة المجانية. سيتواصل معك أحد استشاريي أودو في COA خلال دقائق.</p>
     <button type="button" onclick="closeModal()" class="btn-primary-gold" style="border:none;cursor:pointer;width:100%;justify-content:center">تم، شكراً لكم</button>
   </div>
 </div>
 
 <script>
-// 1. THREE.JS BACKGROUND PARTICLES
-const bgCanvas = document.getElementById('bg-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+// 1. URGENCY COUNTDOWN
+let seconds = 14 * 3600 + 23 * 60 + 45;
+setInterval(() => {
+  seconds--; if (seconds < 0) seconds = 86400;
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  document.getElementById('timer').textContent = `${h<10?'0'+h:h} : ${m<10?'0'+m:m} : ${s<10?'0'+s:s}`;
+}, 1000);
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 100;
-
-const count = 180;
-const positions = new Float32Array(count * 3);
-for (let i = 0; i < count * 3; i++) {
-  positions[i] = (Math.random() - 0.5) * 200;
-}
-
-const geo = new THREE.BufferGeometry();
-geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-const mat = new THREE.PointsMaterial({ color: 0x875A7B, size: 1.5, transparent: true, opacity: 0.7 });
-const pts = new THREE.Points(geo, mat);
-scene.add(pts);
-
-function animate() {
-  requestAnimationFrame(animate);
-  pts.rotation.y += 0.001;
-  pts.rotation.x += 0.0005;
-  renderer.render(scene, camera);
-}
-animate();
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+// 2. THREE.JS SECTION 1 - HERO 3D GEOMETRY PRISM & DYNAMIC PARTICLES
+(function initHero3D() {
+  const canvas = document.getElementById('hero-3d-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 80;
+
+  // 3D Geometric Floating Icosahedron (Odoo Prism)
+  const geom = new THREE.IcosahedronGeometry(24, 1);
+  const mat = new THREE.MeshBasicMaterial({ color: 0x875A7B, wireframe: true, transparent: true, opacity: 0.35 });
+  const mesh = new THREE.Mesh(geom, mat);
+  scene.add(mesh);
+
+  // Background Glowing Gold/Purple Particles
+  const pCount = 150;
+  const pGeom = new THREE.BufferGeometry();
+  const pPos = new Float32Array(pCount * 3);
+  for(let i=0; i<pCount*3; i++) pPos[i] = (Math.random() - 0.5) * 180;
+  pGeom.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+  const pMat = new THREE.PointsMaterial({ color: 0xFFC107, size: 1.6, transparent: true, opacity: 0.6 });
+  const particles = new THREE.Points(pGeom, pMat);
+  scene.add(particles);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    mesh.rotation.x += 0.003;
+    mesh.rotation.y += 0.005;
+    particles.rotation.y -= 0.001;
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// 3. THREE.JS SECTION 2 - WHO WE ARE 3D ODOO MODULE SPHERES
+(function initWho3D() {
+  const canvas = document.getElementById('who-3d-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  const rect = canvas.getBoundingClientRect();
+  renderer.setSize(rect.width, rect.height);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, rect.width / rect.height, 0.1, 1000);
+  camera.position.z = 12;
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const light = new THREE.PointLight(0xFFC107, 2, 50);
+  light.position.set(5, 5, 5);
+  scene.add(light);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+
+  // Central Odoo Core Sphere
+  const coreMat = new THREE.MeshStandardMaterial({ color: 0x875A7B, roughness: 0.2, metalness: 0.8 });
+  const core = new THREE.Mesh(new THREE.SphereGeometry(2.2, 32, 32), coreMat);
+  group.add(core);
+
+  // Orbiting Satellite Module Spheres (Accounting, Sales, HR, Inventory)
+  const modules = [0xFFC107, 0x00D4FF, 0x7C3AED, 0xFF2D55];
+  const sats = [];
+  modules.forEach((col, i) => {
+    const sat = new THREE.Mesh(new THREE.SphereGeometry(0.7, 24, 24), new THREE.MeshStandardMaterial({ color: col }));
+    const angle = (i / modules.length) * Math.PI * 2;
+    sat.position.set(Math.cos(angle)*4.5, Math.sin(angle)*4.5, 0);
+    group.add(sat);
+    sats.push({ sat, angle });
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    group.rotation.y += 0.008;
+    sats.forEach(s => {
+      s.angle += 0.015;
+      s.sat.position.x = Math.cos(s.angle) * 4.5;
+      s.sat.position.z = Math.sin(s.angle) * 4.5;
+    });
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// 4. THREE.JS SECTION 3 - 3D EARTH GLOBE WITH ALL 16 CLIENTS
+const clientsData = [
+  { name: 'أرفاد (Arfad)', lat: 30.0, lon: 31.2, type: 'Odoo.sh Enterprise', sector: 'المقاولات والاستثمار' },
+  { name: 'الرملة (Al-Ramlaa)', lat: 29.9, lon: 31.1, type: 'Odoo.sh Enterprise', sector: 'الزراعة والاستصلاح' },
+  { name: 'CFC Egypt (v18)', lat: 30.1, lon: 31.3, type: 'Odoo.sh Enterprise', sector: 'التصنيع والتصدير' },
+  { name: 'Punalu (eng-coa)', lat: 31.2, lon: 29.9, type: 'Odoo.sh Enterprise', sector: 'الاستشارات الهندسية' },
+  { name: 'أطياف للصناعات الغذائية', lat: 29.8, lon: 30.9, type: 'Odoo.sh Enterprise', sector: 'الصناعات الغذائية' },
+  { name: 'Odoo for Oud (عود)', lat: 24.7, lon: 46.7, type: 'Odoo.sh Enterprise', sector: 'العطور والتجارة' },
+  { name: 'شفاء الدواء (Shefa)', lat: 21.5, lon: 39.1, type: 'Odoo.sh Enterprise', sector: 'الأدوية والمستلزمات' },
+  { name: 'Tornado KSA (تورنيدو)', lat: 26.4, lon: 50.1, type: 'Odoo.sh Enterprise', sector: 'التكنولوجيا والتوزيع' },
+  { name: 'Wheat & Butter', lat: 25.2, lon: 55.3, type: 'Odoo.sh Enterprise', sector: 'الأغذية والمطاعم' },
+  { name: 'بيكون (Beacon)', lat: 29.3, lon: 47.7, type: 'VPS Enterprise', sector: 'الاتصالات والشبكات' },
+  { name: 'عرب باك (Arab Pack)', lat: 30.05, lon: 31.25, type: 'VPS Enterprise', sector: 'التعبئة والتغليف' },
+  { name: 'Cofinance', lat: 51.5, lon: -0.1, type: 'VPS Enterprise', sector: 'الخدمات المالية' },
+  { name: 'Dottopia', lat: 52.5, lon: 13.4, type: 'VPS Enterprise', sector: 'حلول البرمجيات' },
+  { name: 'الرضا (El-Reda)', lat: 31.0, lon: 31.3, type: 'VPS Enterprise', sector: 'التجارة العامة' },
+  { name: 'المخلف (El-Mokhalaf)', lat: 24.6, lon: 46.6, type: 'VPS Enterprise', sector: 'المقاولات العامة' },
+  { name: 'حلال ماركت (Halal Market)', lat: 40.7, lon: -74.0, type: 'VPS Enterprise', sector: 'التجزئة والسوبر ماركت' }
+];
+
+const clientListEl = document.getElementById('clientList');
+let globeGroupTargetQ = new THREE.Quaternion();
+let currentActiveClient = 0;
+
+clientsData.forEach((c, idx) => {
+  const card = document.createElement('div');
+  card.className = `client-item-card` + (idx === 0 ? ' active' : '');
+  card.innerHTML = `
+    <div class="client-info">
+      <h4>${c.name}</h4>
+      <p>${c.sector}</p>
+    </div>
+    <span class="tag-badge ${c.type.includes('Odoo.sh') ? 'sh' : 'vps'}">${c.type}</span>
+  `;
+  card.addEventListener('click', () => triggerGlobeClient(idx));
+  clientListEl.appendChild(card);
 });
 
-// 2. FORM SUBMISSION HANDLER
-function handleFormSubmit(e) {
+let globeGroup, globeCamera, globeRenderer;
+const R = 2.45;
+
+function ll2xyz(lat, lon, radius = R + 0.02) {
+  const phi = (90 - lat) * Math.PI / 180;
+  const theta = (lon + 180) * Math.PI / 180;
+  return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta));
+}
+
+function getQuaternionForPos(pos) {
+  const norm = pos.clone().normalize();
+  const cameraDir = new THREE.Vector3(0, 0, 1);
+  return new THREE.Quaternion().setFromUnitVectors(norm, cameraDir);
+}
+
+const clientPosVecs = clientsData.map(c => ll2xyz(c.lat, c.lon));
+
+function triggerGlobeClient(idx) {
+  currentActiveClient = idx;
+  const cards = document.querySelectorAll('.client-item-card');
+  cards.forEach((cd, i) => cd.classList.toggle('active', i === idx));
+
+  const targetPos = clientPosVecs[idx];
+  globeGroupTargetQ.copy(getQuaternionForPos(targetPos));
+}
+
+(function initGlobe3D() {
+  const canvas = document.getElementById('globe-3d-canvas');
+  globeRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  const rect = canvas.getBoundingClientRect();
+  globeRenderer.setSize(rect.width, rect.height);
+
+  const scene = new THREE.Scene();
+  globeCamera = new THREE.PerspectiveCamera(45, rect.width / rect.height, 0.1, 1000);
+  globeCamera.position.set(0, 0, 5.8);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const dLight = new THREE.DirectionalLight(0xffffff, 1.6);
+  dLight.position.set(5, 3, 5);
+  scene.add(dLight);
+
+  globeGroup = new THREE.Group();
+  scene.add(globeGroup);
+
+  const texLoader = new THREE.TextureLoader();
+  const dayMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+
+  const earthMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(R, 64, 64),
+    new THREE.MeshPhongMaterial({ map: dayMap, shininess: 15 })
+  );
+  globeGroup.add(earthMesh);
+
+  // Add 16 Crimson Red Location Pins
+  clientsData.forEach((c, idx) => {
+    const pos = clientPosVecs[idx];
+    const pin = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFF2D55 }));
+    pin.position.copy(pos);
+    globeGroup.add(pin);
+  });
+
+  globeGroupTargetQ.copy(getQuaternionForPos(clientPosVecs[0]));
+  globeGroup.quaternion.copy(globeGroupTargetQ);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    globeGroup.quaternion.slerp(globeGroupTargetQ, 0.08);
+    globeRenderer.render(scene, globeCamera);
+  }
+  animate();
+})();
+
+// 5. FORM & MODAL HANDLERS
+function handleB2BSubmit(e) {
   e.preventDefault();
   document.getElementById('success-modal').classList.add('open');
 }
 
 function closeModal() {
   document.getElementById('success-modal').classList.remove('open');
-  document.getElementById('coaForm').reset();
 }
-
-// 3. COUNTDOWN TIMER
-let seconds = 14 * 3600 + 23 * 60 + 59;
-setInterval(() => {
-  seconds--;
-  if (seconds < 0) seconds = 86400;
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = seconds % 60;
-  document.getElementById('timer').textContent = `${h < 10 ? '0'+h : h} : ${m < 10 ? '0'+m : m} : ${s < 10 ? '0'+s : s}`;
-}, 1000);
 </script>
 </body>
 </html>
