@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>iCONSULT | 3D Interactive Global Presence Engine</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet"/>
+
+<!-- Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --blue: #00AEEF;
+  --blue2: #00D4FF;
+  --purple: #7C3AED;
+  --navy: #03070c;
+  --red: #FF2D55;
+  --red2: #FF3B30;
+  --card-obsidian: rgba(8, 14, 24, 0.94);
+  --border-hairline: rgba(0, 174, 239, 0.3);
+  --white: #fff;
+  --grad: linear-gradient(135deg, #00AEEF, #7C3AED);
+  --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--navy);
+  font-family: 'Outfit', sans-serif;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Standalone Globe Section Container */
+#s-globe-standalone {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#globe-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  touch-action: pan-y !important;
+}
+
+/* Overlay Container for Floating 3D Glass Badges */
+#globe-badges-container {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* VIBRANT RED HIGH-TECH FLOATING GLASS BADGES */
+.floating-glass-badge {
+  position: absolute;
+  top: 0; left: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(14, 5, 8, 0.92);
+  border: 1.5px solid rgba(255, 45, 85, 0.6);
+  color: #FFFFFF;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 45, 85, 0.35);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: opacity 0.25s ease, border-color 0.3s, background 0.3s, box-shadow 0.3s;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: transform;
+}
+
+.floating-glass-badge:hover, .floating-glass-badge.active {
+  background: rgba(255, 45, 85, 0.95);
+  border-color: #FF6B8B;
+  color: #FFFFFF;
+  box-shadow: 0 8px 30px rgba(255, 45, 85, 0.9);
+}
+
+.floating-glass-badge .badge-dot {
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--red);
+}
+
+/* Zoom Controls (+ / -) on Left Side */
+.mobile-zoom-controls {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.zoom-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(8, 14, 24, 0.94);
+  border: 1.5px solid var(--blue);
+  color: #FFFFFF;
+  font-size: 1.6rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(0, 174, 239, 0.5);
+  transition: var(--transition-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+.zoom-btn:active {
+  transform: scale(0.9);
+  background: var(--blue);
+}
+
+/* Floating Compact Double-Bezel Card (Right Side) */
+.globe-card-stage {
+  position: absolute;
+  right: 4vw;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  width: 100%;
+  max-width: 420px;
+  padding: 0 10px;
+  pointer-events: none;
+}
+
+.double-bezel-outer {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.95);
+  transition: var(--transition-spring);
+  pointer-events: auto;
+  touch-action: auto !important;
+}
+
+.double-bezel-inner {
+  background: var(--card-obsidian);
+  border: 1px solid var(--border-hairline);
+  border-radius: calc(24px - 10px);
+  padding: 26px 24px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.mobile-card-handle {
+  display: none;
+  width: 40px;
+  height: 4px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px;
+  margin: 0 auto 12px;
+}
+
+.mobile-card-close {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+}
+
+.explode-text {
+  position: absolute;
+  width: calc(100% - 48px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.explode-text.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  pointer-events: auto;
+}
+
+.card-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.card-flag-badge { display: flex; align-items: center; gap: 8px; font-size: 1.4rem; color: #FFFFFF; font-weight: 800; }
+.card-region-tag { font-size: 0.68rem; color: var(--blue); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
+.card-country-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; color: white; margin-bottom: 8px; font-weight: 600; }
+.card-body-text { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.65; margin-bottom: 16px; }
+.badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.agency-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(0, 174, 239, 0.1); border: 1px solid rgba(0, 174, 239, 0.3);
+  color: var(--blue); padding: 5px 13px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;
+}
+.agency-pill.green { background: rgba(27, 130, 67, 0.12); border-color: rgba(27, 130, 67, 0.35); color: #25d366; }
+.agency-pill.gold { background: rgba(207, 161, 92, 0.12); border-color: rgba(207, 161, 92, 0.35); color: #cfa15c; }
+
+@media(max-width:850px){
+  .mobile-card-close, .mobile-card-handle { display: flex; }
+
+  .globe-card-stage {
+    right: 0; left: 0;
+    top: auto; bottom: 20px;
+    transform: translateY(130%);
+    opacity: 0;
+    max-width: 92%;
+    margin: 0 auto;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  }
+  .globe-card-stage.mobile-open {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .mobile-zoom-controls { left: 16px; top: 40%; }
+}
+@media(max-width:480px){
+  .globe-card-stage { max-width: 95%; bottom: 15px; }
+  .zoom-btn { width: 46px; height: 46px; font-size: 1.4rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="s-globe-standalone">
+  <canvas id="globe-canvas"></canvas>
+  <div id="globe-badges-container"></div>
+
+  <div class="mobile-zoom-controls">
+    <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
+    <button type="button" class="zoom-btn" id="btn-zoom-out" aria-label="Zoom Out">−</button>
+  </div>
+
+  <div class="globe-card-stage" id="globe-card-stage">
+    <div class="double-bezel-outer">
+      <div class="double-bezel-inner" id="globe-card-inner">
+        <div class="mobile-card-handle"></div>
+        <button type="button" class="mobile-card-close" id="btn-close-card">✕</button>
+        <!-- Explode panels generated dynamically -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const countryStops = [
+    { lat: 30.0, lon: 31.2, country: 'Egypt', tag: 'Headquarters', title: 'Cairo HQ Hub', desc: 'Cairo Headquarters leading business transformation across North Africa. Specialized in Odoo ERP, strategic consulting & AI automation.', p1: '⚙️ Odoo ERP', p2: '200+ Projects', isHq: true },
+    { lat: 24.7, lon: 46.7, country: 'Saudi Arabia', tag: 'Vision 2030', title: 'Riyadh Operations', desc: 'Empowering major enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.', p1: '🎯 Strategic Planning', p2: '98% Satisfaction' },
+    { lat: 25.2, lon: 55.3, country: 'UAE', tag: 'Innovation Hub', title: 'Dubai Office', desc: 'Driving high-performance digital marketing, brand acceleration, and AI workflow automation for Dubai corporations.', p1: '📣 Digital Marketing', p2: '3x ROI Growth' },
+    { lat: 29.3, lon: 47.7, country: 'Kuwait', tag: 'GCC Region', title: 'Kuwait City', desc: 'Providing specialized ERP automation and workforce management solutions for industrial & commercial groups.', p1: '👥 Human Resources', p2: 'GCC Growth' },
+    { lat: 51.5, lon: -0.1, country: 'United Kingdom', tag: 'European Gateway', title: 'London Partner', desc: 'Connecting European firms with Middle Eastern markets through seamless IT architecture and compliance consulting.', p1: '🌐 Global Tech', p2: 'UK Network' },
+    { lat: 52.5, lon: 13.4, country: 'Germany', tag: 'Central Europe', title: 'Berlin Office', desc: 'Delivering Industry 4.0 data integration and cross-border ERP synchronization for German manufacturing firms.', p1: '⚙️ Industry 4.0', p2: 'Data Integration' },
+    { lat: 36.2, lon: 138.2, country: 'Japan', tag: 'Tech Alliance', title: 'Tokyo Alliance', desc: 'Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.', p1: '🤖 AI Integration', p2: 'Tokyo Office' },
+    { lat: 1.3, lon: 103.8, country: 'Singapore', tag: 'APAC Hub', title: 'Singapore Centre', desc: 'Expanding digital transformation and fintech integration for Asian multinational enterprises.', p1: '🚀 APAC Expansion', p2: 'Fintech ERP' },
+    { lat: 40.7, lon: -74.0, country: 'United States', tag: 'Americas Hub', title: 'New York Office', desc: 'Providing US corporations expanding into MENA with strategic market entry, ERP migration, and localization.', p1: '🗽 Market Entry', p2: 'US Alliance' },
+    { lat: -23.5, lon: -46.6, country: 'Brazil', tag: 'Latin America', title: 'São Paulo Partner', desc: 'Supporting South American agritech and industrial leaders with cloud ERP infrastructure and analytics.', p1: '🌱 Agritech ERP', p2: 'LATAM Reach' }
+];
+
+const globeCardInner = document.getElementById('globe-card-inner');
+const globeCardStage = document.getElementById('globe-card-stage');
+const badgesContainer = document.getElementById('globe-badges-container');
+
+let activePinIdx = 0;
+const badgeElements = [];
+
+countryStops.forEach((st, i) => {
+    const panel = document.createElement('div');
+    panel.className = `explode-text` + (i === 0 ? ' active' : '');
+    panel.id = `globe-panel-${i}`;
+    panel.innerHTML = `
+        <div class="card-top-row">
+            <div class="card-flag-badge"><strong>${st.country}</strong></div>
+            <span class="card-region-tag">${st.tag}</span>
+        </div>
+        <h2 class="card-country-title">${st.title}</h2>
+        <p class="card-body-text">${st.desc}</p>
+        <div class="badge-row">
+            <span class="agency-pill green">${st.p1}</span>
+            <span class="agency-pill gold">${st.p2}</span>
+        </div>
+    `;
+    globeCardInner.appendChild(panel);
+
+    const badge = document.createElement('div');
+    badge.className = `floating-glass-badge` + (i === 0 ? ' active' : '');
+    badge.id = `glass-badge-${i}`;
+    badge.innerHTML = `<span class="badge-dot"></span><span>${st.country}</span>`;
+    badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        triggerPinCard(i);
+    });
+    badgesContainer.appendChild(badge);
+    badgeElements.push(badge);
+});
+
+const globeCanvas = document.getElementById('globe-canvas');
+const globeRenderer = new THREE.WebGLRenderer({ canvas: globeCanvas, alpha: true, antialias: true });
+globeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+globeRenderer.setSize(window.innerWidth, window.innerHeight);
+
+const globeScene = new THREE.Scene();
+const globeCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+globeCamera.position.set(0, 0, 5.8);
+
+const ambL = new THREE.AmbientLight(0xffffff, 0.65); globeScene.add(ambL);
+const dirL = new THREE.DirectionalLight(0xffffff, 1.8); dirL.position.set(5, 3, 5); globeScene.add(dirL);
+const rimL = new THREE.DirectionalLight(0x00AEEF, 0.8); rimL.position.set(-5, -2, -3); globeScene.add(rimL);
+
+const globeGroup = new THREE.Group();
+globeGroup.position.set(-1.7, 0, 0);
+globeScene.add(globeGroup);
+
+function updateGlobeCam() {
+    if (window.innerWidth < 850) {
+        globeGroup.position.set(0, 0.5, 0);
+        globeCamera.position.set(0, 0, 6.8);
+    } else {
+        globeGroup.position.set(-1.7, 0, 0);
+        globeCamera.position.set(0, 0, 5.8);
+    }
+}
+updateGlobeCam();
+
+const R = 2.45;
+const texLoader = new THREE.TextureLoader();
+const dayMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+const bumpMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg');
+const specMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg');
+const cldMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
+
+const earthMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(R, 64, 64),
+    new THREE.MeshPhongMaterial({ map: dayMap, normalMap: bumpMap, normalScale: new THREE.Vector2(0.85, 0.85), specularMap: specMap, specular: new THREE.Color(0x333333), shininess: 15 })
+);
+globeGroup.add(earthMesh);
+
+const cloudMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(R * 1.015, 64, 64),
+    new THREE.MeshStandardMaterial({ map: cldMap, transparent: true, opacity: 0.4 })
+);
+globeGroup.add(cloudMesh);
+
+const atmMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(R * 1.1, 64, 64),
+    new THREE.MeshBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.12, side: THREE.BackSide })
+);
+globeGroup.add(atmMesh);
+
+function ll2xyz(lat, lon, radius = R + 0.02) {
+    const phi = (90 - lat) * Math.PI / 180;
+    const theta = (lon + 180) * Math.PI / 180;
+    return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta));
+}
+
+function createRedLocationMarker(isHq) {
+    const group = new THREE.Group();
+    const coreColor = 0xFF2D55;
+
+    const coreNode = new THREE.Mesh(
+        new THREE.SphereGeometry(0.048, 16, 16),
+        new THREE.MeshBasicMaterial({ color: coreColor })
+    );
+    group.add(coreNode);
+
+    const ringInner = new THREE.Mesh(
+        new THREE.TorusGeometry(0.085, 0.009, 8, 32),
+        new THREE.MeshBasicMaterial({ color: coreColor, transparent: true, opacity: 0.9 })
+    );
+    ringInner.lookAt(0, 0, 0);
+    group.add(ringInner);
+
+    const ringOuter = new THREE.Mesh(
+        new THREE.TorusGeometry(0.145, 0.005, 8, 32),
+        new THREE.MeshBasicMaterial({ color: 0xFF3B30, transparent: true, opacity: 0.45 })
+    );
+    ringOuter.lookAt(0, 0, 0);
+    group.add(ringOuter);
+
+    const hitSphere = new THREE.Mesh(
+        new THREE.SphereGeometry(0.38, 16, 16),
+        new THREE.MeshBasicMaterial({ visible: false })
+    );
+    group.add(hitSphere);
+
+    return group;
+}
+
+function create3DNetworkArc(v1, v2, color = 0xFF2D55) {
+    const distance = v1.distanceTo(v2);
+    const mid = v1.clone().add(v2).multiplyScalar(0.5);
+    const midLength = mid.length();
+
+    mid.normalize().multiplyScalar(midLength + distance * 0.32);
+
+    const curve = new THREE.QuadraticBezierCurve3(v1, mid, v2);
+    const points = curve.getPoints(45);
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+
+    const material = new THREE.LineBasicMaterial({
+        color: color,
+        transparent: true,
+        opacity: 0.48,
+        linewidth: 1
+    });
+
+    return new THREE.Line(geometry, material);
+}
+
+const beaconGroup = new THREE.Group();
+globeGroup.add(beaconGroup);
+const beaconMeshes = [];
+
+const hqPos = ll2xyz(countryStops[0].lat, countryStops[0].lon);
+
+countryStops.forEach((st, idx) => {
+    const pos = ll2xyz(st.lat, st.lon);
+    const marker = createRedLocationMarker(st.isHq);
+    marker.position.copy(pos);
+    beaconGroup.add(marker);
+
+    if (idx > 0) {
+        const arcLine = create3DNetworkArc(hqPos, pos, idx % 2 === 0 ? 0xFF2D55 : 0x7C3AED);
+        globeGroup.add(arcLine);
+    }
+
+    beaconMeshes.push({ marker, pos });
+});
+
+const targetQuaternion = new THREE.Quaternion();
+
+function getQuaternionForPos(pos) {
+    const norm = pos.clone().normalize();
+    const cameraDir = new THREE.Vector3(0, 0, 1);
+    return new THREE.Quaternion().setFromUnitVectors(norm, cameraDir);
+}
+
+targetQuaternion.copy(getQuaternionForPos(beaconMeshes[0].pos));
+globeGroup.quaternion.copy(targetQuaternion);
+
+let isDrag = false, prevM = { x: 0, y: 0 };
+let targetCamZ2 = 5.8;
+let touchPinchDist = null;
+
+const raycaster = new THREE.Raycaster();
+const mouseVec = new THREE.Vector2();
+
+function triggerPinCard(idx) {
+    activePinIdx = idx;
+    targetQuaternion.copy(getQuaternionForPos(beaconMeshes[idx].pos));
+
+    countryStops.forEach((_, i) => {
+        const panel = document.getElementById(`globe-panel-${i}`);
+        if (panel) panel.classList.toggle('active', i === idx);
+
+        const badge = badgeElements[i];
+        if (badge) badge.classList.toggle('active', i === idx);
+    });
+
+    globeCardStage.classList.add('mobile-open');
+}
+
+function checkPinTap(clientX, clientY) {
+    const rect = globeCanvas.getBoundingClientRect();
+    mouseVec.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    mouseVec.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouseVec, globeCamera);
+    const intersects = raycaster.intersectObjects(beaconGroup.children, true);
+
+    if (intersects.length > 0) {
+        const hitObj = intersects[0].object;
+        beaconMeshes.forEach((bm, idx) => {
+            if (bm.marker === hitObj || bm.marker.children.includes(hitObj)) {
+                triggerPinCard(idx);
+            }
+        });
+    }
+}
+
+globeCanvas.addEventListener('mousedown', e => { isDrag = true; prevM = { x: e.clientX, y: e.clientY }; });
+window.addEventListener('mouseup', () => { isDrag = false; });
+globeCanvas.addEventListener('click', e => { checkPinTap(e.clientX, e.clientY); });
+
+window.addEventListener('mousemove', e => {
+    if (!isDrag) return;
+    const deltaX = e.clientX - prevM.x;
+    const deltaY = e.clientY - prevM.y;
+
+    const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.005);
+    const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.005);
+    targetQuaternion.premultiply(qY).premultiply(qX);
+
+    prevM = { x: e.clientX, y: e.clientY };
+});
+
+let touchStartCoords = { x: 0, y: 0 };
+
+globeCanvas.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) {
+        isDrag = true;
+        touchStartCoords = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2) {
+        isDrag = false;
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        touchPinchDist = Math.hypot(dx, dy);
+    }
+}, { passive: true });
+
+globeCanvas.addEventListener('touchmove', e => {
+    if (e.touches.length === 1 && isDrag) {
+        const deltaX = e.touches[0].clientX - prevM.x;
+        const deltaY = e.touches[0].clientY - prevM.y;
+
+        const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.006);
+        const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.006);
+        targetQuaternion.premultiply(qY).premultiply(qX);
+
+        prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2 && touchPinchDist !== null) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const curDist = Math.hypot(dx, dy);
+        const delta = touchPinchDist - curDist;
+        targetCamZ2 += delta * 0.015;
+        targetCamZ2 = Math.max(3.0, Math.min(9.5, targetCamZ2));
+        touchPinchDist = curDist;
+    }
+}, { passive: true });
+
+window.addEventListener('touchend', e => {
+    if (e.changedTouches && e.changedTouches.length === 1) {
+        const moveDist = Math.hypot(e.changedTouches[0].clientX - touchStartCoords.x, e.changedTouches[0].clientY - touchStartCoords.y);
+        if (moveDist < 12) {
+            checkPinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        }
+    }
+    isDrag = false;
+    touchPinchDist = null;
+});
+
+document.getElementById('btn-close-card').addEventListener('click', () => {
+    globeCardStage.classList.remove('mobile-open');
+});
+
+document.getElementById('btn-zoom-in').addEventListener('click', e => {
+    e.preventDefault();
+    targetCamZ2 = Math.max(3.0, targetCamZ2 - 0.7);
+});
+
+document.getElementById('btn-zoom-out').addEventListener('click', e => {
+    e.preventDefault();
+    targetCamZ2 = Math.min(9.5, targetCamZ2 + 0.7);
+});
+
+globeCanvas.addEventListener('wheel', e => {
+    targetCamZ2 = Math.max(3.0, Math.min(9.5, targetCamZ2 + e.deltaY * 0.003));
+}, { passive: true });
+
+const tempVec = new THREE.Vector3();
+function updateAllFloatingBadges() {
+    beaconMeshes.forEach((bm, i) => {
+        const badge = badgeElements[i];
+        if (!badge) return;
+
+        tempVec.copy(bm.pos);
+        globeGroup.localToWorld(tempVec);
+
+        const camDir = globeCamera.position.clone().sub(tempVec).normalize();
+        const pinNorm = tempVec.clone().normalize();
+        const dot = pinNorm.dot(camDir);
+
+        if (dot < 0.12) {
+            badge.style.opacity = '0';
+            badge.style.pointerEvents = 'none';
+            return;
+        }
+
+        tempVec.project(globeCamera);
+        const x = (tempVec.x * 0.5 + 0.5) * window.innerWidth;
+        const y = -(tempVec.y * 0.5 - 0.5) * window.innerHeight;
+
+        const isBadgeActive = (i === activePinIdx);
+        const scaleVal = isBadgeActive ? 'scale(1.12)' : 'scale(1)';
+
+        badge.style.opacity = '1';
+        badge.style.pointerEvents = 'auto';
+        badge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 12}px) ${scaleVal}`;
+    });
+}
+
+function animateGlobe() {
+    requestAnimationFrame(animateGlobe);
+    cloudMesh.rotation.y += 0.0008;
+    globeCamera.position.z += (targetCamZ2 - globeCamera.position.z) * 0.1;
+
+    globeGroup.quaternion.slerp(targetQuaternion, 0.08);
+
+    updateAllFloatingBadges();
+    globeRenderer.render(globeScene, globeCamera);
+}
+animateGlobe();
+
+window.addEventListener('resize', () => {
+    updateGlobeCam();
+    globeCamera.aspect = window.innerWidth / window.innerHeight;
+    globeCamera.updateProjectionMatrix();
+    globeRenderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>
