@@ -1285,8 +1285,8 @@ footer ul a:hover { color: var(--coa-red); }
 
     <!-- Department Categories Bar -->
     <div class="team-dept-bar" id="teamDeptBar">
-      <button type="button" class="dept-btn active" onclick="filterDept('all')">🏷️ كل الأقسام</button>
-      <button type="button" class="dept-btn" onclick="filterDept('management')">👔 الإدارة والقيادة</button>
+      <button type="button" class="dept-btn active" onclick="filterDept('all')">🏷️ All Departments</button>
+      <button type="button" class="dept-btn" onclick="filterDept('management')">👔 Executive Management</button>
       <button type="button" class="dept-btn" onclick="filterDept('teamlead')">👑 Team Leaders</button>
       <button type="button" class="dept-btn" onclick="filterDept('dev')">💻 Odoo Developers</button>
       <button type="button" class="dept-btn" onclick="filterDept('snrimple')">🛠️ Senior Implementors</button>
@@ -1295,37 +1295,10 @@ footer ul a:hover { color: var(--coa-red); }
       <button type="button" class="dept-btn" onclick="filterDept('support')">🎧 Support</button>
     </div>
 
-    <!-- Member Tabs -->
-    <div class="team-tabs-row" id="teamTabs">
-      <!-- 1. CEO & Leadership -->
-      <button type="button" class="team-tab-btn active" data-dept="management" onclick="selectTeam3D(0)">👔 Ibrahim Ramadan <span class="tab-role-tag">CEO</span></button>
-      <!-- 2. ERP Management -->
-      <button type="button" class="team-tab-btn" data-dept="management" onclick="selectTeam3D(1)">⚙️ Eng. Esmail Elhareef <span class="tab-role-tag">ERP Manager</span></button>
-      <!-- 3. Team Leaders -->
-      <button type="button" class="team-tab-btn" data-dept="teamlead" onclick="selectTeam3D(2)">👑 Eng. Ekramy <span class="tab-role-tag">Team Leader</span></button>
-      <button type="button" class="team-tab-btn" data-dept="teamlead" onclick="selectTeam3D(3)">👑 Eng. Omar Abdelaziz <span class="tab-role-tag">Team Leader</span></button>
-      <!-- 4. Sales -->
-      <button type="button" class="team-tab-btn" data-dept="sales" onclick="selectTeam3D(4)">🎯 Aya Mohamed <span class="tab-role-tag">Sales</span></button>
-      <!-- 5. Senior Implementors & Consultants -->
-      <button type="button" class="team-tab-btn" data-dept="snrimple" onclick="selectTeam3D(5)">💼 Mohanad Nabil <span class="tab-role-tag">Consultant</span></button>
-      <button type="button" class="team-tab-btn" data-dept="snrimple" onclick="selectTeam3D(6)">🛠️ Abdelrahman Ashraf <span class="tab-role-tag">Senior Implementor</span></button>
-      <button type="button" class="team-tab-btn" data-dept="snrimple" onclick="selectTeam3D(7)">🛠️ Hesham Hendy <span class="tab-role-tag">Senior Implementor</span></button>
-      <button type="button" class="team-tab-btn" data-dept="snrimple" onclick="selectTeam3D(8)">🛠️ Omar Ahmed <span class="tab-role-tag">Senior Implementor</span></button>
-      <!-- 6. Odoo Implementors -->
-      <button type="button" class="team-tab-btn" data-dept="imple" onclick="selectTeam3D(9)">📋 Aya Ahmed <span class="tab-role-tag">Implementor</span></button>
-      <button type="button" class="team-tab-btn" data-dept="imple" onclick="selectTeam3D(10)">📋 Abdelrahman Gamal <span class="tab-role-tag">Implementor</span></button>
-      <button type="button" class="team-tab-btn" data-dept="imple" onclick="selectTeam3D(11)">📋 Dina Amin <span class="tab-role-tag">Implementor</span></button>
-      <!-- 7. Odoo Developers -->
-      <button type="button" class="team-tab-btn" data-dept="dev" onclick="selectTeam3D(12)">💻 Eslam Tarek <span class="tab-role-tag">Odoo Developer</span></button>
-      <button type="button" class="team-tab-btn" data-dept="dev" onclick="selectTeam3D(13)">💻 Ahmed Abo Shady <span class="tab-role-tag">Odoo Developer</span></button>
-      <button type="button" class="team-tab-btn" data-dept="dev" onclick="selectTeam3D(14)">💻 Nader Yasser <span class="tab-role-tag">Odoo Developer</span></button>
-      <button type="button" class="team-tab-btn" data-dept="support" onclick="selectTeam3D(15)">👩‍💼 Maram <span class="tab-role-tag">Support</span></button>
-    </div>
-
     <!-- 3D WebGL Executive Carousel Stage Canvas -->
     <div class="team-webgl-stage-wrap">
       <canvas id="team-webgl-canvas"></canvas>
-      <div class="stage-instructions-hint">💡 حرك الماوس أو اختر العضو لتدوير المنهجية الـ 3D</div>
+      <div class="stage-instructions-hint">💡 Click or drag 3D standees to rotate members seamlessly</div>
     </div>
 
     <!-- Professional Showcase Card -->
@@ -1894,36 +1867,23 @@ function filterDept(deptCategory) {
     btn.classList.toggle('active', onclickAttr.includes(`'${deptCategory}'`));
   });
 
-  const memberBtns = document.querySelectorAll('.team-tab-btn');
-  let firstVisibleIdx = -1;
+  const deptMap = {
+    'management': [0, 1],
+    'teamlead': [2, 3],
+    'sales': [4],
+    'snrimple': [5, 6, 7, 8],
+    'imple': [9, 10, 11],
+    'dev': [12, 13, 14],
+    'support': [15]
+  };
 
-  memberBtns.forEach(btn => {
-    const memberDept = btn.getAttribute('data-dept');
-    const onclickAttr = btn.getAttribute('onclick') || '';
-    const matchIdx = onclickAttr.match(/\d+/);
-    const idx = matchIdx ? parseInt(matchIdx[0], 10) : 0;
-
-    if (deptCategory === 'all' || memberDept === deptCategory) {
-      btn.style.display = 'inline-flex';
-      if (firstVisibleIdx === -1) firstVisibleIdx = idx;
-    } else {
-      btn.style.display = 'none';
-    }
-  });
-
-  if (firstVisibleIdx !== -1) {
-    selectTeam3D(firstVisibleIdx);
-  }
+  const targetIndices = deptCategory === 'all' ? [0] : (deptMap[deptCategory] || [0]);
+  selectTeam3D(targetIndices[0]);
 }
 
 function selectTeam3D(idx) {
   activeTeamIdx = idx;
 
-  // Update tabs
-  document.querySelectorAll('.team-tab-btn').forEach((tb) => {
-    const onclickAttr = tb.getAttribute('onclick') || '';
-    tb.classList.toggle('active', onclickAttr.includes(`(${idx})`));
-  });
   // Update nav dots
   document.querySelectorAll('.team-nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
 
@@ -2127,10 +2087,33 @@ function selectTeam3D(idx) {
   });
 
   let mouseX = 0, mouseY = 0;
+  const raycaster = new THREE.Raycaster();
+  const mouseVec = new THREE.Vector2();
+
   canvas.addEventListener('mousemove', e => {
     const r = canvas.getBoundingClientRect();
     mouseX = ((e.clientX - r.left) / r.width - 0.5) * 2;
     mouseY = ((e.clientY - r.top) / r.height - 0.5) * 2;
+  });
+
+  canvas.addEventListener('click', e => {
+    const r = canvas.getBoundingClientRect();
+    mouseVec.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+    mouseVec.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouseVec, camera);
+    const intersects = raycaster.intersectObjects(teamStageGroup.children, true);
+
+    if (intersects.length > 0) {
+      let hitObj = intersects[0].object;
+      while (hitObj.parent && hitObj.parent !== teamStageGroup) {
+        hitObj = hitObj.parent;
+      }
+      const hitIdx = teamMeshes.findIndex(tm => tm.group === hitObj);
+      if (hitIdx !== -1) {
+        selectTeam3D(hitIdx);
+      }
+    }
   });
 
   function animateTeamWebGL() {
