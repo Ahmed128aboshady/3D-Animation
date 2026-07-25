@@ -363,18 +363,18 @@ nav ul a:hover { color: white; }
   display: none;
   align-items: center;
   gap: 8px;
-  background: #0e2031;
-  border: 1.5px solid var(--red);
+  background: rgba(8, 14, 24, 0.92);
+  border: 1.5px solid var(--blue);
   color: #FFFFFF;
   padding: 6px 16px;
   border-radius: 30px;
   font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  box-shadow: 0 8px 25px rgba(255, 45, 85, 0.5);
+  box-shadow: 0 8px 25px rgba(0, 174, 239, 0.5);
   pointer-events: none;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition: opacity 0.2s ease, transform 0.1s linear;
   white-space: nowrap;
 }
@@ -388,7 +388,7 @@ nav ul a:hover { color: white; }
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 6px solid var(--red);
+  border-top: 6px solid var(--blue);
 }
 
 /* Mobile Floating Zoom & Scroll Controls (+ / - / ↓) on Left Side */
@@ -1023,44 +1023,43 @@ const atmMesh = new THREE.Mesh(
 );
 globeGroup.add(atmMesh);
 
-function ll2xyz(lat, lon, radius = R + 0.04) {
+function ll2xyz(lat, lon, radius = R + 0.03) {
     const phi = (90 - lat) * Math.PI / 180;
     const theta = (lon + 180) * Math.PI / 180;
     return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta));
 }
 
-// Custom 3D Pin styled with requested vibrant RED color (#FF2D55)
+// Sleek High-Tech Professional Corporate Beacon Pins (No Balloon Look)
 function create3DPin() {
     const pg = new THREE.Group();
-    const pinRedColor = 0xFF2D55;
 
-    // Pin head (sphere) with #FF2D55 color
-    const h = new THREE.Mesh(
-        new THREE.SphereGeometry(0.14, 16, 16),
-        new THREE.MeshPhongMaterial({ color: pinRedColor, emissive: 0xFF2D55, emissiveIntensity: 0.4, shininess: 40 })
+    // 1. Slender Glowing Vertical Beam Column
+    const beam = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.012, 0.012, 0.28, 12),
+        new THREE.MeshBasicMaterial({ color: 0x00D4FF, transparent: true, opacity: 0.9 })
     );
-    h.position.y = 0.28; pg.add(h);
+    beam.position.y = 0.14; pg.add(beam);
 
-    // Pin center eye (glowing white center)
-    const e = new THREE.Mesh(
-        new THREE.SphereGeometry(0.065, 12, 12),
+    // 2. High-Tech Metallic Diamond / Sleek Sphere Gem
+    const head = new THREE.Mesh(
+        new THREE.SphereGeometry(0.055, 16, 16),
+        new THREE.MeshPhongMaterial({ color: 0x03070c, emissive: 0x00AEEF, emissiveIntensity: 0.8, shininess: 100 })
+    );
+    head.position.y = 0.28; pg.add(head);
+
+    // 3. Glowing Cyan Core Node
+    const core = new THREE.Mesh(
+        new THREE.SphereGeometry(0.028, 12, 12),
         new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
     );
-    e.position.set(0, 0.28, 0.1); pg.add(e);
+    core.position.y = 0.28; pg.add(core);
 
-    // Pin cone stem
-    const c = new THREE.Mesh(
-        new THREE.ConeGeometry(0.11, 0.28, 16),
-        new THREE.MeshPhongMaterial({ color: pinRedColor, emissive: 0xFF2D55, emissiveIntensity: 0.3 })
-    );
-    c.position.y = 0.14; c.rotation.x = Math.PI; pg.add(c);
-
-    // Large invisible hit sphere for 100% reliable tap detection
+    // 4. Large Invisible hit sphere for 100% reliable tap/click detection
     const hitSphere = new THREE.Mesh(
-        new THREE.SphereGeometry(0.38, 16, 16),
+        new THREE.SphereGeometry(0.35, 16, 16),
         new THREE.MeshBasicMaterial({ visible: false })
     );
-    hitSphere.position.y = 0.2;
+    hitSphere.position.y = 0.18;
     pg.add(hitSphere);
 
     return pg;
@@ -1077,9 +1076,14 @@ countryStops.forEach(st => {
     pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
     beaconGroup.add(pin);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.015, 8, 32), new THREE.MeshBasicMaterial({ color: 0xFF2D55, transparent: true, opacity: 0.9 }));
+    // Delicate Double Ripple Target Rings on Earth Surface
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.09, 0.007, 8, 32), new THREE.MeshBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.85 }));
     ring.position.copy(pos); ring.lookAt(0,0,0); beaconGroup.add(ring);
-    beaconMeshes.push({ pin, ring, pos });
+
+    const ringOuter = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.005, 8, 32), new THREE.MeshBasicMaterial({ color: 0x00D4FF, transparent: true, opacity: 0.45 }));
+    ringOuter.position.copy(pos); ringOuter.lookAt(0,0,0); beaconGroup.add(ringOuter);
+
+    beaconMeshes.push({ pin, ring, ringOuter, pos });
 });
 
 function getRot(lat, lon) {
@@ -1122,7 +1126,7 @@ function checkPinTap(clientX, clientY) {
     if (intersects.length > 0) {
         const hitObj = intersects[0].object;
         beaconMeshes.forEach((bm, idx) => {
-            if (bm.pin === hitObj || bm.pin.children.includes(hitObj) || bm.ring === hitObj) {
+            if (bm.pin === hitObj || bm.pin.children.includes(hitObj) || bm.ring === hitObj || bm.ringOuter === hitObj) {
                 triggerPinCard(idx);
             }
         });
