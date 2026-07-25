@@ -1268,22 +1268,42 @@ footer ul a:hover { color: var(--coa-red); }
 
     <!-- Department Categories Bar -->
     <div class="team-dept-bar" id="teamDeptBar">
-      <button type="button" class="dept-btn active" onclick="filterDept('all')">🏷️ كل التخصصات</button>
-      <button type="button" class="dept-btn" onclick="filterDept('consulting')">📊 الاستشارات وإدارة الأعمال</button>
-      <button type="button" class="dept-btn" onclick="filterDept('operations')">⚙️ إدارة العمليات</button>
-      <button type="button" class="dept-btn" onclick="filterDept('implementation')">🛠️ التطبيق والترفيذ (Implementation)</button>
-      <button type="button" class="dept-btn" onclick="filterDept('development')">💻 التطوير والبرمجة (Odoo Dev)</button>
-      <button type="button" class="dept-btn" onclick="filterDept('support')">🎧 الدعم الفني وخدمة العملاء</button>
+      <button type="button" class="dept-btn active" onclick="filterDept('all')">🏷️ كل الأقسام</button>
+      <button type="button" class="dept-btn" onclick="filterDept('management')">👔 الإدارة والقيادة</button>
+      <button type="button" class="dept-btn" onclick="filterDept('teamlead')">👑 Team Leaders</button>
+      <button type="button" class="dept-btn" onclick="filterDept('dev')">💻 Odoo Developers</button>
+      <button type="button" class="dept-btn" onclick="filterDept('snrimple')">🛠️ Senior Implementors</button>
+      <button type="button" class="dept-btn" onclick="filterDept('imple')">📋 Odoo Implementors</button>
+      <button type="button" class="dept-btn" onclick="filterDept('sales')">🎯 Sales</button>
+      <button type="button" class="dept-btn" onclick="filterDept('support')">🎧 Support</button>
     </div>
 
     <!-- Member Tabs -->
     <div class="team-tabs-row" id="teamTabs">
-      <button type="button" class="team-tab-btn active" data-dept="consulting" onclick="selectTeam3D(0)">👨‍💼 إبراهيم رمضان <span class="tab-role-tag">Senior Expert</span></button>
-      <button type="button" class="team-tab-btn" data-dept="operations" onclick="selectTeam3D(1)">⚙️ إسماعيل الحريف <span class="tab-role-tag">Operation Lead</span></button>
-      <button type="button" class="team-tab-btn" data-dept="consulting" onclick="selectTeam3D(2)">💼 مهند نبيل <span class="tab-role-tag">Financial Architect</span></button>
-      <button type="button" class="team-tab-btn" data-dept="implementation" onclick="selectTeam3D(3)">🛠️ عبد الرحمن جمال <span class="tab-role-tag">Implementation Pro</span></button>
-      <button type="button" class="team-tab-btn" data-dept="development" onclick="selectTeam3D(4)">💻 نادر ياسر <span class="tab-role-tag">Odoo Developer</span></button>
-      <button type="button" class="team-tab-btn" data-dept="support" onclick="selectTeam3D(5)">👩‍💼 مرام <span class="tab-role-tag">Support &amp; Success</span></button>
+      <!-- 1. CEO & Leadership -->
+      <button type="button" class="team-tab-btn active" data-dept="management" onclick="selectTeam3D(0)">👔 إبراهيم رمضان <span class="tab-role-tag">CEO</span></button>
+      <!-- 2. ERP Management -->
+      <button type="button" class="team-tab-btn" data-dept="management" onclick="selectTeam3D(1)">⚙️ م/ إسماعيل الحريف <span class="tab-role-tag">ERP Manager</span></button>
+      <!-- 3. Team Leaders -->
+      <button type="button" class="team-tab-btn" data-dept="teamlead" onclick="selectTeam3D(2)">👑 م/ إكرامي <span class="tab-role-tag">Team Leader</span></button>
+      <button type="button" class="team-tab-btn" data-dept="teamlead" onclick="selectTeam3D(3)">👑 م/ عمر عبد العزيز <span class="tab-role-tag">Team Leader</span></button>
+      <!-- 4. Sales -->
+      <button type="button" class="team-tab-btn" data-dept="sales" onclick="selectTeam3D(4)">🎯 Aya Mohamed <span class="tab-role-tag">Sales</span></button>
+      <!-- 5. Senior Implementors & Consultants -->
+      <button type="button" class="team-tab-btn" data-dept="snrimple" onclick="selectTeam3D(5)">💼 مهند نبيل <span class="tab-role-tag">Consultant</span></button>
+      <button type="button" class="team-tab-btn" data-dept="snrimple" onclick="selectTeam3D(6)">🛠️ Abdelrahman Ashraf <span class="tab-role-tag">Senior Implementor</span></button>
+      <button type="button" class="team-tab-btn" data-dept="snrimple" onclick="selectTeam3D(7)">🛠️ Hesham Hendy <span class="tab-role-tag">Senior Implementor</span></button>
+      <button type="button" class="team-tab-btn" data-dept="snrimple" onclick="selectTeam3D(8)">🛠️ Omar Ahmed <span class="tab-role-tag">Senior Implementor</span></button>
+      <!-- 6. Odoo Implementors -->
+      <button type="button" class="team-tab-btn" data-dept="imple" onclick="selectTeam3D(9)">📋 Aya Ahmed <span class="tab-role-tag">Implementor</span></button>
+      <button type="button" class="team-tab-btn" data-dept="imple" onclick="selectTeam3D(10)">📋 Abdelrahman Gamal <span class="tab-role-tag">Implementor</span></button>
+      <button type="button" class="team-tab-btn" data-dept="imple" onclick="selectTeam3D(11)">📋 Dina Amin <span class="tab-role-tag">Implementor</span></button>
+      <!-- 7. Odoo Developers -->
+      <button type="button" class="team-tab-btn" data-dept="dev" onclick="selectTeam3D(12)">💻 Eslam Tarek <span class="tab-role-tag">Odoo Developer</span></button>
+      <button type="button" class="team-tab-btn" data-dept="dev" onclick="selectTeam3D(13)">💻 Ahmed Abo Shady <span class="tab-role-tag">Odoo Developer</span></button>
+      <button type="button" class="team-tab-btn" data-dept="dev" onclick="selectTeam3D(14)">💻 نادر ياسر <span class="tab-role-tag">Odoo Developer</span></button>
+      <!-- 8. Support -->
+      <button type="button" class="team-tab-btn" data-dept="support" onclick="selectTeam3D(15)">👩‍💼 مرام <span class="tab-role-tag">Support</span></button>
     </div>
 
     <!-- Professional Showcase Card -->
@@ -1814,12 +1834,30 @@ ScrollTrigger.create({ trigger: '#s-cta', start:'top 60%', onEnter:() => setDot(
 
 // 6. REAL THREE.JS 3D WEBGL TEAM STAGE ANIMATION ENGINE
 const teamData = [
-  { avatar: '👨‍💼', photo: 'ibrahim_ramadan.png', badge: 'Odoo Senior Expert', name: 'إبراهيم رمضان', role: 'Business Developer & Odoo Consultant', desc: 'دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.', skills: ['Odoo.sh Enterprise', 'استشارات ERP', 'تحول رقمي'], color: 0xE52531 },
-  { avatar: '⚙️', photo: 'esmail_elhareef.jpg', badge: 'Operations Lead', name: 'إسماعيل الحريف', role: 'Operation Manager', desc: 'إشراف كامل على جودة وسرعة تنفيذ وتسليم مشاريع أودو والاستشارات المحاسبية لضمان أعلى مستويات الأداء والإنجاز.', skills: ['إدارة المشاريع', 'ضمان الجودة', 'قيادة العمليات'], color: 0x0D334E },
-  { avatar: '💼', photo: 'mohanad_nabil.png', badge: 'Financial Architect', name: 'مهند نبيل', role: 'Odoo Consultant', desc: 'استشاري متخصص في تحليل وتصميم الدورة المستندية وتصميم القوائم المالية وإعداد الموديولات المحاسبية للشركات.', skills: ['تحليل مالي', 'دورة مستندية', 'هندسة الحسابات'], color: 0xE52531 },
-  { avatar: '🛠️', badge: 'Implementation Pro', name: 'عبد الرحمن جمال', role: 'Odoo Implementer', desc: 'تطبيق وتنفيذ الموديولات الميدانية ونقل بيانات الشركات القديمة لأودو وتدريب الموظفين وفرق العمل بكفاءة.', skills: ['تطبيق أودو', 'ترحيل البيانات', 'تدريب الفرق'], color: 0x0D334E },
-  { avatar: '💻', badge: 'Dev Engine', name: 'نادر ياسر', role: 'Odoo Developer', desc: 'تطوير وبرمجة التطبيقات والتعديلات المخصصة في أودو وإجراء الربط البرمجي الكامل API بين الأنظمة المخلفة.', skills: ['برمجة Odoo', 'ربط API', 'Custom Modules'], color: 0xE52531 },
-  { avatar: '👩‍💼', badge: 'Support & Success', name: 'مرام', role: 'Odoo Consultant', desc: 'دعم فني وتأهيل موظفي المؤسسات للعمل التكتيكي على المنظومة وتذليل أي عقبات تشغيلية لضمان استقرار العمل.', skills: ['دعم فني 24/7', 'تأهيل المستخدمين', 'نجاح العملاء'], color: 0x0D334E }
+  // 1. CEO & Leadership
+  { avatar: '👔', photo: 'ibrahim_ramadan.png', badge: 'CEO & Founder', name: 'إبراهيم رمضان', role: 'Chief Executive Officer & Founder', desc: 'قيادة الرؤية الاستراتيجية لشركة COA Egypt وتطوير حلول أودو ERP للمؤسسات والشركات الكبرى في الشرق الأوسط.', skills: ['القيادة الاستراتيجية', 'استشارات أودو ERP', 'إدارة الأعمال'], color: 0xE52531 },
+  // 2. ERP Management
+  { avatar: '⚙️', photo: 'esmail_elhareef.jpg', badge: 'ERP Manager', name: 'م/ إسماعيل الحريف', role: 'ERP Operations Manager', desc: 'إدارة وإشراف كامل على جودة وتنفيذ مشاريع أودو والاستشارات الفنية لضمان الأداء التشغيلي الأعلى.', skills: ['إدارة مشاريع ERP', 'ضمان الجودة', 'قيادة العمليات'], color: 0x0D334E },
+  // 3. Team Leaders
+  { avatar: '👑', badge: 'Team Leader', name: 'م/ إكرامي', role: 'Technical & Implementation Team Leader', desc: 'قيادة وتوجيه الفرق الفنية وفرق التطبيق لضمان تنفيذ الموديولات وتسليم المشروعات بجودة عالية.', skills: ['إدارة الفرق', 'تطبيق أودو', 'حلول ERP'], color: 0xE52531 },
+  { avatar: '👑', badge: 'Team Leader', name: 'م/ عمر عبد العزيز', role: 'Implementation Team Leader', desc: 'متابعة وتوجيه مهندسي التطبيق وتصميم حلول الدورة المستندية وتحليل متطلبات المؤسسات.', skills: ['قيادة التنفيذ', 'تحليل العمليات', 'حلول أودو'], color: 0x0D334E },
+  // 4. Sales
+  { avatar: '🎯', badge: 'Sales Manager', name: 'آية محمد (Aya Mohamed)', role: 'Sales & Business Development Lead', desc: 'تطوير العلاقات مع العملاء وتحليل احتياجات الشركات وتقديم الحلول التجارية والاستشارية المناسبة.', skills: ['تطوير الأعمال', 'استشارات المبيعات', 'العلاقات العامة'], color: 0xE52531 },
+  // 5. Senior Implementors & Consultants
+  { avatar: '💼', photo: 'mohanad_nabil.png', badge: 'Financial Architect', name: 'مهند نبيل', role: 'Odoo Consultant & Financial Architect', desc: 'استشاري متخصص في تحليل وتصميم الدورة المستندية وتصميم القوائم المالية وإعداد الموديولات المحاسبية.', skills: ['تحليل مالي', 'دورة مستندية', 'هندسة الحسابات'], color: 0x0D334E },
+  { avatar: '🛠️', badge: 'Senior Implementor', name: 'عبد الرحمن أشرف (Abdelrahman Ashraf)', role: 'Senior Odoo Implementor', desc: 'تطبيق وإدارة الموديولات المتقدمة ونقل البيانات المعقدة وتأهيل المنظومة التشغيلية للشركات.', skills: ['تطبيق أودو', 'ترحيل البيانات', 'إدارة الموديولات'], color: 0xE52531 },
+  { avatar: '🛠️', badge: 'Senior Implementor', name: 'هشام هندي (Hesham Hendy)', role: 'Senior Odoo Implementor', desc: 'تنفيذ الموديولات الميدانية وإعادة هيكلة الدورة المستندية المحاسبية لضمان التكامل التام.', skills: ['هيكلة الموديولات', 'تطبيق ميداني', 'حلول أودو'], color: 0x0D334E },
+  { avatar: '🛠️', badge: 'Senior Implementor', name: 'عمر أحمد (Omar Ahmed)', role: 'Senior Odoo Implementor', desc: 'تطبيق وتدريب كوادر الشركات وتصميم الموديولات الاستراتيجية وفقاً لمعايير أودو المعتمدة.', skills: ['تطبيق أودو', 'تدريب الفرق', 'ضبط الإعدادات'], color: 0xE52531 },
+  // 6. Odoo Implementors
+  { avatar: '📋', badge: 'Odoo Implementor', name: 'آية أحمد (Aya Ahmed)', role: 'Odoo Implementor', desc: 'إعداد وتجهيز الموديولات الأساسية واختبار النظام ومساعدة فرق العمل في تشغيل أودو يومياً.', skills: ['إعداد الموديولات', 'اختبار النظام', 'الدعم الميداني'], color: 0x0D334E },
+  { avatar: '📋', badge: 'Odoo Implementor', name: 'عبد الرحمن جمال (Abdelrahman Gamal)', role: 'Odoo Implementor', desc: 'تطبيق الموديولات ونقل بيانات الشركات القديمة لأودو وتدريب الموظفين وفرق العمل بكفاءة.', skills: ['تطبيق أودو', 'ترحيل البيانات', 'تدريب الموظفين'], color: 0xE52531 },
+  { avatar: '📋', badge: 'Odoo Implementor', name: 'دينا أمين (Dina Amin)', role: 'Odoo Implementor', desc: 'متابعة إدخال البيانات وضبط إعدادات موديولات الحسابات والمبيعات والمخازن بدقة.', skills: ['ضبط الحسابات', 'تجهيز أودو', 'متابعة التنفيذ'], color: 0x0D334E },
+  // 7. Odoo Developers
+  { avatar: '💻', badge: 'Odoo Developer', name: 'إسلام طارق (Eslam Tarek)', role: 'Senior Odoo Developer', desc: 'برمجة وتطوير الموديولات المخصصة وإجراء الربط البرمجي الكامل API وتخصيص تقارير أودو.', skills: ['برمجة Custom Modules', 'ربط API', 'تطوير أودو'], color: 0xE52531 },
+  { avatar: '💻', badge: 'Odoo Developer', name: 'أحمد أبو شادي (Ahmed Abo Shady)', role: 'Odoo Developer', desc: 'تطوير البرمجيات والتطبيقات الخاصة والواجهات والتكامل التقني مع المنظومات المختلفة.', skills: ['تطوير أودو', 'برمجة الموديولات', 'تكامل تقني'], color: 0x0D334E },
+  { avatar: '💻', badge: 'Odoo Developer', name: 'نادر ياسر', role: 'Odoo Developer', desc: 'تطوير التطبيقات والتعديلات البرمجية وتطوير واجهات المستخدم والحلول التفاعلية.', skills: ['برمجة Odoo', 'ربط API', 'تطوير الواجهات'], color: 0xE52531 },
+  // 8. Support
+  { avatar: '👩‍💼', badge: 'Support & Success', name: 'مرام', role: 'Odoo Consultant & Support Lead', desc: 'دعم فني وتأهيل موظفي المؤسسات للعمل على المنظومة وتذليل أي عقبات تشغيلية لضمان استقرار العمل.', skills: ['دعم فني 24/7', 'تأهيل المستخدمين', 'نجاح العملاء'], color: 0x0D334E }
 ];
 
 let activeTeamIdx = 0;
