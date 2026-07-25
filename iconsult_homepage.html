@@ -361,7 +361,7 @@ nav ul a:hover { color: white; }
   overflow: hidden;
 }
 
-/* VIBRANT RED HIGH-TECH FLOATING GLASS BADGES (KEEP PINS & BADGES RED!) */
+/* VIBRANT RED HIGH-TECH FLOATING GLASS BADGES (PINS & BADGES IN CRIMSON RED) */
 .floating-glass-badge {
   position: absolute;
   top: 0; left: 0;
@@ -1010,6 +1010,7 @@ const rimL = new THREE.DirectionalLight(0x00AEEF, 0.8); rimL.position.set(-5, -2
 
 const globeGroup = new THREE.Group();
 globeGroup.position.set(-1.7, 0, 0);
+globeGroup.rotation.reorder('YXZ'); // YXZ Euler order for exact pitch & yaw targeting
 globeScene.add(globeGroup);
 
 function updateGlobeCam() {
@@ -1136,11 +1137,16 @@ countryStops.forEach((st, idx) => {
     beaconMeshes.push({ marker, pos });
 });
 
-function getRot(lat, lon) {
-    return { x: (lat) * Math.PI / 180 * 0.38, y: (lon + 180) * Math.PI / 180 - Math.PI / 2 };
+// ── EXACT 3D QUATERNION ROTATION FUNCTION: BRINGS ANY 3D PIN EXACTLY TO CAMERA CENTER ──
+function getRotForPos(pos) {
+    const norm = pos.clone().normalize();
+    const targetVec = new THREE.Vector3(0, 0, 1);
+    const q = new THREE.Quaternion().setFromUnitVectors(norm, targetVec);
+    const euler = new THREE.Euler().setFromQuaternion(q, 'YXZ');
+    return { x: euler.x, y: euler.y };
 }
 
-let targetRot = getRot(countryStops[0].lat, countryStops[0].lon);
+let targetRot = getRotForPos(beaconMeshes[0].pos);
 globeGroup.rotation.x = targetRot.x; globeGroup.rotation.y = targetRot.y;
 
 // ── MOUSE & TOUCH GESTURES WITH INSTANT DIRECT PIN ROTATION (0 LAG!) ──
@@ -1153,10 +1159,9 @@ const mouseVec = new THREE.Vector2();
 
 function triggerPinCard(idx) {
     activePinIdx = idx;
-    const st = countryStops[idx];
 
-    // INSTANT ROTATION DIRECTLY TO CLICKED PIN (ELIMINATES GERMANY SCROLL LAG!)
-    const tr = getRot(st.lat, st.lon);
+    // INSTANT EXACT ROTATION DIRECTLY TO CLICKED PIN AT CAMERA CENTER
+    const tr = getRotForPos(beaconMeshes[idx].pos);
     targetRot = tr;
     rotOff.x = 0;
     rotOff.y = 0;
@@ -1331,8 +1336,7 @@ function animateGlobe() {
         if (Math.abs(diff) > 0.0003) {
             currentGlobeProgress += diff * 0.09;
             const activeIdx = Math.min(countryStops.length - 1, Math.floor(currentGlobeProgress * countryStops.length));
-            const st = countryStops[activeIdx];
-            targetRot = getRot(st.lat, st.lon);
+            targetRot = getRotForPos(beaconMeshes[activeIdx].pos);
 
             activePinIdx = activeIdx;
 
