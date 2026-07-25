@@ -1072,10 +1072,88 @@ function updateAllFloatingBadges() {
   });
 }
 
+let isDrag = false, prevM = { x: 0, y: 0 };
+let touchStartCoords = { x: 0, y: 0 };
+
+const raycaster = new THREE.Raycaster();
+const mouseVec = new THREE.Vector2();
+
+function checkPinTap(clientX, clientY) {
+  const rect = globeCanvas.getBoundingClientRect();
+  mouseVec.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+  mouseVec.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(mouseVec, globeCamera);
+  const intersects = raycaster.intersectObjects(beaconGroup.children, true);
+
+  if (intersects.length > 0) {
+    const hitObj = intersects[0].object;
+    beaconMeshes.forEach((bm, idx) => {
+      if (bm.marker === hitObj || bm.marker.children.includes(hitObj)) {
+        triggerPinCard(idx);
+      }
+    });
+  }
+}
+
+globeCanvas.addEventListener('mousedown', e => {
+  isDrag = true;
+  prevM = { x: e.clientX, y: e.clientY };
+});
+
+window.addEventListener('mouseup', () => { isDrag = false; });
+
+window.addEventListener('mousemove', e => {
+  if (!isDrag) return;
+  const deltaX = e.clientX - prevM.x;
+  const deltaY = e.clientY - prevM.y;
+
+  const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.005);
+  const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.005);
+  targetQuaternion.premultiply(qY).premultiply(qX);
+
+  prevM = { x: e.clientX, y: e.clientY };
+});
+
+globeCanvas.addEventListener('click', e => {
+  checkPinTap(e.clientX, e.clientY);
+});
+
+globeCanvas.addEventListener('touchstart', e => {
+  if (e.touches.length === 1) {
+    isDrag = true;
+    touchStartCoords = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }
+}, { passive: true });
+
+globeCanvas.addEventListener('touchmove', e => {
+  if (e.touches.length === 1 && isDrag) {
+    const deltaX = e.touches[0].clientX - prevM.x;
+    const deltaY = e.touches[0].clientY - prevM.y;
+
+    const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.006);
+    const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.006);
+    targetQuaternion.premultiply(qY).premultiply(qX);
+
+    prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }
+}, { passive: true });
+
+window.addEventListener('touchend', e => {
+  if (e.changedTouches && e.changedTouches.length === 1) {
+    const moveDist = Math.hypot(e.changedTouches[0].clientX - touchStartCoords.x, e.changedTouches[0].clientY - touchStartCoords.y);
+    if (moveDist < 12) {
+      checkPinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    }
+  }
+  isDrag = false;
+});
+
 let targetGlobeProgress = 0, currentGlobeProgress = 0;
 function animateGlobe() {
   requestAnimationFrame(animateGlobe);
-  if (window.innerWidth >= 850) {
+  if (window.innerWidth >= 850 && !isDrag) {
     const diff = targetGlobeProgress - currentGlobeProgress;
     if (Math.abs(diff) > 0.0003) {
       currentGlobeProgress += diff * 0.09;
