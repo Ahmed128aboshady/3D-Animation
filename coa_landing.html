@@ -817,7 +817,7 @@ footer ul a:hover { color: var(--coa-red); }
     height: 100% !important;
   }
   /* Hide floating badges on mobile to keep screen ultra clean & prevent text overlap */
-  #globe-badges-container { display: none !important; }
+  #globe-badges-container, .floating-glass-badge { display: none !important; }
 
   /* Info card: Slide-up bottom sheet on mobile */
   .globe-card-stage {
@@ -1633,6 +1633,12 @@ globeCanvas.addEventListener('wheel', e => { targetCamZ2 = Math.max(3.0, Math.mi
 
 const tempVec = new THREE.Vector3();
 function updateAllFloatingBadges() {
+  if (window.innerWidth <= 850) {
+    badgeElements.forEach(badge => {
+      if (badge) { badge.style.opacity = '0'; badge.style.pointerEvents = 'none'; }
+    });
+    return;
+  }
   beaconMeshes.forEach((bm, i) => {
     const badge = badgeElements[i];
     if (!badge) return;
