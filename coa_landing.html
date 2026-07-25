@@ -1432,10 +1432,21 @@ countryStops.forEach((st, i) => {
 const globeCanvas = document.getElementById('globe-canvas');
 const globeRenderer = new THREE.WebGLRenderer({ canvas: globeCanvas, alpha: true, antialias: true });
 globeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-globeRenderer.setSize(window.innerWidth, window.innerHeight);
+
+// Use actual canvas container size, not window size
+function getGlobeSize() {
+  const wrapper = document.querySelector('.globe-sticky-wrapper');
+  if (wrapper) {
+    return { w: wrapper.clientWidth || window.innerWidth, h: wrapper.clientHeight || window.innerHeight };
+  }
+  return { w: window.innerWidth, h: window.innerHeight };
+}
+
+const gs0 = getGlobeSize();
+globeRenderer.setSize(gs0.w, gs0.h);
 
 const globeScene = new THREE.Scene();
-const globeCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+const globeCamera = new THREE.PerspectiveCamera(45, gs0.w / gs0.h, 0.1, 1000);
 globeCamera.position.set(0, 0, 5.8);
 
 const ambL = new THREE.AmbientLight(0xffffff, 0.95); globeScene.add(ambL);
@@ -1446,15 +1457,23 @@ globeGroup.position.set(1.7, 0, 0);
 globeScene.add(globeGroup);
 
 function updateGlobeCam() {
-  if (window.innerWidth < 850) {
-    globeGroup.position.set(0, 0.5, 0);
-    globeCamera.position.set(0, 0, 6.8);
+  const isMobile = window.innerWidth < 850;
+  const { w, h } = getGlobeSize();
+  globeRenderer.setSize(w, h);
+  globeCamera.aspect = w / h;
+  globeCamera.updateProjectionMatrix();
+  if (isMobile) {
+    globeGroup.position.set(0, 0, 0);
+    globeCamera.position.set(0, 0, 7.2);
   } else {
     globeGroup.position.set(1.7, 0, 0);
     globeCamera.position.set(0, 0, 5.8);
   }
 }
 updateGlobeCam();
+
+// Re-run on resize
+window.addEventListener('resize', updateGlobeCam);
 
 const R = 2.45;
 const texLoader = new THREE.TextureLoader();
