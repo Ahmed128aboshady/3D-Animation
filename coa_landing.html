@@ -499,23 +499,15 @@ nav ul a:hover { color: var(--coa-red); }
 .team-3d-stage-wrapper {
   position: relative;
   width: 100%;
-  height: 580px;
-  background: rgba(248, 250, 252, 0.5);
+  min-height: 520px;
+  background: rgba(248, 250, 252, 0.6);
   border: 1.5px solid var(--border-light);
   border-radius: 32px;
   overflow: hidden;
   backdrop-filter: blur(16px);
   box-shadow: 0 20px 60px rgba(13, 51, 78, 0.08);
+  padding: 85px 2rem 2.5rem;
 }
-
-#team-webgl-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  z-index: 1;
-  cursor: grab;
-}
-#team-webgl-canvas:active { cursor: grabbing; }
 
 .team-tabs-row {
   position: absolute;
@@ -523,11 +515,11 @@ nav ul a:hover { color: var(--coa-red); }
   transform: translateX(-50%);
   z-index: 10;
   display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 8px 12px; border-radius: 50px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 14px; border-radius: 50px;
   border: 1px solid var(--border-light);
   backdrop-filter: blur(12px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
 }
 
 .team-tab-btn {
@@ -544,19 +536,76 @@ nav ul a:hover { color: var(--coa-red); }
   box-shadow: 0 4px 15px rgba(229, 37, 49, 0.35);
 }
 
-.team-profile-card-3d {
+.team-split-stage {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 2.5rem;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+
+.team-portrait-3d-col {
+  position: relative;
+  height: 390px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#team-webgl-canvas {
   position: absolute;
-  bottom: 28px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  width: 92%; max-width: 680px;
-  background: rgba(255, 255, 255, 0.92);
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.portrait-photo-holder {
+  position: relative;
+  z-index: 2;
+  width: 270px;
+  height: 350px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(13, 51, 78, 0.22), 0 0 35px rgba(229, 37, 49, 0.18);
+  border: 3.5px solid rgba(255, 255, 255, 0.9);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+  transform: perspective(1000px) rotateY(-6deg) rotateX(2deg);
+}
+
+.portrait-photo-holder:hover {
+  transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.03);
+  box-shadow: 0 30px 70px rgba(229, 37, 49, 0.28);
+}
+
+.portrait-photo-holder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.portrait-glow-ring {
+  position: absolute;
+  inset: -12px;
+  border-radius: 36px;
+  border: 2px dashed rgba(229, 37, 49, 0.4);
+  pointer-events: none;
+  animation: rotateHalo 16s linear infinite;
+}
+
+.team-info-3d-col {
+  background: rgba(255, 255, 255, 0.94);
   border: 1.5px solid var(--border-light);
-  border-radius: 24px;
-  padding: 24px 28px;
+  border-radius: 28px;
+  padding: 32px 36px;
   backdrop-filter: blur(20px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
   transition: all 0.4s ease;
+  text-align: right;
 }
 
 .profile-card-header {
@@ -817,13 +866,11 @@ footer ul a:hover { color: var(--coa-red); }
     <div class="why-top">
       <div class="section-tag">مسرح الخبراء ثلاثي الأبعاد 3D WebGL</div>
       <h2 class="sec-title">نخبة المهندسين والاستشاريين في <span class="acc">COA Egypt</span></h2>
-      <p class="sec-sub">استعرض فريق النخبة عبر المسرح المحسم 3D WebGL Interactive Engine 💎</p>
+      <p class="sec-sub">اختر الخبير لمشاهدة بورتريه الصورة والسيرة الذاتية عبر المسرح التفاعلي 💎</p>
     </div>
 
     <!-- 3D WebGL Team Stage Container -->
     <div class="team-3d-stage-wrapper">
-      <canvas id="team-webgl-canvas"></canvas>
-      
       <!-- Interactive Team Member Switcher Tabs -->
       <div class="team-tabs-row" id="teamTabs">
         <button type="button" class="team-tab-btn active" onclick="selectTeam3D(0)">👨‍💼 إبراهيم رمضان</button>
@@ -834,23 +881,35 @@ footer ul a:hover { color: var(--coa-red); }
         <button type="button" class="team-tab-btn" onclick="selectTeam3D(5)">👩‍💼 مرام</button>
       </div>
 
-      <!-- 3D Active Profile Card Overlay -->
-      <div class="team-profile-card-3d" id="teamProfileCard">
-        <div class="profile-card-header">
-          <div class="profile-avatar-box" id="profAvatar">👨‍💼</div>
-          <div>
-            <div class="profile-badge-tag" id="profBadge">Odoo Senior Expert</div>
-            <h3 class="profile-name" id="profName">إبراهيم رمضان</h3>
-            <div class="profile-role" id="profRole">Business Developer &amp; Odoo Consultant</div>
+      <!-- Split Layout Stage Grid -->
+      <div class="team-split-stage">
+        <!-- Right Column: 3D Full Portrait Standee Showcase -->
+        <div class="team-portrait-3d-col">
+          <canvas id="team-webgl-canvas"></canvas>
+          <div class="portrait-photo-holder" id="profPhotoHolder">
+            <img id="profFullPhoto" src="esmail_elhareef.png" alt="الخبير" />
+            <div class="portrait-glow-ring"></div>
           </div>
         </div>
-        <p class="profile-desc" id="profDesc">
-          دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.
-        </p>
-        <div class="profile-skills-row" id="profSkills">
-          <span class="skill-tag">Odoo.sh Enterprise</span>
-          <span class="skill-tag navy">استشارات ERP</span>
-          <span class="skill-tag">تحول رقمي</span>
+
+        <!-- Left Column: Executive Details Card (Side-by-side, No Overlap!) -->
+        <div class="team-info-3d-col" id="teamProfileCard">
+          <div class="profile-card-header">
+            <div class="profile-avatar-box" id="profAvatar">👨‍💼</div>
+            <div>
+              <div class="profile-badge-tag" id="profBadge">Odoo Senior Expert</div>
+              <h3 class="profile-name" id="profName">إبراهيم رمضان</h3>
+              <div class="profile-role" id="profRole">Business Developer &amp; Odoo Consultant</div>
+            </div>
+          </div>
+          <p class="profile-desc" id="profDesc">
+            دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.
+          </p>
+          <div class="profile-skills-row" id="profSkills">
+            <span class="skill-tag">Odoo.sh Enterprise</span>
+            <span class="skill-tag navy">استشارات ERP</span>
+            <span class="skill-tag">تحول رقمي</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1366,6 +1425,15 @@ function selectTeam3D(idx) {
   tabs.forEach((tb, i) => tb.classList.toggle('active', i === idx));
 
   const t = teamData[idx];
+  const fullPhotoImg = document.getElementById('profFullPhoto');
+  if (fullPhotoImg) {
+    if (t.photo) {
+      fullPhotoImg.src = t.photo;
+    } else {
+      fullPhotoImg.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><rect width="400" height="500" fill="%230D334E"/><circle cx="200" cy="200" r="120" fill="rgba(255,255,255,0.15)"/><text x="50%" y="42%" dominant-baseline="middle" text-anchor="middle" font-size="110">${t.avatar}</text><text x="50%" y="74%" dominant-baseline="middle" text-anchor="middle" font-size="30" font-family="sans-serif" font-weight="bold" fill="%23FFFFFF">${t.name}</text></svg>`;
+    }
+  }
+
   const avatarBox = document.getElementById('profAvatar');
   if (t.photo) {
     avatarBox.innerHTML = `<img src="${t.photo}" alt="${t.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
