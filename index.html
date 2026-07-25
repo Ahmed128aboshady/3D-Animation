@@ -327,7 +327,7 @@ nav ul a:hover { color: white; }
    SECTION 5: PHOTOREALISTIC 3D EARTH GLOBE JOURNEY (10 STOPS)
    ═════════════════════════════════════════════════════════ */
 #s-globe {
-  height: 500vh; /* Smooth Desktop scroll track */
+  height: 450vh; /* Smooth Desktop scroll track */
   position: relative;
   z-index: 15;
 }
@@ -391,26 +391,48 @@ nav ul a:hover { color: white; }
   background: var(--blue);
 }
 
-/* Mobile Touch Instruction Pill */
-.mobile-touch-hint {
-  display: none;
+/* Floating Down-Arrow Scroll Button on Globe Section */
+.globe-scroll-down {
   position: absolute;
-  bottom: 25px;
+  bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 900;
-  background: rgba(8, 14, 24, 0.88);
-  border: 1px solid var(--blue);
-  color: #FFFFFF;
-  padding: 8px 18px;
-  border-radius: 50px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  pointer-events: auto;
+  color: rgba(255, 255, 255, 0.85);
   font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0, 174, 239, 0.4);
-  pointer-events: none;
-  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: var(--transition-spring);
+}
+.globe-scroll-down:hover {
+  color: var(--blue);
+  transform: translateX(-50%) translateY(4px);
+}
+.scroll-arrow-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(8, 14, 24, 0.92);
+  border: 1.5px solid var(--blue);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  box-shadow: 0 6px 20px rgba(0, 174, 239, 0.4);
+  animation: bounceArrow 2s infinite;
+}
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
 }
 
 /* Floating Compact Double-Bezel Card (Right Side) */
@@ -563,7 +585,6 @@ footer ul a:hover { color: var(--blue); }
   .why-grid { grid-template-columns: 1fr 1fr; }
   .stats-row { grid-template-columns: 1fr 1fr; }
   #nav { padding: 0 1.5rem; }
-  .mobile-touch-hint { display: block; }
   .mobile-card-close, .mobile-card-handle { display: flex; }
 
   /* CRITICAL MOBILE SCROLL OPTIMIZATION:
@@ -591,6 +612,7 @@ footer ul a:hover { color: var(--blue); }
     opacity: 1;
   }
   .mobile-zoom-controls { left: 16px; top: 38%; }
+  .globe-scroll-down { bottom: 15px; }
 }
 @media(max-width:480px){
   .why-grid { grid-template-columns: 1fr; }
@@ -737,13 +759,16 @@ footer ul a:hover { color: var(--blue); }
     <!-- Three.js Interactive 3D Earth Canvas -->
     <canvas id="globe-canvas"></canvas>
 
-    <!-- Mobile Touch Instruction Pill -->
-    <div class="mobile-touch-hint">📍 Touch any Pin on Globe to view details</div>
-
     <!-- Mobile Zoom Controls (+ / -) -->
     <div class="mobile-zoom-controls">
       <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
       <button type="button" class="zoom-btn" id="btn-zoom-out" aria-label="Zoom Out">−</button>
+    </div>
+
+    <!-- Down Arrow Button to Scroll to Next Section -->
+    <div class="globe-scroll-down" id="btn-scroll-next">
+      <span>Scroll Down</span>
+      <div class="scroll-arrow-btn">↓</div>
     </div>
 
     <!-- Right Side Floating Double-Bezel Card -->
@@ -998,12 +1023,21 @@ function ll2xyz(lat, lon, radius = R + 0.04) {
 
 function create3DPin(colorHex) {
     const pg = new THREE.Group();
-    const h = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.5 }));
-    h.position.y = 0.25; pg.add(h);
-    const e = new THREE.Mesh(new THREE.SphereGeometry(0.05, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-    e.position.set(0, 0.25, 0.08); pg.add(e);
-    const c = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.25, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.5 }));
-    c.position.y = 0.125; c.rotation.x = Math.PI; pg.add(c);
+    const h = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.5 }));
+    h.position.y = 0.28; pg.add(h);
+    const e = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    e.position.set(0, 0.28, 0.1); pg.add(e);
+    const c = new THREE.Mesh(new THREE.ConeGeometry(0.11, 0.28, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.5 }));
+    c.position.y = 0.14; c.rotation.x = Math.PI; pg.add(c);
+
+    // Large invisible hit sphere for 100% reliable tap detection
+    const hitSphere = new THREE.Mesh(
+        new THREE.SphereGeometry(0.38, 16, 16),
+        new THREE.MeshBasicMaterial({ visible: false })
+    );
+    hitSphere.position.y = 0.2;
+    pg.add(hitSphere);
+
     return pg;
 }
 
@@ -1018,7 +1052,7 @@ countryStops.forEach(st => {
     pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
     beaconGroup.add(pin);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.012, 8, 32), new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.85 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.015, 8, 32), new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.85 }));
     ring.position.copy(pos); ring.lookAt(0,0,0); beaconGroup.add(ring);
     beaconMeshes.push({ pin, ring, pos });
 });
@@ -1040,20 +1074,20 @@ const raycaster = new THREE.Raycaster();
 const mouseVec = new THREE.Vector2();
 
 function triggerPinCard(idx) {
-    // INSTANTLY display card without rotating the globe!
+    // INSTANTLY display card without force-rotating the globe!
     countryStops.forEach((_, i) => {
         const el = document.getElementById(`globe-panel-${i}`);
         if (el) el.classList.toggle('active', i === idx);
     });
 
-    if (window.innerWidth < 850) {
-        globeCardStage.classList.add('mobile-open');
-    }
+    // Show card slide-up on mobile
+    globeCardStage.classList.add('mobile-open');
 }
 
 function checkPinTap(clientX, clientY) {
-    mouseVec.x = (clientX / window.innerWidth) * 2 - 1;
-    mouseVec.y = -(clientY / window.innerHeight) * 2 + 1;
+    const rect = globeCanvas.getBoundingClientRect();
+    mouseVec.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    mouseVec.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
     raycaster.setFromCamera(mouseVec, globeCamera);
     const intersects = raycaster.intersectObjects(beaconGroup.children, true);
@@ -1119,7 +1153,7 @@ globeCanvas.addEventListener('touchmove', e => {
 window.addEventListener('touchend', e => {
     if (e.changedTouches && e.changedTouches.length === 1) {
         const moveDist = Math.hypot(e.changedTouches[0].clientX - touchStartCoords.x, e.changedTouches[0].clientY - touchStartCoords.y);
-        if (moveDist < 8) {
+        if (moveDist < 12) {
             checkPinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
         }
     }
@@ -1130,6 +1164,11 @@ window.addEventListener('touchend', e => {
 // Close Mobile Card Button (✕)
 document.getElementById('btn-close-card').addEventListener('click', () => {
     globeCardStage.classList.remove('mobile-open');
+});
+
+// Down Arrow Scroll Button
+document.getElementById('btn-scroll-next').addEventListener('click', () => {
+    document.getElementById('s-why').scrollIntoView({ behavior: 'smooth' });
 });
 
 // Mobile Zoom Button Handler Functions
