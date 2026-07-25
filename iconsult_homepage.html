@@ -391,13 +391,35 @@ nav ul a:hover { color: white; }
   background: var(--blue);
 }
 
+/* Mobile Touch Hint Pill */
+.mobile-touch-hint {
+  display: none;
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  background: rgba(8, 14, 24, 0.88);
+  border: 1px solid var(--blue);
+  color: #FFFFFF;
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 174, 239, 0.4);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
 /* Floating Compact Double-Bezel Card (Right Side) */
 .globe-card-stage {
   position: absolute;
   right: 5vw;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 10;
+  z-index: 1000;
   width: 100%;
   max-width: 440px;
   padding: 0 10px;
@@ -427,6 +449,26 @@ nav ul a:hover { color: white; }
   flex-direction: column;
   justify-content: center;
   position: relative;
+}
+
+/* Mobile Close Button (✕) inside Card */
+.mobile-card-close {
+  display: none;
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
 }
 
 .explode-text {
@@ -510,14 +552,30 @@ footer ul a:hover { color: var(--blue); }
   .why-grid { grid-template-columns: 1fr 1fr; }
   .stats-row { grid-template-columns: 1fr 1fr; }
   #nav { padding: 0 1.5rem; }
-  .globe-card-stage { right: 0; left: 0; top: auto; bottom: 3vh; transform: none; max-width: 92%; margin: 0 auto; }
+  .mobile-touch-hint { display: block; }
+  .mobile-card-close { display: flex; }
+
+  /* Mobile Slide-Up Card triggered when Pin Tapped */
+  .globe-card-stage {
+    right: 0; left: 0;
+    top: auto; bottom: 20px;
+    transform: translateY(120%);
+    opacity: 0;
+    max-width: 92%;
+    margin: 0 auto;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+  }
+  .globe-card-stage.mobile-open {
+    transform: translateY(0);
+    opacity: 1;
+  }
   .mobile-zoom-controls { left: 16px; top: 38%; }
 }
 @media(max-width:480px){
   .why-grid { grid-template-columns: 1fr; }
   .cta-box { padding: 2.5rem 1.5rem; }
   footer { padding: 1.5rem; }
-  .globe-card-stage { max-width: 95%; bottom: 2vh; }
+  .globe-card-stage { max-width: 95%; bottom: 15px; }
   .zoom-btn { width: 46px; height: 46px; font-size: 1.4rem; }
 }
 </style>
@@ -658,6 +716,9 @@ footer ul a:hover { color: var(--blue); }
     <!-- Three.js Interactive 3D Earth Canvas -->
     <canvas id="globe-canvas"></canvas>
 
+    <!-- Mobile Touch Instruction Pill -->
+    <div class="mobile-touch-hint">📍 Touch any Location Pin to view details</div>
+
     <!-- Mobile Zoom Controls (+ / -) -->
     <div class="mobile-zoom-controls">
       <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
@@ -665,9 +726,10 @@ footer ul a:hover { color: var(--blue); }
     </div>
 
     <!-- Right Side Floating Double-Bezel Card -->
-    <div class="globe-card-stage">
+    <div class="globe-card-stage" id="globe-card-stage">
       <div class="double-bezel-outer">
         <div class="double-bezel-inner" id="globe-card-inner">
+          <button type="button" class="mobile-card-close" id="btn-close-card">✕</button>
           <!-- 10 Explode panels generated dynamically -->
         </div>
       </div>
@@ -832,6 +894,8 @@ const countryStops = [
 ];
 
 const globeCardInner = document.getElementById('globe-card-inner');
+const globeCardStage = document.getElementById('globe-card-stage');
+
 countryStops.forEach((st, i) => {
     const panel = document.createElement('div');
     panel.className = `explode-text` + (i === 0 ? ' active' : '');
@@ -870,7 +934,7 @@ globeScene.add(globeGroup);
 
 function updateGlobeCam() {
     if (window.innerWidth < 850) {
-        globeGroup.position.set(0, 0.7, 0);
+        globeGroup.position.set(0, 0.6, 0);
         globeCamera.position.set(0, 0, 6.8);
     } else {
         globeGroup.position.set(-1.7, 0, 0);
@@ -912,12 +976,12 @@ function ll2xyz(lat, lon, radius = R + 0.04) {
 
 function create3DPin(colorHex) {
     const pg = new THREE.Group();
-    const h = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.4 }));
-    h.position.y = 0.22; pg.add(h);
-    const e = new THREE.Mesh(new THREE.SphereGeometry(0.038, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-    e.position.set(0, 0.22, 0.07); pg.add(e);
-    const c = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.22, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.4 }));
-    c.position.y = 0.11; c.rotation.x = Math.PI; pg.add(c);
+    const h = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.5 }));
+    h.position.y = 0.24; pg.add(h);
+    const e = new THREE.Mesh(new THREE.SphereGeometry(0.045, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    e.position.set(0, 0.24, 0.08); pg.add(e);
+    const c = new THREE.Mesh(new THREE.ConeGeometry(0.09, 0.24, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.5 }));
+    c.position.y = 0.12; c.rotation.x = Math.PI; pg.add(c);
     return pg;
 }
 
@@ -932,7 +996,7 @@ countryStops.forEach(st => {
     pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
     beaconGroup.add(pin);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.009, 8, 32), new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.8 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.01, 8, 32), new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.85 }));
     ring.position.copy(pos); ring.lookAt(0,0,0); beaconGroup.add(ring);
     beaconMeshes.push({ pin, ring, pos });
 });
@@ -944,14 +1008,54 @@ function getRot(lat, lon) {
 const initR = getRot(countryStops[0].lat, countryStops[0].lon);
 globeGroup.rotation.x = initR.x; globeGroup.rotation.y = initR.y;
 
-// ── ROBUST MOUSE & TOUCH GESTURES (MOBILE + DESKTOP) ──
+// ── MOUSE & TOUCH GESTURES WITH 3D PIN RAYCASTING ──
 let isDrag = false, prevM = { x: 0, y: 0 }, rotOff = { x: 0, y: 0 };
 let targetCamZ2 = 5.8;
 let touchPinchDist = null;
 
-// Mouse Drag
+// Raycaster for tapping 3D Pin
+const raycaster = new THREE.Raycaster();
+const mouseVec = new THREE.Vector2();
+
+function triggerPinCard(idx) {
+    countryStops.forEach((_, i) => {
+        const el = document.getElementById(`globe-panel-${i}`);
+        if (el) el.classList.toggle('active', i === idx);
+    });
+
+    const st = countryStops[idx];
+    const tr = getRot(st.lat, st.lon);
+    rotOff.x = 0; rotOff.y = 0;
+    globeGroup.rotation.x = tr.x;
+    globeGroup.rotation.y = tr.y;
+
+    if (window.innerWidth < 850) {
+        globeCardStage.classList.add('mobile-open');
+    }
+}
+
+function checkPinTap(clientX, clientY) {
+    mouseVec.x = (clientX / window.innerWidth) * 2 - 1;
+    mouseVec.y = -(clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouseVec, globeCamera);
+    const intersects = raycaster.intersectObjects(beaconGroup.children, true);
+
+    if (intersects.length > 0) {
+        const hitObj = intersects[0].object;
+        beaconMeshes.forEach((bm, idx) => {
+            if (bm.pin === hitObj || bm.pin.children.includes(hitObj) || bm.ring === hitObj) {
+                triggerPinCard(idx);
+            }
+        });
+    }
+}
+
+// Mouse Drag & Click
 globeCanvas.addEventListener('mousedown', e => { isDrag = true; prevM = { x: e.clientX, y: e.clientY }; });
 window.addEventListener('mouseup', () => { isDrag = false; });
+globeCanvas.addEventListener('click', e => { checkPinTap(e.clientX, e.clientY); });
+
 window.addEventListener('mousemove', e => {
     if (!isDrag) return;
     rotOff.y += (e.clientX - prevM.x) * 0.006;
@@ -960,10 +1064,13 @@ window.addEventListener('mousemove', e => {
     prevM = { x: e.clientX, y: e.clientY };
 });
 
-// Mobile Touch Drag & Touch Pinch Zoom
+// Mobile Touch Drag, Touch Pinch Zoom & Pin Tap
+let touchStartCoords = { x: 0, y: 0 };
+
 globeCanvas.addEventListener('touchstart', e => {
     if (e.touches.length === 1) {
         isDrag = true;
+        touchStartCoords = { x: e.touches[0].clientX, y: e.touches[0].clientY };
         prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     } else if (e.touches.length === 2) {
         isDrag = false;
@@ -975,7 +1082,7 @@ globeCanvas.addEventListener('touchstart', e => {
 
 globeCanvas.addEventListener('touchmove', e => {
     if (e.touches.length === 1 && isDrag) {
-        e.preventDefault(); // Prevent browser window scrolling when dragging 3D globe!
+        e.preventDefault();
         const deltaX = e.touches[0].clientX - prevM.x;
         const deltaY = e.touches[0].clientY - prevM.y;
         rotOff.y += deltaX * 0.008;
@@ -983,7 +1090,7 @@ globeCanvas.addEventListener('touchmove', e => {
         rotOff.x = Math.max(-0.8, Math.min(0.8, rotOff.x));
         prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     } else if (e.touches.length === 2 && touchPinchDist !== null) {
-        e.preventDefault(); // Prevent page pinch zoom!
+        e.preventDefault();
         const dx = e.touches[0].clientX - e.touches[1].clientX;
         const dy = e.touches[0].clientY - e.touches[1].clientY;
         const curDist = Math.hypot(dx, dy);
@@ -994,9 +1101,20 @@ globeCanvas.addEventListener('touchmove', e => {
     }
 }, { passive: false });
 
-window.addEventListener('touchend', () => {
+window.addEventListener('touchend', e => {
+    if (e.changedTouches && e.changedTouches.length === 1) {
+        const moveDist = Math.hypot(e.changedTouches[0].clientX - touchStartCoords.x, e.changedTouches[0].clientY - touchStartCoords.y);
+        if (moveDist < 8) {
+            checkPinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        }
+    }
     isDrag = false;
     touchPinchDist = null;
+});
+
+// Close Mobile Card Button (✕)
+document.getElementById('btn-close-card').addEventListener('click', () => {
+    globeCardStage.classList.remove('mobile-open');
 });
 
 // Mobile Zoom Button Handler Functions
