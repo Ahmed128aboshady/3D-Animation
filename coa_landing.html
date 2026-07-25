@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>COA Egypt | الشريك المعتمد لنظام Odoo ERP والخدمات المحاسبية</title>
-<meta name="description" content="COA Egypt تقدم الاستشارات المحاسبية والضريبية وتنفيذ نظام أودو Odoo ERP للشركات في مصر والسعودية والخليج."/>
+<title>COA Egypt | كوميونتي أوف أكونتنتس | الشريك المعتمد لنظام Odoo ERP والخدمات المحاسبية</title>
+<meta name="description" content="COA Egypt (Community of Accountants) تقدم الخدمات المحاسبية والاستشارات الضريبية وتنفيذ نظام أودو Odoo ERP للشركات في مصر والسعودية والخليج."/>
 
 <!-- SEO & GEO Structured Data -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "AccountingService",
-  "name": "COA Egypt - Chartered Accountants & Odoo Partner",
+  "name": "COA Egypt - Community of Accountants & Odoo Partner",
   "url": "https://coa-egy.odoo.com/coa",
+  "logo": "coa_logo.png",
   "telephone": "+201029243254",
   "email": "info@coa-egypt.com",
   "address": {
@@ -39,21 +40,17 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 :root {
-  --odoo-purple: #875A7B;
-  --odoo-dark: #5B3852;
-  --blue: #00AEEF;
-  --blue-dark: #0284C7;
+  --coa-navy: #0D334E;
+  --coa-red: #E52531;
+  --coa-red-dark: #C41C27;
   --gold: #D97706;
-  --gold-light: #F59E0B;
   --bg-white: #FFFFFF;
   --bg-slate: #F8FAFC;
-  --bg-card: #FFFFFF;
   --text-dark: #0F172A;
   --text-sub: #475569;
-  --border-light: rgba(135, 90, 123, 0.2);
-  --red: #FF2D55;
-  --grad-coa: linear-gradient(135deg, #875A7B 0%, #00AEEF 100%);
-  --grad-btn: linear-gradient(135deg, #875A7B 0%, #6C4262 100%);
+  --border-light: rgba(13, 51, 78, 0.15);
+  --grad-coa: linear-gradient(135deg, #0D334E 0%, #E52531 100%);
+  --grad-btn: linear-gradient(135deg, #E52531 0%, #C41C27 100%);
   --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -68,36 +65,36 @@ body {
 }
 
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-thumb { background: var(--odoo-purple); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--coa-red); border-radius: 3px; }
 
 /* ── URGENCY OFFER BAR (STICKY TOP) ── */
 #urgency-bar {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1001;
-  background: linear-gradient(90deg, #875A7B 0%, #5B3852 50%, #00AEEF 100%);
+  background: linear-gradient(90deg, #E52531 0%, #0D334E 100%);
   color: white;
   padding: 8px 15px;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  box-shadow: 0 4px 15px rgba(135, 90, 123, 0.3);
+  box-shadow: 0 4px 15px rgba(229, 37, 49, 0.3);
 }
 
 .countdown-box {
   display: inline-flex;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
   padding: 2px 10px;
   border-radius: 20px;
   font-family: 'Outfit', sans-serif;
   letter-spacing: 1px;
 }
 
-/* ── FIXED BACKGROUND PARTICLE CANVAS (LIGHT MODE) ── */
+/* ── FIXED BACKGROUND PARTICLE CANVAS ── */
 #bg-canvas {
   position: fixed;
   top: 0; left: 0;
@@ -111,10 +108,10 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: rgba(248, 250, 252, 0.6);
+  background: rgba(248, 250, 252, 0.65);
 }
 
-/* ── NAVBAR ── */
+/* ── NAVBAR WITH OFFICIAL COA EGYPT LOGO ── */
 #nav {
   position: fixed;
   top: 38px; left: 0; right: 0;
@@ -123,47 +120,43 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 3rem;
-  height: 72px;
+  height: 76px;
   transition: all 0.5s;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1.5px solid var(--border-light);
   box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
 
 .logo {
   display: flex; align-items: center; gap: 12px;
-  text-decoration: none; color: var(--text-dark);
+  text-decoration: none;
 }
-.logo-badge {
-  background: var(--odoo-purple);
-  color: white;
-  padding: 6px 14px;
-  border-radius: 10px;
-  font-weight: 900;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 15px rgba(135, 90, 123, 0.4);
+.logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(13, 51, 78, 0.15));
 }
 
 nav ul { display: flex; gap: 2rem; list-style: none; }
 nav ul a {
-  color: var(--text-sub);
-  text-decoration: none; font-size: 0.9rem; font-weight: 700;
+  color: var(--coa-navy);
+  text-decoration: none; font-size: 0.9rem; font-weight: 800;
   transition: color 0.3s;
 }
-nav ul a:hover { color: var(--odoo-purple); }
+nav ul a:hover { color: var(--coa-red); }
 
 .nav-btn {
-  background: var(--grad-coa);
+  background: var(--grad-btn);
   color: white; text-decoration: none;
   padding: 0.65rem 1.6rem;
   border-radius: 50px; font-weight: 800; font-size: 0.88rem;
-  box-shadow: 0 4px 20px rgba(135, 90, 123, 0.3);
+  box-shadow: 0 4px 20px rgba(229, 37, 49, 0.3);
   transition: all 0.3s;
   white-space: nowrap;
 }
-.nav-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(135, 90, 123, 0.5); }
+.nav-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(229, 37, 49, 0.5); }
 
 /* ── JOURNEY PROGRESS DOT ── */
 #progress-dots {
@@ -176,14 +169,14 @@ nav ul a:hover { color: var(--odoo-purple); }
 .dot {
   width: 10px; height: 10px;
   border-radius: 50%;
-  border: 2px solid rgba(135, 90, 123, 0.4);
+  border: 2px solid rgba(13, 51, 78, 0.3);
   cursor: pointer;
   transition: all 0.4s;
 }
 .dot.active {
-  background: var(--odoo-purple);
-  border-color: var(--odoo-purple);
-  box-shadow: 0 0 12px rgba(135, 90, 123, 0.6);
+  background: var(--coa-red);
+  border-color: var(--coa-red);
+  box-shadow: 0 0 12px rgba(229, 37, 49, 0.6);
   transform: scale(1.4);
 }
 
@@ -205,14 +198,14 @@ nav ul a:hover { color: var(--odoo-purple); }
 
 .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(135, 90, 123, 0.08);
-  border: 1px solid rgba(135, 90, 123, 0.25);
+  background: rgba(229, 37, 49, 0.08);
+  border: 1.5px solid rgba(229, 37, 49, 0.3);
   padding: 0.45rem 1.3rem;
-  border-radius: 50px; font-size: 0.82rem;
-  color: var(--odoo-purple); font-weight: 800;
+  border-radius: 50px; font-size: 0.85rem;
+  color: var(--coa-red); font-weight: 800;
   margin-bottom: 1.8rem;
 }
-.pulse { width: 8px; height: 8px; background: var(--odoo-purple); border-radius: 50%; animation: blink 2s infinite; }
+.pulse { width: 8px; height: 8px; background: var(--coa-red); border-radius: 50%; animation: blink 2s infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
 .hero-h1 {
@@ -220,7 +213,7 @@ nav ul a:hover { color: var(--odoo-purple); }
   font-weight: 900;
   line-height: 1.25;
   margin-bottom: 1.5rem;
-  color: var(--text-dark);
+  color: var(--coa-navy);
 }
 .hero-h1 .g {
   background: var(--grad-coa);
@@ -232,32 +225,32 @@ nav ul a:hover { color: var(--odoo-purple); }
 .hero-sub {
   font-size: clamp(1rem, 1.5vw, 1.25rem);
   color: var(--text-sub);
-  max-width: 680px; margin: 0 auto 2.5rem;
-  line-height: 1.8; font-weight: 500;
+  max-width: 700px; margin: 0 auto 2.5rem;
+  line-height: 1.8; font-weight: 600;
 }
 
 .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
 .btn-main {
   display: inline-flex; align-items: center; gap: 8px;
-  background: var(--grad-coa); color: white;
+  background: var(--grad-btn); color: white;
   padding: 1rem 2.4rem; border-radius: 50px;
   font-weight: 800; font-size: 0.98rem; text-decoration: none;
-  box-shadow: 0 8px 25px rgba(135, 90, 123, 0.35);
+  box-shadow: 0 8px 25px rgba(229, 37, 49, 0.35);
   transition: all 0.3s;
 }
-.btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(135, 90, 123, 0.5); }
+.btn-main:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(229, 37, 49, 0.5); }
 
 .btn-ghost {
   display: inline-flex; align-items: center; gap: 8px;
   background: white;
-  color: var(--text-dark); padding: 1rem 2.2rem; border-radius: 50px;
-  font-weight: 700; font-size: 0.98rem; text-decoration: none;
+  color: var(--coa-navy); padding: 1rem 2.2rem; border-radius: 50px;
+  font-weight: 800; font-size: 0.98rem; text-decoration: none;
   border: 1.5px solid var(--border-light);
   box-shadow: 0 4px 15px rgba(0,0,0,0.03);
   transition: all 0.3s;
 }
-.btn-ghost:hover { border-color: var(--odoo-purple); background: rgba(135, 90, 123, 0.05); transform: translateY(-3px); }
+.btn-ghost:hover { border-color: var(--coa-red); background: rgba(229, 37, 49, 0.05); transform: translateY(-3px); }
 
 /* ── PROBLEM SECTION ── */
 #s-problem {
@@ -270,19 +263,20 @@ nav ul a:hover { color: var(--odoo-purple); }
 .section-tag {
   display: inline-block;
   font-size: 0.75rem; font-weight: 800; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--odoo-purple);
+  text-transform: uppercase; color: var(--coa-red);
   margin-bottom: 1.2rem; position: relative; padding-bottom: 10px;
 }
 .section-tag::after {
   content: ''; position: absolute;
   bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 35px; height: 3px; background: var(--odoo-purple); border-radius: 2px;
+  width: 35px; height: 3px; background: var(--coa-red); border-radius: 2px;
 }
 .problem-title {
   font-size: clamp(2rem, 3.5vw, 3.2rem);
   font-weight: 900; line-height: 1.2; margin-bottom: 1.5rem;
+  color: var(--coa-navy);
 }
-.problem-title .accent { color: var(--odoo-purple); }
+.problem-title .accent { color: var(--coa-red); }
 .problem-text {
   font-size: 1.1rem; color: var(--text-sub);
   line-height: 1.8; max-width: 700px; margin: 0 auto 3rem;
@@ -305,9 +299,9 @@ nav ul a:hover { color: var(--odoo-purple); }
 #s-services { padding: 6rem 2rem; flex-direction: column; }
 .services-wrap { max-width: 1150px; margin: 0 auto; width: 100%; }
 .services-top { text-align: center; margin-bottom: 3.8rem; }
-.sec-title { font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 900; margin-bottom: 0.8rem; }
-.sec-title .acc { color: var(--odoo-purple); }
-.sec-sub { font-size: 1.05rem; color: var(--text-sub); font-weight: 500; }
+.sec-title { font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 900; margin-bottom: 0.8rem; color: var(--coa-navy); }
+.sec-title .acc { color: var(--coa-red); }
+.sec-sub { font-size: 1.05rem; color: var(--text-sub); font-weight: 600; }
 .services-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.8rem; }
 .s-card {
   background: white;
@@ -322,27 +316,27 @@ nav ul a:hover { color: var(--odoo-purple); }
   position: absolute; top: 0; left: 0; right: 0; height: 3px;
   background: var(--grad-coa); transform: scaleX(0); transform-origin: left; transition: transform 0.5s;
 }
-.s-card:hover { transform: translateY(-10px); border-color: var(--odoo-purple); box-shadow: 0 25px 60px rgba(135,90,123,0.12); }
+.s-card:hover { transform: translateY(-10px); border-color: var(--coa-red); box-shadow: 0 25px 60px rgba(229,37,49,0.12); }
 .s-card:hover .s-card-line { transform: scaleX(1); }
 .s-num {
   font-size: 5rem; font-weight: 900; position: absolute; top: 1rem; left: 1.8rem; line-height: 1;
-  background: linear-gradient(135deg, #875A7B 0%, #00AEEF 100%);
+  background: linear-gradient(135deg, #0D334E 0%, #E52531 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  opacity: 0.85;
-  filter: drop-shadow(0 2px 8px rgba(135,90,123,0.2));
+  opacity: 0.9;
+  filter: drop-shadow(0 2px 8px rgba(13,51,78,0.2));
 }
 .s-icon {
   width: 65px; height: 65px; border-radius: 18px;
   display: flex; align-items: center; justify-content: center;
   font-size: 2rem; margin-bottom: 1.5rem;
 }
-.s-icon.c1 { background: rgba(135, 90, 123, 0.12); }
-.s-icon.c2 { background: rgba(0, 174, 239, 0.12); }
+.s-icon.c1 { background: rgba(13, 51, 78, 0.12); }
+.s-icon.c2 { background: rgba(229, 37, 49, 0.12); }
 .s-icon.c3 { background: rgba(16, 185, 129, 0.12); }
 .s-icon.c4 { background: rgba(245, 158, 11, 0.12); }
-.s-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--text-dark); }
+.s-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--coa-navy); }
 .s-desc { font-size: 0.95rem; color: var(--text-sub); line-height: 1.85; margin-bottom: 1.5rem; }
-.s-link { color: var(--odoo-purple); font-size: 0.9rem; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: gap 0.3s; }
+.s-link { color: var(--coa-red); font-size: 0.9rem; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: gap 0.3s; }
 .s-link:hover { gap: 12px; }
 
 /* ── STATS ── */
@@ -355,7 +349,7 @@ nav ul a:hover { color: var(--odoo-purple); }
   background: var(--grad-coa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .stat-suf { font-size: 2.5rem; font-weight: 900; }
-.stat-line { width: 40px; height: 3px; background: var(--odoo-purple); margin: 0.8rem auto; border-radius: 2px; }
+.stat-line { width: 40px; height: 3px; background: var(--coa-red); margin: 0.8rem auto; border-radius: 2px; }
 .stat-lbl { font-size: 0.9rem; color: var(--text-sub); font-weight: 700; }
 
 /* ═════════════════════════════════════════════════════════
@@ -400,7 +394,7 @@ nav ul a:hover { color: var(--odoo-purple); }
   top: 0; left: 0;
   display: flex; align-items: center; gap: 7px;
   background: rgba(255, 255, 255, 0.95);
-  border: 1.5px solid var(--odoo-purple);
+  border: 1.5px solid var(--coa-red);
   color: var(--text-dark);
   padding: 6px 14px; border-radius: 20px;
   font-size: 0.8rem; font-weight: 800;
@@ -412,16 +406,16 @@ nav ul a:hover { color: var(--odoo-purple); }
 }
 
 .floating-glass-badge:hover, .floating-glass-badge.active {
-  background: var(--odoo-purple);
+  background: var(--coa-red);
   color: white;
-  border-color: var(--odoo-purple);
-  box-shadow: 0 8px 25px rgba(135, 90, 123, 0.4);
+  border-color: var(--coa-red);
+  box-shadow: 0 8px 25px rgba(229, 37, 49, 0.4);
 }
 
 .floating-glass-badge .badge-dot {
   width: 8px; height: 8px;
-  background: var(--red); border-radius: 50%;
-  box-shadow: 0 0 8px var(--red);
+  background: var(--coa-navy); border-radius: 50%;
+  box-shadow: 0 0 8px var(--coa-navy);
 }
 
 .mobile-zoom-controls {
@@ -437,13 +431,13 @@ nav ul a:hover { color: var(--odoo-purple); }
   width: 48px; height: 48px; border-radius: 50%;
   background: white;
   border: 1.5px solid var(--border-light);
-  color: var(--text-dark); font-size: 1.5rem; font-weight: 800;
+  color: var(--coa-navy); font-size: 1.5rem; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; backdrop-filter: blur(10px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
   transition: var(--transition-spring);
 }
-.zoom-btn:active { transform: scale(0.9); background: var(--odoo-purple); color: white; }
+.zoom-btn:active { transform: scale(0.9); background: var(--coa-red); color: white; }
 
 .globe-card-stage {
   position: absolute;
@@ -455,7 +449,7 @@ nav ul a:hover { color: var(--odoo-purple); }
 }
 
 .double-bezel-outer {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   border: 1px solid rgba(0, 0, 0, 0.08);
   padding: 10px; border-radius: 24px;
   box-shadow: 0 25px 60px rgba(0,0,0,0.12);
@@ -492,17 +486,17 @@ nav ul a:hover { color: var(--odoo-purple); }
 }
 
 .card-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.card-flag-badge { font-size: 1.3rem; color: var(--text-dark); font-weight: 800; }
-.card-region-tag { font-size: 0.72rem; color: var(--odoo-purple); letter-spacing: 1px; font-weight: 800; }
-.card-country-title { font-size: 1.6rem; color: var(--text-dark); margin-bottom: 8px; font-weight: 800; }
+.card-flag-badge { font-size: 1.3rem; color: var(--coa-navy); font-weight: 800; }
+.card-region-tag { font-size: 0.72rem; color: var(--coa-red); letter-spacing: 1px; font-weight: 800; }
+.card-country-title { font-size: 1.6rem; color: var(--coa-navy); margin-bottom: 8px; font-weight: 800; }
 .card-body-text { font-size: 0.9rem; color: var(--text-sub); line-height: 1.65; margin-bottom: 16px; }
 .badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .agency-pill {
   display: inline-flex; align-items: center; gap: 5px;
-  background: rgba(135, 90, 123, 0.1); border: 1px solid rgba(135, 90, 123, 0.25);
-  color: var(--odoo-purple); padding: 5px 13px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+  background: rgba(229, 37, 49, 0.08); border: 1px solid rgba(229, 37, 49, 0.25);
+  color: var(--coa-red); padding: 5px 13px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
 }
-.agency-pill.green { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: #059669; }
+.agency-pill.green { background: rgba(13, 51, 78, 0.08); border-color: rgba(13, 51, 78, 0.25); color: var(--coa-navy); }
 
 /* ── WHY COA & REAL TEAM MEMBERS ── */
 #s-why { padding: 6rem 2rem; flex-direction: column; background: white; }
@@ -514,9 +508,9 @@ nav ul a:hover { color: var(--odoo-purple); }
   border-radius: 22px; padding: 2.2rem 1.8rem; transition: all 0.4s;
   opacity: 0; transform: translateY(30px);
 }
-.w-card:hover { transform: translateY(-8px); border-color: var(--odoo-purple); background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
+.w-card:hover { transform: translateY(-8px); border-color: var(--coa-red); background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
 .w-emoji { font-size: 2.2rem; margin-bottom: 1rem; }
-.w-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--text-dark); }
+.w-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--coa-navy); }
 .w-text { font-size: 0.88rem; color: var(--text-sub); line-height: 1.7; }
 
 /* ── CTA & B2B LEAD FORM ── */
@@ -524,28 +518,28 @@ nav ul a:hover { color: var(--odoo-purple); }
 .cta-box {
   max-width: 820px; margin: 0 auto; background: white;
   border: 1.5px solid var(--border-light); border-radius: 30px; padding: 4.5rem 3rem;
-  box-shadow: 0 25px 70px rgba(135, 90, 123, 0.12);
+  box-shadow: 0 25px 70px rgba(13, 51, 78, 0.12);
   opacity: 0; transform: translateY(30px); text-align: right;
 }
-.cta-title { font-size: clamp(2rem,3.5vw,2.8rem); font-weight: 900; margin-bottom: 0.8rem; text-align: center; }
+.cta-title { font-size: clamp(2rem,3.5vw,2.8rem); font-weight: 900; margin-bottom: 0.8rem; text-align: center; color: var(--coa-navy); }
 .cta-sub { font-size: 1rem; color: var(--text-sub); margin-bottom: 2.5rem; text-align: center; line-height: 1.7; }
 
 .lead-form-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.2rem; }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group.full { grid-column: span 2; }
-.form-group label { font-size: 0.85rem; font-weight: 800; color: var(--text-dark); }
+.form-group label { font-size: 0.85rem; font-weight: 800; color: var(--coa-navy); }
 .form-input {
   background: var(--bg-slate); border: 1.5px solid rgba(0,0,0,0.1);
   border-radius: 14px; padding: 13px 16px; font-family: inherit; font-size: 0.95rem;
   outline: none; transition: all 0.3s; color: var(--text-dark);
 }
-.form-input:focus { border-color: var(--odoo-purple); background: white; box-shadow: 0 0 15px rgba(135, 90, 123, 0.2); }
+.form-input:focus { border-color: var(--coa-red); background: white; box-shadow: 0 0 15px rgba(229, 37, 49, 0.2); }
 .submit-btn {
-  grid-column: span 2; background: var(--grad-coa); color: white; border: none;
+  grid-column: span 2; background: var(--grad-btn); color: white; border: none;
   padding: 1.1rem; border-radius: 50px; font-weight: 900; font-size: 1.1rem; cursor: pointer;
-  box-shadow: 0 8px 25px rgba(135, 90, 123, 0.35); transition: all 0.3s; margin-top: 1rem;
+  box-shadow: 0 8px 25px rgba(229, 37, 49, 0.35); transition: all 0.3s; margin-top: 1rem;
 }
-.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(135, 90, 123, 0.5); }
+.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(229, 37, 49, 0.5); }
 
 /* FOOTER */
 footer {
@@ -553,10 +547,10 @@ footer {
   padding: 2rem 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
 }
 footer .copy { font-size: 0.85rem; color: var(--text-sub); }
-footer .copy span { color: var(--odoo-purple); font-weight: 800; }
+footer .copy span { color: var(--coa-red); font-weight: 800; }
 footer ul { display: flex; gap: 1.5rem; list-style: none; }
 footer ul a { font-size: 0.85rem; color: var(--text-sub); text-decoration: none; font-weight: 600; }
-footer ul a:hover { color: var(--odoo-purple); }
+footer ul a:hover { color: var(--coa-red); }
 
 /* MODAL */
 #success-modal {
@@ -567,7 +561,7 @@ footer ul a:hover { color: var(--odoo-purple); }
 }
 #success-modal.open { opacity: 1; pointer-events: auto; }
 .modal-box {
-  background: white; border: 2px solid var(--odoo-purple); padding: 3rem 2.5rem;
+  background: white; border: 2px solid var(--coa-red); padding: 3rem 2.5rem;
   border-radius: 28px; text-align: center; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
 }
 
@@ -591,7 +585,7 @@ footer ul a:hover { color: var(--odoo-purple); }
 
 <!-- URGENCY BAR -->
 <div id="urgency-bar">
-  <span>🚨 عرض خاص من COA: خصم 20% على تنفيذ Odoo ERP + 15 يوماً تجربة مجانية Free Demo قبل ارتفاع الأسعار</span>
+  <span>🚨 عرض خاص من COA Egypt: خصم 20% على تنفيذ Odoo ERP + 15 يوماً تجربة مجانية Free Demo قبل ارتفاع الأسعار</span>
   <div class="countdown-box" id="timer">14 : 23 : 59 : 45</div>
 </div>
 
@@ -599,14 +593,10 @@ footer ul a:hover { color: var(--odoo-purple); }
 <canvas id="bg-canvas"></canvas>
 <div id="scene-overlay"></div>
 
-<!-- NAVBAR -->
+<!-- NAVBAR WITH OFFICIAL COA EGYPT LOGO IMAGE -->
 <div id="nav">
   <a href="#" class="logo">
-    <div class="logo-badge">COA</div>
-    <div>
-      <div style="font-weight:800;font-size:0.95rem;color:var(--text-dark)">COA Egypt</div>
-      <div style="font-size:0.75rem;color:var(--text-sub)">Certified Odoo Partner</div>
-    </div>
+    <img src="coa_logo.png" alt="COA EGYPT" class="logo-img"/>
   </a>
   <nav><ul>
     <li><a href="#s-services">خدماتنا</a></li>
@@ -631,7 +621,7 @@ footer ul a:hover { color: var(--odoo-purple); }
 <!-- SECTION 1: HERO -->
 <section class="journey-section" id="s-hero">
   <div>
-    <div class="hero-badge"><span class="pulse"></span>Certified Odoo Partner &amp; Chartered Accountants</div>
+    <div class="hero-badge"><span class="pulse"></span>Community of Accountants &amp; Certified Odoo Partner</div>
     <h1 class="hero-h1" id="h1">
       تمكين مؤسستك مع<br/>
       <span class="g">أودو Odoo ERP</span><br/>
@@ -744,7 +734,7 @@ footer ul a:hover { color: var(--odoo-purple); }
   <div class="why-wrap">
     <div class="why-top">
       <div class="section-tag">فريق العمل والخبراء</div>
-      <h2 class="sec-title">نخبة المهندسين والاستشاريين في <span class="acc">COA</span></h2>
+      <h2 class="sec-title">نخبة المهندسين والاستشاريين في <span class="acc">COA Egypt</span></h2>
     </div>
     <div class="why-grid">
       <div class="w-card" id="wc1"><div class="w-emoji">👨‍💼</div><h4 class="w-title">إبراهيم رمضان</h4><p class="w-text">Business Developer &amp; Odoo Consultant - دراسة وتطوير حلول أودو ERP للشركات والمؤسسات.</p></div>
@@ -760,7 +750,7 @@ footer ul a:hover { color: var(--odoo-purple); }
 <!-- SECTION 7: CTA & B2B LEAD FORM -->
 <section class="journey-section" id="s-cta">
   <div class="cta-box" id="ctaBox">
-    <h2 class="cta-title">احجز <span style="color:var(--odoo-purple)">الديمو المجاني</span> وتأكيد الخصم 20%</h2>
+    <h2 class="cta-title">احجز <span style="color:var(--coa-red)">الديمو المجاني</span> وتأكيد الخصم 20%</h2>
     <p class="cta-sub">سيتواصل معك أحد استشاريي Odoo في COA Egypt خلال 15 دقيقة فقط لتأكيد العرض وتحديد موعد الديمو.</p>
     
     <form class="lead-form-grid" onsubmit="handleFormSubmit(event)">
@@ -800,7 +790,7 @@ footer ul a:hover { color: var(--odoo-purple); }
     
     <div style="margin-top:2.5rem;text-align:center;font-size:0.88rem;color:var(--text-sub)">
       📍 <strong>المقر الرئيسي (مدينة نصر):</strong> بلوك 1 الحي التاسع - شارع أفريقيا، امتداد شارع مصطفى النحاس، مدينة نصر، القاهرة.<br/>
-      📞 <strong>الهاتف المباشر:</strong> <a href="tel:+201029243254" style="color:var(--odoo-purple);text-decoration:none;font-weight:800">+20 102 924 3254</a> | ✉️ <strong>info@coa-egypt.com</strong>
+      📞 <strong>الهاتف المباشر:</strong> <a href="tel:+201029243254" style="color:var(--coa-red);text-decoration:none;font-weight:800">+20 102 924 3254</a> | ✉️ <strong>info@coa-egypt.com</strong>
     </div>
   </div>
 </section>
@@ -826,7 +816,7 @@ footer ul a:hover { color: var(--odoo-purple); }
 </div>
 
 <script>
-// 1. THREE.JS — PERSISTENT BACKGROUND PARTICLES (LIGHT MODE PURPLE/BLUE)
+// 1. THREE.JS — PERSISTENT BACKGROUND PARTICLES (COA RED & NAVY PARTICLES)
 const bgCanvas = document.getElementById('bg-canvas');
 const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
 bgRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -846,7 +836,11 @@ for (let i = 0; i < N; i++) {
   pPos[i*3+1] = (Math.random()-0.5)*130;
   pPos[i*3+2] = (Math.random()-0.5)*90;
   pVel.push((Math.random()-0.5)*0.07, (Math.random()-0.5)*0.07, (Math.random()-0.5)*0.03);
-  pCol[i*3] = 0.53; pCol[i*3+1] = 0.35; pCol[i*3+2] = 0.48; // Odoo Purple
+  if (i % 2 === 0) {
+    pCol[i*3] = 0.89; pCol[i*3+1] = 0.14; pCol[i*3+2] = 0.19; // COA Red
+  } else {
+    pCol[i*3] = 0.05; pCol[i*3+1] = 0.20; pCol[i*3+2] = 0.30; // COA Navy
+  }
 }
 
 const pGeo = new THREE.BufferGeometry();
@@ -856,7 +850,7 @@ const pMat = new THREE.PointsMaterial({ size: 1.6, vertexColors: true, transpare
 const points = new THREE.Points(pGeo, pMat);
 bgScene.add(points);
 
-const lMat = new THREE.LineBasicMaterial({ color: 0x875A7B, transparent: true, opacity: 0.12 });
+const lMat = new THREE.LineBasicMaterial({ color: 0xE52531, transparent: true, opacity: 0.12 });
 let linesMesh = null;
 
 function buildLines() {
@@ -906,7 +900,7 @@ function animateBg() {
 }
 animateBg();
 
-// 2. 3D GLOBE WITH ALL 16 CLIENT COMPANIES FROM COA
+// 2. 3D GLOBE WITH ALL 16 CLIENT COMPANIES FROM COA EGYPT
 const countryStops = [
   { lat: 30.0, lon: 31.2, country: 'أرفاد (Arfad)', tag: 'القاهرة - مصر', title: 'شركة أرفاد', desc: 'تطبيق موديولات Odoo ERP للحسابات والمقاولات والتوريدات.', p1: 'Odoo.sh Enterprise', p2: 'القاهرة' },
   { lat: 29.9, lon: 31.1, country: 'الرملة (Al-Ramlaa)', tag: 'الجيزة - مصر', title: 'مجموعة الرملة', desc: 'نظام إدارة الزراعة والمخازن وسلاسل الإمداد على أودو.', p1: 'Odoo.sh Enterprise', p2: 'الجيزة' },
@@ -969,11 +963,11 @@ const globeScene = new THREE.Scene();
 const globeCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 globeCamera.position.set(0, 0, 5.8);
 
-const ambL = new THREE.AmbientLight(0xffffff, 0.9); globeScene.add(ambL);
+const ambL = new THREE.AmbientLight(0xffffff, 0.95); globeScene.add(ambL);
 const dirL = new THREE.DirectionalLight(0xffffff, 1.4); dirL.position.set(5, 3, 5); globeScene.add(dirL);
 
 const globeGroup = new THREE.Group();
-globeGroup.position.set(1.7, 0, 0); // Position on Right in RTL
+globeGroup.position.set(1.7, 0, 0);
 globeScene.add(globeGroup);
 
 function updateGlobeCam() {
@@ -1005,9 +999,9 @@ function ll2xyz(lat, lon, radius = R + 0.02) {
 
 function createRedLocationMarker() {
   const group = new THREE.Group();
-  const coreNode = new THREE.Mesh(new THREE.SphereGeometry(0.048, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFF2D55 }));
+  const coreNode = new THREE.Mesh(new THREE.SphereGeometry(0.048, 16, 16), new THREE.MeshBasicMaterial({ color: 0xE52531 }));
   group.add(coreNode);
-  const ringInner = new THREE.Mesh(new THREE.TorusGeometry(0.085, 0.009, 8, 32), new THREE.MeshBasicMaterial({ color: 0xFF2D55, transparent: true, opacity: 0.9 }));
+  const ringInner = new THREE.Mesh(new THREE.TorusGeometry(0.085, 0.009, 8, 32), new THREE.MeshBasicMaterial({ color: 0xE52531, transparent: true, opacity: 0.9 }));
   ringInner.lookAt(0, 0, 0); group.add(ringInner);
   return group;
 }
@@ -1072,9 +1066,9 @@ function updateAllFloatingBadges() {
   });
 }
 
+// Full 360 Mouse and Touch Rotation Handlers
 let isDrag = false, prevM = { x: 0, y: 0 };
 let touchStartCoords = { x: 0, y: 0 };
-
 const raycaster = new THREE.Raycaster();
 const mouseVec = new THREE.Vector2();
 
@@ -1082,10 +1076,8 @@ function checkPinTap(clientX, clientY) {
   const rect = globeCanvas.getBoundingClientRect();
   mouseVec.x = ((clientX - rect.left) / rect.width) * 2 - 1;
   mouseVec.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-
   raycaster.setFromCamera(mouseVec, globeCamera);
   const intersects = raycaster.intersectObjects(beaconGroup.children, true);
-
   if (intersects.length > 0) {
     const hitObj = intersects[0].object;
     beaconMeshes.forEach((bm, idx) => {
@@ -1096,28 +1088,18 @@ function checkPinTap(clientX, clientY) {
   }
 }
 
-globeCanvas.addEventListener('mousedown', e => {
-  isDrag = true;
-  prevM = { x: e.clientX, y: e.clientY };
-});
-
+globeCanvas.addEventListener('mousedown', e => { isDrag = true; prevM = { x: e.clientX, y: e.clientY }; });
 window.addEventListener('mouseup', () => { isDrag = false; });
-
 window.addEventListener('mousemove', e => {
   if (!isDrag) return;
   const deltaX = e.clientX - prevM.x;
   const deltaY = e.clientY - prevM.y;
-
   const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.005);
   const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.005);
   targetQuaternion.premultiply(qY).premultiply(qX);
-
   prevM = { x: e.clientX, y: e.clientY };
 });
-
-globeCanvas.addEventListener('click', e => {
-  checkPinTap(e.clientX, e.clientY);
-});
+globeCanvas.addEventListener('click', e => { checkPinTap(e.clientX, e.clientY); });
 
 globeCanvas.addEventListener('touchstart', e => {
   if (e.touches.length === 1) {
@@ -1131,11 +1113,9 @@ globeCanvas.addEventListener('touchmove', e => {
   if (e.touches.length === 1 && isDrag) {
     const deltaX = e.touches[0].clientX - prevM.x;
     const deltaY = e.touches[0].clientY - prevM.y;
-
     const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.006);
     const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.006);
     targetQuaternion.premultiply(qY).premultiply(qX);
-
     prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
   }
 }, { passive: true });
@@ -1143,9 +1123,7 @@ globeCanvas.addEventListener('touchmove', e => {
 window.addEventListener('touchend', e => {
   if (e.changedTouches && e.changedTouches.length === 1) {
     const moveDist = Math.hypot(e.changedTouches[0].clientX - touchStartCoords.x, e.changedTouches[0].clientY - touchStartCoords.y);
-    if (moveDist < 12) {
-      checkPinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-    }
+    if (moveDist < 12) { checkPinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY); }
   }
   isDrag = false;
 });
