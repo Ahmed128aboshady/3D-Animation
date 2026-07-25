@@ -923,23 +923,24 @@ footer ul a:hover { color: var(--coa-red); }
 @media(max-width: 768px) {
   .profile-modal-overlay {
     padding: 1rem 0.8rem;
-    align-items: flex-end;
+    align-items: center;
   }
   .profile-modal-box {
     max-height: 88vh;
     overflow-y: auto;
-    border-radius: 28px 28px 20px 20px;
-    box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+    border-radius: 28px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
   }
   .profile-modal-grid { grid-template-columns: 1fr; min-height: auto; }
-  .profile-modal-photo-col { height: 220px; min-height: 220px; }
-  .profile-modal-info-col { padding: 1.5rem 1.2rem; text-align: center; }
+  .profile-modal-photo-col { height: 320px; min-height: 320px; }
+  .profile-modal-photo-col img { object-fit: cover; object-position: top center; }
+  .profile-modal-info-col { padding: 1.8rem 1.4rem; text-align: center; }
   .profile-modal-info-col .team-badge-pill { margin-right: auto; margin-left: auto; }
   .profile-modal-info-col .team-skills-row { justify-content: center; }
   .profile-modal-close {
     top: 12px; left: 12px;
     background: rgba(0,0,0,0.6);
-    width: 32px; height: 32px;
+    width: 34px; height: 34px;
   }
 }
 
@@ -1528,7 +1529,6 @@ footer ul a:hover { color: var(--coa-red); }
         <div class="team-divider"></div>
         <p class="profile-modal-desc" id="popDesc">Executive description goes here...</p>
         <div class="team-skills-row" id="popSkills"></div>
-        <button type="button" class="btn-main" onclick="closeProfileModal()" style="margin-top:1.8rem;width:100%;justify-content:center;border:none;cursor:pointer;">إغلاق والعودة للمسرح الـ 3D ✨</button>
       </div>
     </div>
   </div>
