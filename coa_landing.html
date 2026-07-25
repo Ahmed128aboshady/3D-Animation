@@ -1414,64 +1414,79 @@ function selectTeam3D(idx) {
   const radius = 6.5;
   const numMembers = teamData.length;
 
-  // Function to create dynamic 3D Photo Badge Textures
+  // Function to create dynamic Full 3D Photo Card Textures
   function create3DPhotoTexture(member) {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
-    canvas.height = 512;
+    canvas.height = 680;
     const ctx = canvas.getContext('2d');
 
     function drawBadge(imgObj = null) {
-      ctx.clearRect(0, 0, 512, 512);
-
-      // Background Gradient
-      const grad = ctx.createLinearGradient(0, 0, 512, 512);
-      grad.addColorStop(0, member.color === 0xE52531 ? '#E52531' : '#0D334E');
-      grad.addColorStop(1, '#081D2C');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 512, 512);
-
-      // Glowing Border Circle
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 12;
-      ctx.beginPath();
-      ctx.arc(256, 210, 140, 0, Math.PI * 2);
-      ctx.stroke();
-
-      // Inner Circle for Avatar / Photo
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(256, 210, 134, 0, Math.PI * 2);
-      ctx.clip();
+      ctx.clearRect(0, 0, 512, 680);
 
       if (imgObj) {
-        ctx.drawImage(imgObj, 256 - 134, 210 - 134, 268, 268);
+        // Draw Full Photo filling the 3D Card
+        ctx.drawImage(imgObj, 0, 0, 512, 680);
+
+        // Bottom Glass Overlay for Name & Title
+        const glassGrad = ctx.createLinearGradient(0, 480, 0, 680);
+        glassGrad.addColorStop(0, 'rgba(13, 51, 78, 0)');
+        glassGrad.addColorStop(0.3, 'rgba(13, 51, 78, 0.82)');
+        glassGrad.addColorStop(1, 'rgba(13, 51, 78, 0.96)');
+        ctx.fillStyle = glassGrad;
+        ctx.fillRect(0, 480, 512, 200);
+
+        // Name Text
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 38px "Tajawal", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = 'rgba(0,0,0,0.6)';
+        ctx.shadowBlur = 10;
+        ctx.fillText(member.name, 256, 595);
+
+        // Role Text
+        ctx.fillStyle = '#E52531';
+        ctx.font = 'bold 24px "Tajawal", sans-serif';
+        ctx.fillText(member.role, 256, 635);
+        ctx.shadowBlur = 0;
       } else {
+        // Fallback Corporate Design
+        const grad = ctx.createLinearGradient(0, 0, 512, 680);
+        grad.addColorStop(0, member.color === 0xE52531 ? '#E52531' : '#0D334E');
+        grad.addColorStop(1, '#081D2C');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 512, 680);
+
+        // Glowing Border Circle
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 12;
+        ctx.beginPath();
+        ctx.arc(256, 260, 150, 0, Math.PI * 2);
+        ctx.stroke();
+
         ctx.fillStyle = 'rgba(255,255,255,0.15)';
-        ctx.fillRect(0, 0, 512, 512);
-        ctx.font = '120px sans-serif';
+        ctx.beginPath();
+        ctx.arc(256, 260, 144, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.font = '140px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(member.avatar, 256, 215);
+        ctx.fillText(member.avatar, 256, 265);
+
+        // Name Tag Box
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.roundRect(40, 530, 432, 100, 20);
+        ctx.fill();
+
+        ctx.fillStyle = '#0D334E';
+        ctx.font = 'bold 36px "Tajawal", sans-serif';
+        ctx.fillText(member.name, 256, 575);
+
+        ctx.fillStyle = '#E52531';
+        ctx.font = 'bold 22px "Tajawal", sans-serif';
+        ctx.fillText(member.role, 256, 610);
       }
-      ctx.restore();
-
-      // Name Tag Box
-      ctx.fillStyle = 'rgba(255,255,255,0.95)';
-      ctx.roundRect(40, 390, 432, 85, 20);
-      ctx.fill();
-
-      // Name Text
-      ctx.fillStyle = '#0D334E';
-      ctx.font = 'bold 36px "Tajawal", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(member.name, 256, 430);
-
-      // Role Text
-      ctx.fillStyle = '#E52531';
-      ctx.font = 'bold 22px "Tajawal", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(member.role, 256, 460);
     }
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -1496,9 +1511,9 @@ function selectTeam3D(idx) {
     const meshGroup = new THREE.Group();
     meshGroup.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
 
-    // Front-Facing 3D Crystal Card Mesh (BoxGeometry)
+    // Full 3D Photo Standee Card Mesh (BoxGeometry 2.4 x 3.2 x 0.12)
     const photoTex = create3DPhotoTexture(td);
-    const cardGeo = new THREE.BoxGeometry(2.4, 3.1, 0.12);
+    const cardGeo = new THREE.BoxGeometry(2.4, 3.2, 0.12);
     
     const matSide = new THREE.MeshStandardMaterial({ color: td.color, roughness: 0.2, metalness: 0.8 });
     const matFront = new THREE.MeshStandardMaterial({ map: photoTex, roughness: 0.1, metalness: 0.1 });
@@ -1508,24 +1523,14 @@ function selectTeam3D(idx) {
     const coreMesh = new THREE.Mesh(cardGeo, materials);
     meshGroup.add(coreMesh);
 
-    // Outer Glowing Wireframe Octahedron Cage
-    const cageMat = new THREE.MeshBasicMaterial({
-      color: td.color === 0xE52531 ? 0x0D334E : 0xE52531,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.45
-    });
-    const cageMesh = new THREE.Mesh(new THREE.OctahedronGeometry(2.2, 1), cageMat);
-    meshGroup.add(cageMesh);
-
-    // Orbiting Torus Ring
-    const ringMat = new THREE.MeshBasicMaterial({ color: td.color, transparent: true, opacity: 0.6 });
-    const ringMesh = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.035, 8, 32), ringMat);
+    // Sleek Orbiting Torus Ring
+    const ringMat = new THREE.MeshBasicMaterial({ color: td.color, transparent: true, opacity: 0.5 });
+    const ringMesh = new THREE.Mesh(new THREE.TorusGeometry(2.4, 0.03, 8, 32), ringMat);
     ringMesh.rotation.x = Math.PI / 3;
     meshGroup.add(ringMesh);
 
     teamStageGroup.add(meshGroup);
-    teamMeshes.push({ group: meshGroup, core: coreMesh, cage: cageMesh, ring: ringMesh, photoTex: photoTex, angle: angle });
+    teamMeshes.push({ group: meshGroup, core: coreMesh, ring: ringMesh, photoTex: photoTex, angle: angle });
   });
 
   let mouseX = 0, mouseY = 0;
@@ -1542,12 +1547,11 @@ function selectTeam3D(idx) {
     teamStageGroup.rotation.x += (mouseY * 0.15 - teamStageGroup.rotation.x) * 0.05;
 
     teamMeshes.forEach((tm, i) => {
-      // Keep 3D Portrait Cards facing forward toward the camera
+      // Keep 3D Portrait Standees facing forward toward camera
       tm.group.rotation.y = -teamStageGroup.rotation.y;
       
-      // Floating Y-bobbing & spinning cage/ring
+      // Floating Y-bobbing & spinning torus ring
       tm.core.position.y = Math.sin(Date.now() * 0.002 + i) * 0.15;
-      tm.cage.rotation.y += 0.01;
       tm.ring.rotation.z += 0.015;
 
       const isCurrent = (i === activeTeamIdx);
