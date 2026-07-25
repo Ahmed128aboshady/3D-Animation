@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>iCONSULT | Integrated Services & Global Presence</title>
+<meta name="description" content="Integrated Services With Digital Solutions For Business Transformation"/>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+
+<!-- Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --blue: #00AEEF;
+  --blue2: #00D4FF;
+  --purple: #7C3AED;
+  --navy: #03070c;
+  --card-obsidian: rgba(8, 14, 24, 0.94);
+  --border-hairline: rgba(0, 174, 239, 0.25);
+  --white: #fff;
+  --grad: linear-gradient(135deg, #00AEEF, #7C3AED);
+  --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: auto; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--navy);
+  color: white;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
+
+/* ── FIXED BACKGROUND PARTICLE CANVAS ── */
+#bg-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#scene-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(3,7,12,0);
+  transition: background 0.1s;
+}
+
+/* ── NAVBAR ── */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  height: 68px;
+  transition: all 0.5s;
+}
+#nav.dark {
+  background: rgba(3,7,12,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,174,239,0.12);
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.logo-box {
+  width: 38px; height: 38px;
+  background: var(--grad);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 15px; color: white;
+}
+.logo-name { font-size: 1.3rem; font-weight: 800; color: white; }
+.logo-name em { color: var(--blue); font-style: normal; }
+nav ul {
+  display: flex; gap: 2.2rem; list-style: none;
+}
+nav ul a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none; font-size: 0.875rem; font-weight: 500;
+  transition: color 0.3s;
+}
+nav ul a:hover { color: white; }
+.nav-btn {
+  background: var(--grad);
+  color: white; text-decoration: none;
+  padding: 0.5rem 1.4rem;
+  border-radius: 50px; font-weight: 700; font-size: 0.85rem;
+  box-shadow: 0 4px 20px rgba(0,174,239,0.3);
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+.nav-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,174,239,0.5); }
+
+/* ── JOURNEY PROGRESS DOT ── */
+#progress-dots {
+  position: fixed;
+  right: 2rem; top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0,174,239,0.4);
+  cursor: pointer;
+  transition: all 0.4s;
+}
+.dot.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  box-shadow: 0 0 10px rgba(0,174,239,0.6);
+  transform: scale(1.4);
+}
+
+/* ── SECTIONS ── */
+.journey-section {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── HERO ── */
+#s-hero {
+  text-align: center;
+  padding: 0 2rem;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,174,239,0.1);
+  border: 1px solid rgba(0,174,239,0.25);
+  padding: 0.4rem 1.1rem;
+  border-radius: 50px; font-size: 0.78rem;
+  color: var(--blue); font-weight: 600;
+  letter-spacing: 0.5px; margin-bottom: 1.8rem;
+}
+.pulse { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero-h1 {
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -3px;
+  margin-bottom: 1.5rem;
+}
+.hero-h1 .g {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  color: rgba(255,255,255,0.55);
+  max-width: 520px; margin: 0 auto 2.5rem;
+  line-height: 1.75; font-weight: 300;
+}
+.hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.btn-main {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--grad); color: white;
+  padding: 0.9rem 2.2rem; border-radius: 50px;
+  font-weight: 700; font-size: 0.95rem; text-decoration: none;
+  box-shadow: 0 8px 30px rgba(0,174,239,0.4);
+  transition: all 0.3s;
+}
+.btn-main:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,174,239,0.55); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.06);
+  color: white; padding: 0.9rem 2.2rem; border-radius: 50px;
+  font-weight: 600; font-size: 0.95rem; text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: all 0.3s; backdrop-filter: blur(10px);
+}
+.btn-ghost:hover { border-color: var(--blue); background: rgba(0,174,239,0.08); transform: translateY(-3px); }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem; left: 50%;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.3); font-size: 0.7rem; letter-spacing: 2px;
+}
+.scroll-mouse {
+  width: 24px; height: 38px;
+  border: 1.5px solid rgba(0,174,239,0.4);
+  border-radius: 12px;
+  display: flex; justify-content: center; padding-top: 5px;
+}
+.scroll-wheel {
+  width: 2px; height: 7px;
+  background: var(--blue); border-radius: 1px;
+  animation: swheel 2s infinite;
+}
+@keyframes swheel { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(12px);opacity:0} }
+
+/* ── PROBLEM SECTION ── */
+#s-problem {
+  padding: 4rem 2rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(3,7,12,0.85) 20%, rgba(3,7,12,0.85) 80%, transparent 100%);
+}
+.problem-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+.section-tag {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--blue);
+  margin-bottom: 1.2rem; position: relative; padding-bottom: 10px;
+}
+.section-tag::after {
+  content: ''; position: absolute;
+  bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 30px; height: 2px; background: var(--blue);
+}
+.problem-title {
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-weight: 800; letter-spacing: -1.5px;
+  line-height: 1.15; margin-bottom: 1.5rem;
+}
+.problem-title .accent { color: var(--blue); }
+.problem-text {
+  font-size: 1.1rem; color: rgba(255,255,255,0.55);
+  line-height: 1.8; max-width: 680px; margin: 0 auto 3rem;
+}
+.claim-pill {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: rgba(0,174,239,0.08);
+  border: 1px solid rgba(0,174,239,0.2);
+  padding: 1.2rem 2rem; border-radius: 16px;
+  font-size: 1.1rem; font-weight: 600;
+}
+.claim-pill .num {
+  font-size: 2.5rem; font-weight: 900;
+  background: var(--grad);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: -2px;
+}
+
+/* ── SERVICES ── */
+#s-services { padding: 5rem 2rem; flex-direction: column; }
+.services-wrap { max-width: 1100px; margin: 0 auto; width: 100%; }
+.services-top { text-align: center; margin-bottom: 3.5rem; }
+.sec-title { font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.8rem; }
+.sec-title .acc { color: var(--blue); }
+.sec-sub { font-size: 1rem; color: rgba(255,255,255,0.45); font-weight: 300; }
+.services-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
+.s-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 22px; padding: 2.2rem;
+  position: relative; overflow: hidden;
+  cursor: pointer; transition: all 0.45s cubic-bezier(0.4,0,0.2,1);
+  opacity: 0; transform: translateY(40px);
+}
+.s-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(0,174,239,0.07) 0%, transparent 65%);
+  opacity: 0; transition: opacity 0.4s; border-radius: 22px;
+}
+.s-card-line {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform 0.5s;
+}
+.s-card:hover { transform: translateY(-10px); border-color: rgba(0,174,239,0.25); box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 60px rgba(0,174,239,0.05); }
+.s-card:hover::before { opacity: 1; }
+.s-card:hover .s-card-line { transform: scaleX(1); }
+.s-num {
+  font-size: 5rem; font-weight: 900; position: absolute; top: 1rem; right: 1.6rem; line-height: 1;
+  background: linear-gradient(135deg, rgba(0,174,239,0.35), rgba(124,58,237,0.25));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: -3px;
+}
+.s-icon {
+  width: 60px; height: 60px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; margin-bottom: 1.4rem;
+}
+.s-icon.c1 { background: rgba(0,174,239,0.12); }
+.s-icon.c2 { background: rgba(124,58,237,0.12); }
+.s-icon.c3 { background: rgba(16,185,129,0.12); }
+.s-icon.c4 { background: rgba(245,158,11,0.12); }
+.s-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.65rem; }
+.s-desc { font-size: 0.875rem; color: rgba(255,255,255,0.48); line-height: 1.7; margin-bottom: 1.4rem; }
+.s-link { color: var(--blue); font-size: 0.85rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: gap 0.3s; }
+.s-link:hover { gap: 12px; }
+
+/* ── STATS ── */
+#s-stats { padding: 4rem 2rem; background: rgba(3,7,12,0.6); }
+.stats-inner { max-width: 900px; margin: 0 auto; }
+.stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; text-align: center; }
+.stat-box { opacity: 0; transform: scale(0.85); }
+.stat-n {
+  font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 900; letter-spacing: -3px; line-height: 1;
+  background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-suf { font-size: 2.5rem; font-weight: 900; }
+.stat-line { width: 32px; height: 2px; background: rgba(0,174,239,0.35); margin: 0.8rem auto; }
+.stat-lbl { font-size: 0.8rem; color: rgba(255,255,255,0.4); font-weight: 400; }
+
+
+/* ═════════════════════════════════════════════════════════
+   SECTION 5: PHOTOREALISTIC 3D EARTH GLOBE JOURNEY (10 STOPS)
+   ═════════════════════════════════════════════════════════ */
+#s-globe {
+  height: 1000vh; /* 10 Stops scroll track */
+  position: relative;
+  z-index: 15;
+}
+
+.globe-sticky-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#globe-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Floating Compact Double-Bezel Card (Right Side) */
+.globe-card-stage {
+  position: absolute;
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 100%;
+  max-width: 440px;
+  padding: 0 10px;
+}
+
+.double-bezel-outer {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.95);
+  transition: var(--transition-spring);
+}
+
+.double-bezel-inner {
+  background: var(--card-obsidian);
+  border: 1px solid var(--border-hairline);
+  border-radius: calc(24px - 10px);
+  padding: 26px 24px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.explode-text {
+  position: absolute;
+  width: calc(100% - 48px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.explode-text.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  pointer-events: auto;
+}
+
+.card-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.card-flag-badge { display: flex; align-items: center; gap: 8px; font-size: 1.6rem; }
+.card-region-tag { font-size: 0.68rem; color: var(--blue); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
+.card-country-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; color: white; margin-bottom: 8px; font-weight: 600; }
+.card-body-text { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.65; margin-bottom: 16px; }
+.badge-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.agency-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(0, 174, 239, 0.1); border: 1px solid rgba(0, 174, 239, 0.3);
+  color: var(--blue); padding: 5px 13px; border-radius: 50px; font-size: 0.75rem; font-weight: 600;
+}
+.agency-pill.green { background: rgba(27, 130, 67, 0.12); border-color: rgba(27, 130, 67, 0.35); color: #25d366; }
+.agency-pill.gold { background: rgba(207, 161, 92, 0.12); border-color: rgba(207, 161, 92, 0.35); color: #cfa15c; }
+
+/* Mobile Floating Zoom Buttons */
+.mobile-zoom-controls {
+  position: absolute; left: 20px; bottom: 30vh; z-index: 50;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.zoom-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(8, 14, 24, 0.88); border: 1px solid var(--border-hairline);
+  color: #FFFFFF; font-size: 1.4rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  backdrop-filter: blur(12px); box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  transition: var(--transition-spring);
+}
+.zoom-btn:active { transform: scale(0.9); background: var(--blue); }
+
+/* ── WHY SECTION ── */
+#s-why { padding: 5rem 2rem; flex-direction: column; }
+.why-wrap { max-width: 1100px; margin: 0 auto; width: 100%; }
+.why-top { text-align: center; margin-bottom: 3.5rem; }
+.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+.w-card {
+  background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 20px; padding: 2rem 1.75rem; transition: all 0.4s;
+  opacity: 0; transform: translateY(30px);
+}
+.w-card:hover { transform: translateY(-8px); border-color: rgba(0,174,239,0.2); background: rgba(0,174,239,0.04); }
+.w-emoji { font-size: 2rem; margin-bottom: 1rem; }
+.w-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+.w-text { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.65; }
+
+/* ── CTA ── */
+#s-cta { padding: 4rem 2rem; text-align: center; }
+.cta-box {
+  max-width: 760px; margin: 0 auto; background: rgba(0,174,239,0.06);
+  border: 1px solid rgba(0,174,239,0.15); border-radius: 28px; padding: 4.5rem 3rem;
+  position: relative; overflow: hidden; opacity: 0; transform: translateY(30px);
+}
+.cta-glow {
+  position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,174,239,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-title { font-size: clamp(2rem,3.5vw,3rem); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 1rem; }
+.cta-sub { font-size: 1rem; color: rgba(255,255,255,0.5); margin-bottom: 2.5rem; line-height: 1.7; }
+.cta-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+.cta-phone { margin-top: 1.5rem; font-size: 0.875rem; color: rgba(255,255,255,0.35); }
+.cta-phone a { color: var(--blue); text-decoration: none; font-weight: 600; }
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 10; background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 2rem 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+}
+footer .copy { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
+footer .copy span { color: var(--blue); }
+footer ul { display: flex; gap: 1.5rem; list-style: none; }
+footer ul a { font-size: 0.8rem; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.3s; }
+footer ul a:hover { color: var(--blue); }
+
+/* RESPONSIVE */
+@media(max-width:850px){
+  nav ul, #progress-dots { display: none; }
+  .services-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  #nav { padding: 0 1.5rem; }
+  .globe-card-stage { right: 0; left: 0; top: auto; bottom: 3vh; transform: none; max-width: 92%; margin: 0 auto; }
+}
+@media(max-width:480px){
+  .why-grid { grid-template-columns: 1fr; }
+  .cta-box { padding: 2.5rem 1.5rem; }
+  footer { padding: 1.5rem; }
+  .globe-card-stage { max-width: 95%; bottom: 2vh; }
+}
+</style>
+</head>
+<body>
+
+<!-- FIXED BACKGROUND CANVAS -->
+<canvas id="bg-canvas"></canvas>
+<div id="scene-overlay"></div>
+
+<!-- NAVBAR -->
+<div id="nav">
+  <a href="#" class="logo">
+    <div class="logo-box">iC</div>
+    <span class="logo-name">i<em>CONSULT</em></span>
+  </a>
+  <nav><ul>
+    <li><a href="#s-services">Services</a></li>
+    <li><a href="#s-globe">Global Presence</a></li>
+    <li><a href="#s-why">Why Us</a></li>
+    <li><a href="#s-cta">Contact</a></li>
+  </ul></nav>
+  <a href="https://wa.me/+201015380800" class="nav-btn" target="_blank">Free Consultation</a>
+</div>
+
+<!-- JOURNEY PROGRESS DOTS -->
+<div id="progress-dots">
+  <div class="dot active" data-target="#s-hero"></div>
+  <div class="dot" data-target="#s-problem"></div>
+  <div class="dot" data-target="#s-services"></div>
+  <div class="dot" data-target="#s-stats"></div>
+  <div class="dot" data-target="#s-globe"></div>
+  <div class="dot" data-target="#s-why"></div>
+  <div class="dot" data-target="#s-cta"></div>
+</div>
+
+<!-- SECTION 1: HERO -->
+<section class="journey-section" id="s-hero">
+  <div>
+    <div class="hero-badge"><span class="pulse"></span>1st &amp; Only Company in MENA</div>
+    <h1 class="hero-h1" id="h1">
+      <span class="g">Integrated</span><br/>
+      Services With<br/>
+      Digital <span class="g">Solutions</span>
+    </h1>
+    <p class="hero-sub">For Business Transformation — 4 fully integrated services for every company in every sector.</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/+201015380800" class="btn-main" target="_blank">💬 Free Consultation</a>
+      <a href="#s-services" class="btn-ghost">Explore Services ↓</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    SCROLL
+  </div>
+</section>
+
+<!-- SECTION 2: PROBLEM -->
+<section class="journey-section" id="s-problem">
+  <div class="problem-inner">
+    <div class="section-tag">The Challenge</div>
+    <h2 class="problem-title">Most companies struggle with<br/><span class="accent">fragmented solutions</span></h2>
+    <p class="problem-text">
+      ERP from one vendor. Marketing from another. HR from a third. Strategy from a consultant who never returns.
+      The result? Disconnected data, wasted budget, and zero transformation.
+    </p>
+    <div class="claim-pill">
+      <div class="num">1st</div>
+      <div>Only company in Middle East &amp; North Africa<br/>to offer <strong>4 integrated services</strong> under one roof</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: SERVICES -->
+<section class="journey-section" id="s-services">
+  <div class="services-wrap">
+    <div class="services-top">
+      <div class="section-tag">What We Do</div>
+      <h2 class="sec-title">Our <span class="acc">4 Integrated</span> Services</h2>
+      <p class="sec-sub">Each designed to work with the others — delivering complete transformation.</p>
+    </div>
+    <div class="services-grid">
+      <div class="s-card" id="sc1">
+        <div class="s-card-line"></div><span class="s-num">01</span>
+        <div class="s-icon c1">⚙️</div>
+        <h3 class="s-title">Odoo ERP</h3>
+        <p class="s-desc">Streamline all operations — finance, inventory, HR, sales — in one seamless system. One source of truth for your entire business.</p>
+        <a href="https://iconsultworld.odoo.com/odoo-erp" class="s-link">Explore ERP →</a>
+      </div>
+      <div class="s-card" id="sc2">
+        <div class="s-card-line"></div><span class="s-num">02</span>
+        <div class="s-icon c2">📣</div>
+        <h3 class="s-title">Digital Marketing</h3>
+        <p class="s-desc">Data-driven strategies that grow your online presence. SEO, social, performance marketing — all tied to real business outcomes.</p>
+        <a href="https://iconsultworld.odoo.com/digital-marketing" class="s-link">Explore Marketing →</a>
+      </div>
+      <div class="s-card" id="sc3">
+        <div class="s-card-line"></div><span class="s-num">03</span>
+        <div class="s-icon c3">🎯</div>
+        <h3 class="s-title">Strategic Planning</h3>
+        <p class="s-desc">Turn vision into actionable roadmaps. Proven frameworks that lead organizations through meaningful, lasting change.</p>
+        <a href="https://iconsultworld.odoo.com/strategic-planning" class="s-link">Explore Strategy →</a>
+      </div>
+      <div class="s-card" id="sc4">
+        <div class="s-card-line"></div><span class="s-num">04</span>
+        <div class="s-icon c4">👥</div>
+        <h3 class="s-title">Human Resources</h3>
+        <p class="s-desc">Build your most valuable asset. Expert HR solutions for talent acquisition, development, performance, and culture.</p>
+        <a href="https://iconsultworld.odoo.com/human-resources" class="s-link">Explore HR →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: STATS -->
+<section class="journey-section" id="s-stats">
+  <div class="stats-inner">
+    <div style="text-align:center;margin-bottom:3rem">
+      <div class="section-tag">By The Numbers</div>
+      <h2 class="sec-title">Proven <span class="acc">Results</span></h2>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box" id="st1"><div class="stat-n"><span class="cnt" data-t="200">0</span><span class="stat-suf">+</span></div><div class="stat-line"></div><div class="stat-lbl">Projects Delivered</div></div>
+      <div class="stat-box" id="st2"><div class="stat-n"><span class="cnt" data-t="15">0</span><span class="stat-suf">+</span></div><div class="stat-line"></div><div class="stat-lbl">Countries Served</div></div>
+      <div class="stat-box" id="st3"><div class="stat-n"><span class="cnt" data-t="4">0</span></div><div class="stat-line"></div><div class="stat-lbl">Integrated Services</div></div>
+      <div class="stat-box" id="st4"><div class="stat-n"><span class="cnt" data-t="98">0</span><span class="stat-suf">%</span></div><div class="stat-line"></div><div class="stat-lbl">Client Satisfaction</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═════════════════════════════════════════════════════════
+     SECTION 5: PHOTOREALISTIC 3D EARTH GLOBE JOURNEY (10 STOPS)
+     ═════════════════════════════════════════════════════════ -->
+<section id="s-globe">
+  <div class="globe-sticky-wrapper">
+
+    <!-- Three.js Interactive 3D Earth Canvas -->
+    <canvas id="globe-canvas"></canvas>
+
+    <!-- Mobile Zoom Controls (+ / -) -->
+    <div class="mobile-zoom-controls">
+      <button class="zoom-btn" onclick="zoomInGlobe()">+</button>
+      <button class="zoom-btn" onclick="zoomOutGlobe()">−</button>
+    </div>
+
+    <!-- Right Side Floating Double-Bezel Card -->
+    <div class="globe-card-stage">
+      <div class="double-bezel-outer">
+        <div class="double-bezel-inner" id="globe-card-inner">
+          <!-- 10 Explode panels generated dynamically -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- SECTION 6: WHY -->
+<section class="journey-section" id="s-why">
+  <div class="why-wrap">
+    <div class="why-top">
+      <div class="section-tag">Why iCONSULT</div>
+      <h2 class="sec-title">What Makes Us <span class="acc">Different</span></h2>
+    </div>
+    <div class="why-grid">
+      <div class="w-card" id="wc1"><div class="w-emoji">🏆</div><h4 class="w-title">Success Heritage</h4><p class="w-text">Proven turnaround strategies that led many organizations to a better prosperous future.</p></div>
+      <div class="w-card" id="wc2"><div class="w-emoji">🎨</div><h4 class="w-title">Bespoke Solutions</h4><p class="w-text">Meticulously crafted solutions for each client's unique challenges, goals and aspirations.</p></div>
+      <div class="w-card" id="wc3"><div class="w-emoji">🌐</div><h4 class="w-title">Diversified Expertise</h4><p class="w-text">Deep understanding of different industries across diverse markets in many countries.</p></div>
+      <div class="w-card" id="wc4"><div class="w-emoji">🤖</div><h4 class="w-title">AI Driven</h4><p class="w-text">Fully AI-digitalized consultancy leveraging artificial intelligence to deliver unparalleled results.</p></div>
+      <div class="w-card" id="wc5"><div class="w-emoji">🔗</div><h4 class="w-title">Full Spectrum</h4><p class="w-text">Integrated solutions that seamlessly address all core business needs in one unified approach.</p></div>
+      <div class="w-card" id="wc6"><div class="w-emoji">🚀</div><h4 class="w-title">Rapid Transformation</h4><p class="w-text">Proven methodologies delivering measurable, lasting results across all business functions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: CTA -->
+<section class="journey-section" id="s-cta">
+  <div class="cta-box" id="ctaBox">
+    <div class="cta-glow"></div>
+    <h2 class="cta-title">Ready to <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Transform?</span></h2>
+    <p class="cta-sub">Book your free consultation and discover how iCONSULT's 4 integrated services can unlock your organization's full potential.</p>
+    <div class="cta-row">
+      <a href="https://wa.me/+201015380800" class="btn-main" target="_blank">💬 WhatsApp Now</a>
+      <a href="https://iconsultworld.odoo.com/appointment" class="btn-ghost">📅 Book Appointment</a>
+    </div>
+    <p class="cta-phone">📞 <a href="tel:+201015380800">+2 010 153 808 00</a></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="copy">© 2025 <span>iCONSULT</span>. All rights reserved.</p>
+  <ul>
+    <li><a href="https://iconsultworld.odoo.com/about-us">About</a></li>
+    <li><a href="https://iconsultworld.odoo.com/contact-us">Contact</a></li>
+    <li><a href="https://iconsultworld.odoo.com/jobs">Careers</a></li>
+  </ul>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════
+// 1. THREE.JS — PERSISTENT BACKGROUND PARTICLES
+// ══════════════════════════════════════════════
+const bgCanvas = document.getElementById('bg-canvas');
+const bgRenderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
+bgRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+bgRenderer.setSize(window.innerWidth, window.innerHeight);
+
+const bgScene = new THREE.Scene();
+const bgCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+bgCamera.position.set(0, 0, 90);
+
+const N = 220;
+const pPos = new Float32Array(N * 3);
+const pVel = [];
+const pCol = new Float32Array(N * 3);
+
+for (let i = 0; i < N; i++) {
+  pPos[i*3]   = (Math.random()-0.5)*220;
+  pPos[i*3+1] = (Math.random()-0.5)*130;
+  pPos[i*3+2] = (Math.random()-0.5)*90;
+  pVel.push((Math.random()-0.5)*0.07, (Math.random()-0.5)*0.07, (Math.random()-0.5)*0.03);
+  pCol[i*3] = 0; pCol[i*3+1] = 0.68; pCol[i*3+2] = 0.94;
+}
+
+const pGeo = new THREE.BufferGeometry();
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+const pMat = new THREE.PointsMaterial({ size: 1.4, vertexColors: true, transparent: true, opacity: 0.75 });
+const points = new THREE.Points(pGeo, pMat);
+bgScene.add(points);
+
+const lMat = new THREE.LineBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.1 });
+let linesMesh = null;
+
+function buildLines() {
+  if (linesMesh) bgScene.remove(linesMesh);
+  const verts = [];
+  const p = pGeo.attributes.position.array;
+  const limit = 25;
+  for (let i = 0; i < N; i++) {
+    for (let j = i+1; j < N; j++) {
+      const dx=p[i*3]-p[j*3], dy=p[i*3+1]-p[j*3+1], dz=p[i*3+2]-p[j*3+2];
+      if (Math.sqrt(dx*dx+dy*dy+dz*dz) < limit) {
+        verts.push(p[i*3],p[i*3+1],p[i*3+2], p[j*3],p[j*3+1],p[j*3+2]);
+      }
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(verts), 3));
+  linesMesh = new THREE.LineSegments(g, lMat);
+  bgScene.add(linesMesh);
+}
+buildLines();
+
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = (e.clientX/window.innerWidth - 0.5)*2;
+  my = (e.clientY/window.innerHeight - 0.5)*2;
+});
+
+let targetCamX = 0, targetCamY = 0, targetCamZ = 90;
+let targetParticleOpacity = 0.75;
+let lineOpacity = 0.1;
+let fc = 0;
+
+function animateBg() {
+  requestAnimationFrame(animateBg);
+  fc++;
+
+  const p = pGeo.attributes.position.array;
+  for (let i = 0; i < N; i++) {
+    p[i*3]   += pVel[i*3];
+    p[i*3+1] += pVel[i*3+1];
+    p[i*3+2] += pVel[i*3+2];
+    if (p[i*3]>110) p[i*3]=-110; if (p[i*3]<-110) p[i*3]=110;
+    if (p[i*3+1]>65) p[i*3+1]=-65; if (p[i*3+1]<-65) p[i*3+1]=65;
+  }
+  pGeo.attributes.position.needsUpdate = true;
+
+  if (fc % 3 === 0) buildLines();
+
+  bgCamera.position.x += (targetCamX + mx*6 - bgCamera.position.x) * 0.04;
+  bgCamera.position.y += (targetCamY - my*4 - bgCamera.position.y) * 0.04;
+  bgCamera.position.z += (targetCamZ - bgCamera.position.z) * 0.04;
+  bgCamera.lookAt(0, 0, 0);
+
+  pMat.opacity += (targetParticleOpacity - pMat.opacity) * 0.05;
+  if (linesMesh) linesMesh.material.opacity += (lineOpacity - linesMesh.material.opacity) * 0.05;
+
+  bgRenderer.render(bgScene, bgCamera);
+}
+animateBg();
+
+
+// ═════════════════════════════════════════════════════════
+// 2. PHOTOREALISTIC 3D EARTH GLOBE ENGINE (SECTION 5)
+// ═════════════════════════════════════════════════════════
+const countryStops = [
+    { lat: 30.0, lon: 31.2, flag: '🇪🇬', country: 'Egypt', tag: 'Headquarters', title: 'Cairo HQ Hub', desc: 'Cairo Headquarters leading business transformation across North Africa. Specialized in Odoo ERP, strategic consulting & AI automation.', p1: '⚙️ Odoo ERP', p2: '200+ Projects', color: 0x1b8243 },
+    { lat: 24.7, lon: 46.7, flag: '🇸🇦', country: 'Saudi Arabia', tag: 'Vision 2030', title: 'Riyadh Operations', desc: 'Empowering major enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.', p1: '🎯 Strategic Planning', p2: '98% Satisfaction', color: 0xcfa15c },
+    { lat: 25.2, lon: 55.3, flag: '🇦🇪', country: 'UAE', tag: 'Innovation Hub', title: 'Dubai Office', desc: 'Driving high-performance digital marketing, brand acceleration, and AI workflow automation for Dubai corporations.', p1: '📣 Digital Marketing', p2: '3x ROI Growth', color: 0x00AEEF },
+    { lat: 29.3, lon: 47.7, flag: '🇰🇼', country: 'Kuwait', tag: 'GCC Region', title: 'Kuwait City', desc: 'Providing specialized ERP automation and workforce management solutions for industrial & commercial groups.', p1: '👥 Human Resources', p2: 'GCC Growth', color: 0x25d366 },
+    { lat: 51.5, lon: -0.1, flag: '🇬🇧', country: 'United Kingdom', tag: 'European Gateway', title: 'London Partner', desc: 'Connecting European firms with Middle Eastern markets through seamless IT architecture and compliance consulting.', p1: '🌐 Global Tech', p2: 'UK Network', color: 0xcfa15c },
+    { lat: 52.5, lon: 13.4, flag: '🇩🇪', country: 'Germany', tag: 'Central Europe', title: 'Berlin Office', desc: 'Delivering Industry 4.0 data integration and cross-border ERP synchronization for German manufacturing firms.', p1: '⚙️ Industry 4.0', p2: 'Data Integration', color: 0x00AEEF },
+    { lat: 36.2, lon: 138.2, flag: '🇯🇵', country: 'Japan', tag: 'Tech Alliance', title: 'Tokyo Alliance', desc: 'Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.', p1: '🤖 AI Integration', p2: 'Tokyo Office', color: 0xFFFFFF },
+    { lat: 1.3, lon: 103.8, flag: '🇸🇬', country: 'Singapore', tag: 'APAC Hub', title: 'Singapore Centre', desc: 'Expanding digital transformation and fintech integration for Asian multinational enterprises.', p1: '🚀 APAC Expansion', p2: 'Fintech ERP', color: 0x25d366 },
+    { lat: 40.7, lon: -74.0, flag: '🇺🇸', country: 'United States', tag: 'Americas Hub', title: 'New York Office', desc: 'Providing US corporations expanding into MENA with strategic market entry, ERP migration, and localization.', p1: '🗽 Market Entry', p2: 'US Alliance', color: 0x00AEEF },
+    { lat: -23.5, lon: -46.6, flag: '🇧🇷', country: 'Brazil', tag: 'Latin America', title: 'São Paulo Partner', desc: 'Supporting South American agritech and industrial leaders with cloud ERP infrastructure and analytics.', p1: '🌱 Agritech ERP', p2: 'LATAM Reach', color: 0xcfa15c }
+];
+
+const globeCardInner = document.getElementById('globe-card-inner');
+countryStops.forEach((st, i) => {
+    const panel = document.createElement('div');
+    panel.className = `explode-text` + (i === 0 ? ' active' : '');
+    panel.id = `globe-panel-${i}`;
+    panel.innerHTML = `
+        <div class="card-top-row">
+            <div class="card-flag-badge"><span>${st.flag}</span> <strong>${st.country}</strong></div>
+            <span class="card-region-tag">${st.tag}</span>
+        </div>
+        <h2 class="card-country-title">${st.title}</h2>
+        <p class="card-body-text">${st.desc}</p>
+        <div class="badge-row">
+            <span class="agency-pill green">${st.p1}</span>
+            <span class="agency-pill gold">${st.p2}</span>
+        </div>
+    `;
+    globeCardInner.appendChild(panel);
+});
+
+const globeCanvas = document.getElementById('globe-canvas');
+const globeRenderer = new THREE.WebGLRenderer({ canvas: globeCanvas, alpha: true, antialias: true });
+globeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+globeRenderer.setSize(window.innerWidth, window.innerHeight);
+
+const globeScene = new THREE.Scene();
+const globeCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+globeCamera.position.set(0, 0, 5.8);
+
+const ambL = new THREE.AmbientLight(0xffffff, 0.65); globeScene.add(ambL);
+const dirL = new THREE.DirectionalLight(0xffffff, 1.8); dirL.position.set(5, 3, 5); globeScene.add(dirL);
+const rimL = new THREE.DirectionalLight(0x00AEEF, 0.8); rimL.position.set(-5, -2, -3); globeScene.add(rimL);
+
+const globeGroup = new THREE.Group();
+globeGroup.position.set(-1.7, 0, 0);
+globeScene.add(globeGroup);
+
+function updateGlobeCam() {
+    if (window.innerWidth < 850) {
+        globeGroup.position.set(0, 0.7, 0);
+        globeCamera.position.set(0, 0, 6.8);
+    } else {
+        globeGroup.position.set(-1.7, 0, 0);
+        globeCamera.position.set(0, 0, 5.8);
+    }
+}
+updateGlobeCam();
+
+const R = 2.45;
+const texLoader = new THREE.TextureLoader();
+const dayMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+const bumpMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg');
+const specMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg');
+const cldMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
+
+const earthMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(R, 64, 64),
+    new THREE.MeshPhongMaterial({ map: dayMap, normalMap: bumpMap, normalScale: new THREE.Vector2(0.85, 0.85), specularMap: specMap, specular: new THREE.Color(0x333333), shininess: 15 })
+);
+globeGroup.add(earthMesh);
+
+const cloudMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(R * 1.015, 64, 64),
+    new THREE.MeshStandardMaterial({ map: cldMap, transparent: true, opacity: 0.4 })
+);
+globeGroup.add(cloudMesh);
+
+const atmMesh = new THREE.Mesh(
+    new THREE.SphereGeometry(R * 1.1, 64, 64),
+    new THREE.MeshBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.12, side: THREE.BackSide })
+);
+globeGroup.add(atmMesh);
+
+function ll2xyz(lat, lon, radius = R + 0.04) {
+    const phi = (90 - lat) * Math.PI / 180;
+    const theta = (lon + 180) * Math.PI / 180;
+    return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta));
+}
+
+function create3DPin(colorHex) {
+    const pg = new THREE.Group();
+    const h = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.4 }));
+    h.position.y = 0.22; pg.add(h);
+    const e = new THREE.Mesh(new THREE.SphereGeometry(0.038, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+    e.position.set(0, 0.22, 0.07); pg.add(e);
+    const c = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.22, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.4 }));
+    c.position.y = 0.11; c.rotation.x = Math.PI; pg.add(c);
+    return pg;
+}
+
+const beaconGroup = new THREE.Group();
+globeGroup.add(beaconGroup);
+const beaconMeshes = [];
+
+countryStops.forEach(st => {
+    const pos = ll2xyz(st.lat, st.lon);
+    const pin = create3DPin(st.color);
+    pin.position.copy(pos);
+    pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
+    beaconGroup.add(pin);
+
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.009, 8, 32), new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.8 }));
+    ring.position.copy(pos); ring.lookAt(0,0,0); beaconGroup.add(ring);
+    beaconMeshes.push({ pin, ring, pos });
+});
+
+function getRot(lat, lon) {
+    return { x: (lat) * Math.PI / 180 * 0.38, y: (lon + 180) * Math.PI / 180 - Math.PI / 2 };
+}
+
+const initR = getRot(countryStops[0].lat, countryStops[0].lon);
+globeGroup.rotation.x = initR.x; globeGroup.rotation.y = initR.y;
+
+// Interactive Drag & Zoom
+let isDrag = false, prevM = { x: 0, y: 0 }, rotOff = { x: 0, y: 0 };
+let targetCamZ2 = 5.8;
+
+globeCanvas.addEventListener('mousedown', e => { isDrag = true; prevM = { x: e.clientX, y: e.clientY }; });
+window.addEventListener('mouseup', () => { isDrag = false; });
+window.addEventListener('mousemove', e => {
+    if (!isDrag) return;
+    rotOff.y += (e.clientX - prevM.x) * 0.006;
+    rotOff.x += (e.clientY - prevM.y) * 0.004;
+    rotOff.x = Math.max(-0.8, Math.min(0.8, rotOff.x));
+    prevM = { x: e.clientX, y: e.clientY };
+});
+
+function zoomInGlobe() { targetCamZ2 = Math.max(3.2, targetCamZ2 - 0.7); }
+function zoomOutGlobe() { targetCamZ2 = Math.min(9.5, targetCamZ2 + 0.7); }
+
+globeCanvas.addEventListener('wheel', e => {
+    if (e.clientX < window.innerWidth * 0.65) {
+        e.preventDefault();
+        targetCamZ2 = Math.max(3.2, Math.min(9.5, targetCamZ2 + e.deltaY * 0.003));
+    }
+}, { passive: false });
+
+let globeProgress = 0, targetGlobeProgress = 0, currentGlobeProgress = 0;
+
+function animateGlobe() {
+    requestAnimationFrame(animateGlobe);
+    cloudMesh.rotation.y += 0.0008;
+    globeCamera.position.z += (targetCamZ2 - globeCamera.position.z) * 0.1;
+
+    const diff = targetGlobeProgress - currentGlobeProgress;
+    if (Math.abs(diff) > 0.0003 || isDrag || Math.abs(globeCamera.position.z - targetCamZ2) > 0.01) {
+        currentGlobeProgress += diff * 0.09;
+        const activeIdx = Math.min(countryStops.length - 1, Math.floor(currentGlobeProgress * countryStops.length));
+        const st = countryStops[activeIdx];
+        const tr = getRot(st.lat, st.lon);
+
+        globeGroup.rotation.x += (tr.x + rotOff.x - globeGroup.rotation.x) * 0.08;
+        globeGroup.rotation.y += (tr.y + rotOff.y - globeGroup.rotation.y) * 0.08;
+
+        countryStops.forEach((_, i) => {
+            const start = i / countryStops.length;
+            const end = (i + 1) / countryStops.length;
+            const el = document.getElementById(`globe-panel-${i}`);
+            if (currentGlobeProgress >= start && currentGlobeProgress < end + 0.01) {
+                if (el) el.classList.add('active');
+            } else {
+                if (el) el.classList.remove('active');
+            }
+        });
+    }
+
+    globeRenderer.render(globeScene, globeCamera);
+}
+animateGlobe();
+
+window.addEventListener('resize', () => {
+    updateGlobeCam();
+    bgCamera.aspect = window.innerWidth / window.innerHeight; bgCamera.updateProjectionMatrix(); bgRenderer.setSize(window.innerWidth, window.innerHeight);
+    globeCamera.aspect = window.innerWidth / window.innerHeight; globeCamera.updateProjectionMatrix(); globeRenderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Scroll calculation for 3D Globe section
+const globeSec = document.getElementById('s-globe');
+window.addEventListener('scroll', () => {
+    const rect = globeSec.getBoundingClientRect();
+    const secH = globeSec.offsetHeight - window.innerHeight;
+    const scrolled = -rect.top;
+    targetGlobeProgress = Math.max(0, Math.min(0.99, scrolled / secH));
+}, { passive: true });
+
+
+// ══════════════════════════════════════════════
+// 3. GSAP SCROLL-TRIGGER & NAVIGATION
+// ══════════════════════════════════════════════
+gsap.registerPlugin(ScrollTrigger);
+
+const dots = document.querySelectorAll('.dot');
+function setDot(i) { dots.forEach((d,j) => d.classList.toggle('active', j===i)); }
+
+gsap.from('#h1', { opacity:0, y:50, duration:1.2, ease:'power3.out', delay:0.3 });
+gsap.from('.hero-badge', { opacity:0, y:30, duration:0.9, ease:'power2.out', delay:0.2 });
+gsap.from('.hero-sub', { opacity:0, y:30, duration:0.9, ease:'power2.out', delay:0.55 });
+gsap.from('.hero-btns', { opacity:0, y:25, duration:0.8, ease:'power2.out', delay:0.75 });
+gsap.from('.scroll-hint', { opacity:0, duration:1, delay:1.5 });
+
+ScrollTrigger.create({ trigger: '#s-problem', start:'top 60%', onEnter:() => setDot(1), onLeaveBack:() => setDot(0) });
+ScrollTrigger.create({ trigger: '#s-services', start:'top 60%', onEnter:() => setDot(2), onLeaveBack:() => setDot(1) });
+ScrollTrigger.create({ trigger: '#s-stats', start:'top 60%', onEnter:() => setDot(3), onLeaveBack:() => setDot(2) });
+ScrollTrigger.create({ trigger: '#s-globe', start:'top 60%', onEnter:() => setDot(4), onLeaveBack:() => setDot(3) });
+ScrollTrigger.create({ trigger: '#s-why', start:'top 60%', onEnter:() => setDot(5), onLeaveBack:() => setDot(4) });
+ScrollTrigger.create({ trigger: '#s-cta', start:'top 60%', onEnter:() => setDot(6), onLeaveBack:() => setDot(5) });
+
+gsap.to(['#sc1','#sc2','#sc3','#sc4'], { opacity:1, y:0, duration:0.75, stagger:0.15, ease:'power2.out', scrollTrigger:{ trigger:'#s-services', start:'top 65%' } });
+gsap.to(['#st1','#st2','#st3','#st4'], { opacity:1, scale:1, duration:0.65, stagger:0.12, ease:'back.out(1.5)', scrollTrigger:{ trigger:'#s-stats', start:'top 70%' } });
+
+let counted = false;
+ScrollTrigger.create({
+  trigger:'#s-stats', start:'top 75%',
+  onEnter:() => {
+    if(counted) return; counted=true;
+    document.querySelectorAll('.cnt').forEach(el => {
+      const target = +el.dataset.t; let cur = 0; const step = target / 100;
+      const t = setInterval(()=>{ cur+=step; if(cur>=target){cur=target;clearInterval(t);} el.textContent=Math.floor(cur); },16);
+    });
+  }
+});
+
+gsap.to(['#wc1','#wc2','#wc3','#wc4','#wc5','#wc6'], { opacity:1, y:0, duration:0.65, stagger:0.1, ease:'power2.out', scrollTrigger:{ trigger:'#s-why', start:'top 70%' } });
+gsap.to('#ctaBox', { opacity:1, y:0, duration:0.9, ease:'power2.out', scrollTrigger:{ trigger:'#s-cta', start:'top 75%' } });
+
+ScrollTrigger.create({ start:'top -50px', onUpdate: self => { document.getElementById('nav').classList.toggle('dark', self.scroll() > 50); } });
+
+dots.forEach((dot) => {
+  dot.addEventListener('click', () => { document.querySelector(dot.dataset.target).scrollIntoView({ behavior:'smooth' }); });
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){ e.preventDefault(); t.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  });
+});
+</script>
+</body>
+</html>
