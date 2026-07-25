@@ -1846,8 +1846,8 @@ const teamData = [
   { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Abdelrahman Gamal', role: 'Odoo Implementor', desc: 'Executing module deployments, legacy data onboarding, and team training workshops.', skills: ['Odoo Deployment', 'Data Onboarding', 'User Training'], color: 0xE52531 },
   { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Dina Amin', role: 'Odoo Implementor', desc: 'Precision data entry management, inventory, sales, and accounting module fine-tuning.', skills: ['Accounting Tuning', 'Odoo Setup', 'Process Tracking'], color: 0x0D334E },
   // 7. Odoo Developers
-  { dept: 'dev', avatar: '💻', badge: 'Senior Developer', name: 'Eslam Tarek', role: 'Senior Odoo Developer', desc: 'Custom module engineering, REST API integrations, backend architecture, and automated reports.', skills: ['Custom Python/Odoo', 'REST API', 'Backend Architecture'], color: 0xE52531 },
-  { dept: 'dev', avatar: '💻', photo: 'ahmed_aboshady.png', badge: 'Odoo Developer', name: 'Ahmed Abo Shady', role: 'Odoo Developer', desc: 'Developing specialized web modules, UI extensions, and multi-system API bridges.', skills: ['Odoo Development', 'Custom Modules', 'Technical Bridges'], color: 0x0D334E }
+  { dept: 'dev', avatar: '💻', photo: 'ahmed_aboshady.png', badge: 'Odoo Developer', name: 'Ahmed Abo Shady', role: 'Odoo Developer', desc: 'Developing specialized web modules, UI extensions, and multi-system API bridges.', skills: ['Odoo Development', 'Custom Modules', 'Technical Bridges'], color: 0x0D334E },
+  { dept: 'dev', avatar: '💻', badge: 'Senior Developer', name: 'Eslam Tarek', role: 'Senior Odoo Developer', desc: 'Custom module engineering, REST API integrations, backend architecture, and automated reports.', skills: ['Custom Python/Odoo', 'REST API', 'Backend Architecture'], color: 0xE52531 }
 ];
 
 let activeTeamIdx = 0;
@@ -1924,7 +1924,7 @@ function selectTeam3D(idx) {
   // --- Rotate 3D WebGL Carousel Stage ---
   targetStageRotY = -(idx / teamData.length) * Math.PI * 2;
 
-  // Subtle fade-in animation on the card
+  // Smooth scroll to card details if clicked/selected
   const card = document.getElementById('teamShowcaseCard');
   if (card) {
     card.style.opacity = '0';
@@ -1934,6 +1934,12 @@ function selectTeam3D(idx) {
       card.style.opacity = '1';
       card.style.transform = 'translateY(0)';
     });
+
+    // Scroll to details card gracefully
+    const cardRect = card.getBoundingClientRect();
+    if (cardRect.top < 0 || cardRect.bottom > window.innerHeight) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   }
 }
 
@@ -2113,6 +2119,9 @@ function selectTeam3D(idx) {
   function animateTeamWebGL() {
     requestAnimationFrame(animateTeamWebGL);
 
+    const isMobile = window.innerWidth < 768;
+    camera.position.z = isMobile ? 16.5 : 14;
+
     teamStageGroup.rotation.y += (targetStageRotY - teamStageGroup.rotation.y) * 0.08;
     teamStageGroup.rotation.x += (mouseY * 0.15 - teamStageGroup.rotation.x) * 0.05;
 
@@ -2124,7 +2133,7 @@ function selectTeam3D(idx) {
       tm.core.position.y = Math.sin(Date.now() * 0.002 + i) * 0.15;
 
       const isCurrent = (i === activeTeamIdx);
-      const targetScale = isCurrent ? 1.35 : 0.85;
+      const targetScale = isCurrent ? (isMobile ? 1.15 : 1.35) : (isMobile ? 0.72 : 0.85);
       tm.group.scale.x += (targetScale - tm.group.scale.x) * 0.08;
       tm.group.scale.y += (targetScale - tm.group.scale.y) * 0.08;
       tm.group.scale.z += (targetScale - tm.group.scale.z) * 0.08;
