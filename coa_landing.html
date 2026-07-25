@@ -498,20 +498,98 @@ nav ul a:hover { color: var(--coa-red); }
 }
 .agency-pill.green { background: rgba(13, 51, 78, 0.08); border-color: rgba(13, 51, 78, 0.25); color: var(--coa-navy); }
 
-/* ── WHY COA & REAL TEAM MEMBERS ── */
+/* ── 3D TEAM SHOWCASE (NUKHBA 3D STAGE) ── */
 #s-why { padding: 6rem 2rem; flex-direction: column; background: white; }
 .why-wrap { max-width: 1150px; margin: 0 auto; width: 100%; }
 .why-top { text-align: center; margin-bottom: 3.8rem; }
-.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; }
-.w-card {
-  background: var(--bg-slate); border: 1.5px solid rgba(0,0,0,0.06);
-  border-radius: 22px; padding: 2.2rem 1.8rem; transition: all 0.4s;
+.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.8rem; perspective: 1200px; }
+
+.w-card-3d {
+  perspective: 1000px;
   opacity: 0; transform: translateY(30px);
 }
-.w-card:hover { transform: translateY(-8px); border-color: var(--coa-red); background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
-.w-emoji { font-size: 2.2rem; margin-bottom: 1rem; }
-.w-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem; color: var(--coa-navy); }
-.w-text { font-size: 0.88rem; color: var(--text-sub); line-height: 1.7; }
+
+.w-card-inner-3d {
+  background: white;
+  border: 1.5px solid var(--border-light);
+  border-radius: 26px;
+  padding: 2.5rem 1.8rem;
+  text-align: center;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.4s ease, border-color 0.4s ease;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+}
+
+.w-card-inner-3d:hover {
+  border-color: var(--coa-red);
+  box-shadow: 0 30px 70px rgba(229, 37, 49, 0.18), 0 0 25px rgba(13, 51, 78, 0.08);
+}
+
+.w-avatar-3d {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  transform: translateZ(45px);
+  transition: transform 0.3s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.w-avatar-3d.c1 { background: linear-gradient(135deg, #E52531 0%, #0D334E 100%); }
+.w-avatar-3d.c2 { background: linear-gradient(135deg, #0D334E 0%, #1E40AF 100%); }
+.w-avatar-3d.c3 { background: linear-gradient(135deg, #E52531 0%, #D97706 100%); }
+.w-avatar-3d.c4 { background: linear-gradient(135deg, #0D334E 0%, #059669 100%); }
+.w-avatar-3d.c5 { background: linear-gradient(135deg, #E52531 0%, #7C3AED 100%); }
+.w-avatar-3d.c6 { background: linear-gradient(135deg, #0D334E 0%, #DB2777 100%); }
+
+.w-avatar-icon { font-size: 2.3rem; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2)); }
+
+.w-avatar-halo {
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(229, 37, 49, 0.4);
+  animation: rotateHalo 12s linear infinite;
+}
+@keyframes rotateHalo { 100% { transform: rotate(360deg); } }
+
+.w-badge-3d {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+  transform: translateZ(30px);
+  letter-spacing: 0.5px;
+}
+.w-badge-3d.red { background: rgba(229, 37, 49, 0.1); color: var(--coa-red); border: 1px solid rgba(229, 37, 49, 0.25); }
+.w-badge-3d.navy { background: rgba(13, 51, 78, 0.1); color: var(--coa-navy); border: 1px solid rgba(13, 51, 78, 0.25); }
+
+.w-title-3d {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--coa-navy);
+  margin-bottom: 4px;
+  transform: translateZ(35px);
+}
+
+.w-role-3d {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--coa-red);
+  margin-bottom: 12px;
+  transform: translateZ(25px);
+}
+
+.w-text-3d {
+  font-size: 0.88rem;
+  color: var(--text-sub);
+  line-height: 1.7;
+  transform: translateZ(15px);
+}
 
 /* ── CTA & B2B LEAD FORM ── */
 #s-cta { padding: 6rem 2rem; text-align: center; }
@@ -729,20 +807,100 @@ footer ul a:hover { color: var(--coa-red); }
   </div>
 </section>
 
-<!-- SECTION 6: WHY COA & TEAM -->
+<!-- SECTION 6: 3D TEAM SHOWCASE (NUKHBA SHOWCASE) -->
 <section class="journey-section" id="s-why">
   <div class="why-wrap">
     <div class="why-top">
       <div class="section-tag">فريق العمل والخبراء</div>
       <h2 class="sec-title">نخبة المهندسين والاستشاريين في <span class="acc">COA Egypt</span></h2>
+      <p class="sec-sub">حرك الماوس على أي كارت للتفاعل مع العرض ثلاثي الأبعاد 3D 💫</p>
     </div>
     <div class="why-grid">
-      <div class="w-card" id="wc1"><div class="w-emoji">👨‍💼</div><h4 class="w-title">إبراهيم رمضان</h4><p class="w-text">Business Developer &amp; Odoo Consultant - دراسة وتطوير حلول أودو ERP للشركات والمؤسسات.</p></div>
-      <div class="w-card" id="wc2"><div class="w-emoji">⚙️</div><h4 class="w-title">إسماعيل الحريف</h4><p class="w-text">Operation Manager - إشراف كامل على جودة وسرعة تنفيذ وتسليم المشاريع.</p></div>
-      <div class="w-card" id="wc3"><div class="w-emoji">💼</div><h4 class="w-title">مهند نبيل</h4><p class="w-text">Odoo Consultant - استشاري تحليل وتصميم الدورة المستندية والموديولات المحاسبية.</p></div>
-      <div class="w-card" id="wc4"><div class="w-emoji">🛠️</div><h4 class="w-title">عبد الرحمن جمال</h4><p class="w-text">Odoo Implementer - تنفيذ وتطبيق الموديولات ونقل البيانات وتدريب فرق العمل.</p></div>
-      <div class="w-card" id="wc5"><div class="w-emoji">💻</div><h4 class="w-title">نادر ياسر</h4><p class="w-text">Odoo Developer - تطوير وبرمجة التعديلات الخاصة والربط البرمجي الـ APIs.</p></div>
-      <div class="w-card" id="wc6"><div class="w-emoji">👩‍💼</div><h4 class="w-title">مرام</h4><p class="w-text">Odoo Consultant - متابعة الدعم الفني وتأهيل موظفي الشركة للعمل على النظام.</p></div>
+      
+      <!-- 1. Ibrahim Ramadan -->
+      <div class="w-card-3d" id="wc1" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
+        <div class="w-card-inner-3d">
+          <div class="w-avatar-3d c1">
+            <span class="w-avatar-icon">👨‍💼</span>
+            <div class="w-avatar-halo"></div>
+          </div>
+          <span class="w-badge-3d red">Odoo Expert</span>
+          <h4 class="w-title-3d">إبراهيم رمضان</h4>
+          <div class="w-role-3d">Business Developer &amp; Odoo Consultant</div>
+          <p class="w-text-3d">دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والخليج.</p>
+        </div>
+      </div>
+
+      <!-- 2. Esmail El-Hareef -->
+      <div class="w-card-3d" id="wc2" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
+        <div class="w-card-inner-3d">
+          <div class="w-avatar-3d c2">
+            <span class="w-avatar-icon">⚙️</span>
+            <div class="w-avatar-halo"></div>
+          </div>
+          <span class="w-badge-3d navy">Operations Lead</span>
+          <h4 class="w-title-3d">إسماعيل الحريف</h4>
+          <div class="w-role-3d">Operation Manager</div>
+          <p class="w-text-3d">إشراف كامل على جودة وسرعة تنفيذ المشاريع وضمان التسليم وفق أعلى المعايير.</p>
+        </div>
+      </div>
+
+      <!-- 3. Mohanad Nabil -->
+      <div class="w-card-3d" id="wc3" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
+        <div class="w-card-inner-3d">
+          <div class="w-avatar-3d c3">
+            <span class="w-avatar-icon">💼</span>
+            <div class="w-avatar-halo"></div>
+          </div>
+          <span class="w-badge-3d red">Financial Architect</span>
+          <h4 class="w-title-3d">مهند نبيل</h4>
+          <div class="w-role-3d">Odoo Consultant</div>
+          <p class="w-text-3d">استشاري تحليل وتصميم الدورة المستندية وتعديل الموديولات المحاسبية للشركات.</p>
+        </div>
+      </div>
+
+      <!-- 4. Abdelrahman Gamal -->
+      <div class="w-card-3d" id="wc4" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
+        <div class="w-card-inner-3d">
+          <div class="w-avatar-3d c4">
+            <span class="w-avatar-icon">🛠️</span>
+            <div class="w-avatar-halo"></div>
+          </div>
+          <span class="w-badge-3d navy">Implementation Pro</span>
+          <h4 class="w-title-3d">عبد الرحمن جمال</h4>
+          <div class="w-role-3d">Odoo Implementer</div>
+          <p class="w-text-3d">تنفيذ وتطبيق الموديولات ونقل البيانات وتدريب فرق العمل ميدانياً.</p>
+        </div>
+      </div>
+
+      <!-- 5. Nader Yasser -->
+      <div class="w-card-3d" id="wc5" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
+        <div class="w-card-inner-3d">
+          <div class="w-avatar-3d c5">
+            <span class="w-avatar-icon">💻</span>
+            <div class="w-avatar-halo"></div>
+          </div>
+          <span class="w-badge-3d red">Dev Engine</span>
+          <h4 class="w-title-3d">نادر ياسر</h4>
+          <div class="w-role-3d">Odoo Developer</div>
+          <p class="w-text-3d">تطوير وبرمجة التعديلات المخصصة والربط البرمجي السحابي الـ APIs.</p>
+        </div>
+      </div>
+
+      <!-- 6. Maram -->
+      <div class="w-card-3d" id="wc6" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
+        <div class="w-card-inner-3d">
+          <div class="w-avatar-3d c6">
+            <span class="w-avatar-icon">👩‍💼</span>
+            <div class="w-avatar-halo"></div>
+          </div>
+          <span class="w-badge-3d navy">Support &amp; Success</span>
+          <h4 class="w-title-3d">مرام</h4>
+          <div class="w-role-3d">Odoo Consultant</div>
+          <p class="w-text-3d">متابعة الدعم الفني وتأهيل موظفي الشركات للعمل وسلاسة التشغيل اليومي.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1214,7 +1372,28 @@ setInterval(() => {
   const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
   document.getElementById('timer').textContent = `${h<10?'0'+h:h} : ${m<10?'0'+m:m} : ${s<10?'0'+s:s}`;
-}, 1000);
+// 6. 3D GYROSCOPE PERSPECTIVE TILT FOR TEAM CARDS
+function handle3DTilt(e, cardEl) {
+  const inner = cardEl.querySelector('.w-card-inner-3d');
+  if (!inner) return;
+  const rect = cardEl.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  
+  const rotateX = ((y - centerY) / centerY) * -16;
+  const rotateY = ((x - centerX) / centerX) * 16;
+  
+  inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(15px)`;
+}
+
+function reset3DTilt(cardEl) {
+  const inner = cardEl.querySelector('.w-card-inner-3d');
+  if (!inner) return;
+  inner.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+}
 </script>
 </body>
 </html>
