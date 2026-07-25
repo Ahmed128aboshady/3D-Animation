@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>iCONSULT | Integrated Services & Global Presence</title>
 <meta name="description" content="Integrated Services With Digital Solutions For Business Transformation"/>
 
@@ -25,7 +25,7 @@
   --purple: #7C3AED;
   --navy: #03070c;
   --card-obsidian: rgba(8, 14, 24, 0.94);
-  --border-hairline: rgba(0, 174, 239, 0.25);
+  --border-hairline: rgba(0, 174, 239, 0.3);
   --white: #fff;
   --grad: linear-gradient(135deg, #00AEEF, #7C3AED);
   --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -343,12 +343,52 @@ nav ul a:hover { color: white; }
   justify-content: space-between;
 }
 
+/* 3D Canvas with Touch Action None for Mobile Gestures */
 #globe-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   z-index: 1;
+  touch-action: none !important;
+}
+
+/* Mobile Floating Zoom Buttons (+ / -) */
+.mobile-zoom-controls {
+  position: absolute;
+  left: 20px;
+  top: 45%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.zoom-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(8, 14, 24, 0.94);
+  border: 1.5px solid var(--blue);
+  color: #FFFFFF;
+  font-size: 1.6rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 30px rgba(0, 174, 239, 0.5);
+  transition: var(--transition-spring);
+  -webkit-tap-highlight-color: transparent;
+}
+.zoom-btn:active {
+  transform: scale(0.9);
+  background: var(--blue);
 }
 
 /* Floating Compact Double-Bezel Card (Right Side) */
@@ -361,6 +401,7 @@ nav ul a:hover { color: white; }
   width: 100%;
   max-width: 440px;
   padding: 0 10px;
+  pointer-events: none;
 }
 
 .double-bezel-outer {
@@ -370,6 +411,7 @@ nav ul a:hover { color: white; }
   border-radius: 24px;
   box-shadow: 0 25px 60px rgba(0,0,0,0.95);
   transition: var(--transition-spring);
+  pointer-events: auto;
 }
 
 .double-bezel-inner {
@@ -417,21 +459,6 @@ nav ul a:hover { color: white; }
 .agency-pill.green { background: rgba(27, 130, 67, 0.12); border-color: rgba(27, 130, 67, 0.35); color: #25d366; }
 .agency-pill.gold { background: rgba(207, 161, 92, 0.12); border-color: rgba(207, 161, 92, 0.35); color: #cfa15c; }
 
-/* Mobile Floating Zoom Buttons */
-.mobile-zoom-controls {
-  position: absolute; left: 20px; bottom: 30vh; z-index: 50;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.zoom-btn {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(8, 14, 24, 0.88); border: 1px solid var(--border-hairline);
-  color: #FFFFFF; font-size: 1.4rem; font-weight: 700;
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
-  backdrop-filter: blur(12px); box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-  transition: var(--transition-spring);
-}
-.zoom-btn:active { transform: scale(0.9); background: var(--blue); }
-
 /* ── WHY SECTION ── */
 #s-why { padding: 5rem 2rem; flex-direction: column; }
 .why-wrap { max-width: 1100px; margin: 0 auto; width: 100%; }
@@ -476,7 +503,7 @@ footer ul { display: flex; gap: 1.5rem; list-style: none; }
 footer ul a { font-size: 0.8rem; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.3s; }
 footer ul a:hover { color: var(--blue); }
 
-/* RESPONSIVE */
+/* RESPONSIVE MEDIA QUERIES */
 @media(max-width:850px){
   nav ul, #progress-dots { display: none; }
   .services-grid { grid-template-columns: 1fr; }
@@ -484,12 +511,14 @@ footer ul a:hover { color: var(--blue); }
   .stats-row { grid-template-columns: 1fr 1fr; }
   #nav { padding: 0 1.5rem; }
   .globe-card-stage { right: 0; left: 0; top: auto; bottom: 3vh; transform: none; max-width: 92%; margin: 0 auto; }
+  .mobile-zoom-controls { left: 16px; top: 38%; }
 }
 @media(max-width:480px){
   .why-grid { grid-template-columns: 1fr; }
   .cta-box { padding: 2.5rem 1.5rem; }
   footer { padding: 1.5rem; }
   .globe-card-stage { max-width: 95%; bottom: 2vh; }
+  .zoom-btn { width: 46px; height: 46px; font-size: 1.4rem; }
 }
 </style>
 </head>
@@ -631,8 +660,8 @@ footer ul a:hover { color: var(--blue); }
 
     <!-- Mobile Zoom Controls (+ / -) -->
     <div class="mobile-zoom-controls">
-      <button class="zoom-btn" onclick="zoomInGlobe()">+</button>
-      <button class="zoom-btn" onclick="zoomOutGlobe()">−</button>
+      <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
+      <button type="button" class="zoom-btn" id="btn-zoom-out" aria-label="Zoom Out">−</button>
     </div>
 
     <!-- Right Side Floating Double-Bezel Card -->
@@ -915,10 +944,12 @@ function getRot(lat, lon) {
 const initR = getRot(countryStops[0].lat, countryStops[0].lon);
 globeGroup.rotation.x = initR.x; globeGroup.rotation.y = initR.y;
 
-// Interactive Drag & Zoom
+// ── ROBUST MOUSE & TOUCH GESTURES (MOBILE + DESKTOP) ──
 let isDrag = false, prevM = { x: 0, y: 0 }, rotOff = { x: 0, y: 0 };
 let targetCamZ2 = 5.8;
+let touchPinchDist = null;
 
+// Mouse Drag
 globeCanvas.addEventListener('mousedown', e => { isDrag = true; prevM = { x: e.clientX, y: e.clientY }; });
 window.addEventListener('mouseup', () => { isDrag = false; });
 window.addEventListener('mousemove', e => {
@@ -929,17 +960,65 @@ window.addEventListener('mousemove', e => {
     prevM = { x: e.clientX, y: e.clientY };
 });
 
-function zoomInGlobe() { targetCamZ2 = Math.max(3.2, targetCamZ2 - 0.7); }
-function zoomOutGlobe() { targetCamZ2 = Math.min(9.5, targetCamZ2 + 0.7); }
-
-globeCanvas.addEventListener('wheel', e => {
-    if (e.clientX < window.innerWidth * 0.65) {
-        e.preventDefault();
-        targetCamZ2 = Math.max(3.2, Math.min(9.5, targetCamZ2 + e.deltaY * 0.003));
+// Mobile Touch Drag & Touch Pinch Zoom
+globeCanvas.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) {
+        isDrag = true;
+        prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2) {
+        isDrag = false;
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        touchPinchDist = Math.hypot(dx, dy);
     }
 }, { passive: false });
 
-let globeProgress = 0, targetGlobeProgress = 0, currentGlobeProgress = 0;
+globeCanvas.addEventListener('touchmove', e => {
+    if (e.touches.length === 1 && isDrag) {
+        e.preventDefault(); // Prevent browser window scrolling when dragging 3D globe!
+        const deltaX = e.touches[0].clientX - prevM.x;
+        const deltaY = e.touches[0].clientY - prevM.y;
+        rotOff.y += deltaX * 0.008;
+        rotOff.x += deltaY * 0.006;
+        rotOff.x = Math.max(-0.8, Math.min(0.8, rotOff.x));
+        prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2 && touchPinchDist !== null) {
+        e.preventDefault(); // Prevent page pinch zoom!
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const curDist = Math.hypot(dx, dy);
+        const delta = touchPinchDist - curDist;
+        targetCamZ2 += delta * 0.015;
+        targetCamZ2 = Math.max(3.0, Math.min(9.5, targetCamZ2));
+        touchPinchDist = curDist;
+    }
+}, { passive: false });
+
+window.addEventListener('touchend', () => {
+    isDrag = false;
+    touchPinchDist = null;
+});
+
+// Mobile Zoom Button Handler Functions
+document.getElementById('btn-zoom-in').addEventListener('click', e => {
+    e.preventDefault();
+    targetCamZ2 = Math.max(3.0, targetCamZ2 - 0.7);
+});
+
+document.getElementById('btn-zoom-out').addEventListener('click', e => {
+    e.preventDefault();
+    targetCamZ2 = Math.min(9.5, targetCamZ2 + 0.7);
+});
+
+// Mouse Wheel Zoom over Globe
+globeCanvas.addEventListener('wheel', e => {
+    if (e.clientX < window.innerWidth * 0.65) {
+        e.preventDefault();
+        targetCamZ2 = Math.max(3.0, Math.min(9.5, targetCamZ2 + e.deltaY * 0.003));
+    }
+}, { passive: false });
+
+let targetGlobeProgress = 0, currentGlobeProgress = 0;
 
 function animateGlobe() {
     requestAnimationFrame(animateGlobe);
