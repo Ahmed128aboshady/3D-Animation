@@ -353,11 +353,11 @@ nav ul a:hover { color: white; }
   touch-action: pan-y !important;
 }
 
-/* Mobile Floating Zoom Buttons (+ / -) */
+/* Mobile Floating Zoom & Scroll Controls (+ / - / ↓) on Left Side */
 .mobile-zoom-controls {
   position: absolute;
   left: 20px;
-  top: 45%;
+  top: 48%;
   transform: translateY(-50%);
   z-index: 1000;
   display: flex;
@@ -391,48 +391,18 @@ nav ul a:hover { color: white; }
   background: var(--blue);
 }
 
-/* Floating Down-Arrow Scroll Button on Globe Section */
-.globe-scroll-down {
-  position: absolute;
-  bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  pointer-events: auto;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  transition: var(--transition-spring);
+/* Down Arrow Button placed directly below (+) and (-) */
+.zoom-btn.scroll-down-btn {
+  background: var(--grad);
+  border-color: var(--blue2);
+  color: #FFFFFF;
+  font-size: 1.4rem;
+  box-shadow: 0 8px 25px rgba(0, 174, 239, 0.6);
+  animation: bounceArrowBtn 2s infinite;
 }
-.globe-scroll-down:hover {
-  color: var(--blue);
-  transform: translateX(-50%) translateY(4px);
-}
-.scroll-arrow-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: rgba(8, 14, 24, 0.92);
-  border: 1.5px solid var(--blue);
-  color: var(--blue);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  font-weight: 800;
-  box-shadow: 0 6px 20px rgba(0, 174, 239, 0.4);
-  animation: bounceArrow 2s infinite;
-}
-@keyframes bounceArrow {
+@keyframes bounceArrowBtn {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+  50% { transform: translateY(5px); }
 }
 
 /* Floating Compact Double-Bezel Card (Right Side) */
@@ -611,8 +581,7 @@ footer ul a:hover { color: var(--blue); }
     transform: translateY(0);
     opacity: 1;
   }
-  .mobile-zoom-controls { left: 16px; top: 38%; }
-  .globe-scroll-down { bottom: 15px; }
+  .mobile-zoom-controls { left: 16px; top: 40%; }
 }
 @media(max-width:480px){
   .why-grid { grid-template-columns: 1fr; }
@@ -759,16 +728,11 @@ footer ul a:hover { color: var(--blue); }
     <!-- Three.js Interactive 3D Earth Canvas -->
     <canvas id="globe-canvas"></canvas>
 
-    <!-- Mobile Zoom Controls (+ / -) -->
+    <!-- Mobile Zoom & Scroll Controls (+ / - / ↓) on Left Side -->
     <div class="mobile-zoom-controls">
       <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
       <button type="button" class="zoom-btn" id="btn-zoom-out" aria-label="Zoom Out">−</button>
-    </div>
-
-    <!-- Down Arrow Button to Scroll to Next Section -->
-    <div class="globe-scroll-down" id="btn-scroll-next">
-      <span>Scroll Down</span>
-      <div class="scroll-arrow-btn">↓</div>
+      <button type="button" class="zoom-btn scroll-down-btn" id="btn-scroll-next" aria-label="Scroll Down">↓</button>
     </div>
 
     <!-- Right Side Floating Double-Bezel Card -->
@@ -1166,7 +1130,7 @@ document.getElementById('btn-close-card').addEventListener('click', () => {
     globeCardStage.classList.remove('mobile-open');
 });
 
-// Down Arrow Scroll Button
+// Down Arrow Scroll Button on Left Side Controls
 document.getElementById('btn-scroll-next').addEventListener('click', () => {
     document.getElementById('s-why').scrollIntoView({ behavior: 'smooth' });
 });
