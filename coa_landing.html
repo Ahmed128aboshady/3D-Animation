@@ -491,6 +491,23 @@ nav ul a:hover { color: var(--coa-red); }
 .card-region-tag { font-size: 0.72rem; color: var(--coa-red); letter-spacing: 1px; font-weight: 800; }
 .card-country-title { font-size: 1.6rem; color: var(--coa-navy); margin-bottom: 8px; font-weight: 800; }
 .card-body-text { font-size: 0.9rem; color: var(--text-sub); line-height: 1.65; margin-bottom: 16px; }
+
+/* Mobile Globe Header */
+.globe-mobile-header {
+  display: none;
+  position: absolute;
+  top: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 100;
+  text-align: center;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  padding: 10px 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  white-space: nowrap;
+  pointer-events: none;
+}
 /* ── TEAM SHOWCASE SECTION ── */
 #s-why { padding: 6rem 2rem; flex-direction: column; background: transparent; }
 .why-wrap { max-width: 1100px; margin: 0 auto; width: 100%; }
@@ -784,16 +801,65 @@ footer ul a:hover { color: var(--coa-red); }
   .stat-num { font-size: 2.2rem; }
 
   /* --- GLOBE --- */
-  #s-globe { height: 100vh !important; }
-  .globe-sticky-wrapper { position: relative !important; height: 100vh !important; }
-  .globe-card-stage {
-    left: 0; right: 0; top: auto; bottom: 16px;
-    transform: translateY(130%); opacity: 0;
-    max-width: 94%; margin: 0 auto;
+  #s-globe {
+    height: 200vh !important;
   }
-  .globe-card-stage.mobile-open { transform: translateY(0); opacity: 1; }
-  .mobile-card-close { display: flex; }
-  .mobile-zoom-controls { right: 12px; top: 38%; }
+  .globe-sticky-wrapper {
+    position: sticky !important;
+    top: 0 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  #globe-canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  /* Hide floating badges on mobile — too cluttered */
+  #globe-badges-container { display: none !important; }
+  /* Info card: full-width slide-up from bottom */
+  .globe-card-stage {
+    position: fixed !important;
+    left: 0 !important; right: 0 !important;
+    bottom: 0 !important; top: auto !important;
+    transform: translateY(105%) !important;
+    opacity: 0;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease !important;
+    z-index: 9000 !important;
+  }
+  .globe-card-stage.mobile-open {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+  }
+  .double-bezel-outer {
+    border-radius: 24px 24px 0 0 !important;
+    padding: 8px 8px 0 !important;
+  }
+  .double-bezel-inner {
+    border-radius: 18px 18px 0 0 !important;
+    padding: 20px 20px 32px !important;
+    min-height: auto !important;
+  }
+  .mobile-card-close {
+    display: flex !important;
+    position: absolute !important;
+    top: 14px !important; left: 16px !important;
+  }
+  /* Zoom controls */
+  .mobile-zoom-controls {
+    right: 16px !important;
+    top: auto !important;
+    bottom: 28px !important;
+    transform: none !important;
+  }
+  /* Show mobile globe header */
+  .globe-mobile-header { display: block !important; }
 
   /* --- TEAM SHOWCASE --- */
   #s-why { padding: 4rem 1.2rem; }
@@ -1072,6 +1138,12 @@ footer ul a:hover { color: var(--coa-red); }
   <div class="globe-sticky-wrapper">
     <canvas id="globe-canvas"></canvas>
     <div id="globe-badges-container"></div>
+
+    <!-- Mobile Globe Header (hidden on desktop) -->
+    <div class="globe-mobile-header">
+      <div class="section-tag" style="margin-bottom:6px">عملاؤنا والتواجد الدولي</div>
+      <p style="font-size:0.8rem;color:var(--text-sub);margin:0">اضغط على أي نقطة لمعرفة العميل 👆</p>
+    </div>
 
     <div class="mobile-zoom-controls">
       <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
