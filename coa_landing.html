@@ -1292,7 +1292,6 @@ footer ul a:hover { color: var(--coa-red); }
       <button type="button" class="dept-btn" onclick="filterDept('snrimple')">🛠️ Senior Implementors</button>
       <button type="button" class="dept-btn" onclick="filterDept('imple')">📋 Odoo Implementors</button>
       <button type="button" class="dept-btn" onclick="filterDept('sales')">🎯 Sales</button>
-      <button type="button" class="dept-btn" onclick="filterDept('support')">🎧 Support</button>
     </div>
 
     <!-- 3D WebGL Executive Carousel Stage Canvas -->
@@ -1838,8 +1837,7 @@ const teamData = [
   { dept: 'teamlead', avatar: '👑', badge: 'Team Leader', name: 'Eng. Omar Abdelaziz', role: 'Implementation Team Leader', desc: 'Managing implementation engineers, process analysis, and custom workflow architectures.', skills: ['Execution Lead', 'Workflow Analysis', 'Odoo Solutions'], color: 0x0D334E },
   // 4. Sales
   { dept: 'sales', avatar: '🎯', badge: 'Sales Lead', name: 'Aya Mohamed', role: 'Sales & Business Development Lead', desc: 'Building key client relationships and aligning corporate ERP requirements with tailored Odoo solutions.', skills: ['Business Development', 'Sales Strategy', 'Client Success'], color: 0xE52531 },
-  // 5. Senior Implementors & Consultants
-  { dept: 'snrimple', avatar: '💼', photo: 'mohanad_nabil.png', badge: 'Financial Architect', name: 'Mohanad Nabil', role: 'Odoo Consultant & Financial Architect', desc: 'Financial engineering, document workflow analysis, and specialized accounting module integration.', skills: ['Financial Analysis', 'Document Workflow', 'Accounting Modules'], color: 0x0D334E },
+  // 5. Senior Implementors
   { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Abdelrahman Ashraf', role: 'Senior Odoo Implementor', desc: 'Deploying advanced enterprise modules, complex data migrations, and system configuration.', skills: ['Odoo Deployment', 'Data Migration', 'Module Architecture'], color: 0xE52531 },
   { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Hesham Hendy', role: 'Senior Odoo Implementor', desc: 'On-site module implementation, accounting workflow restructuring, and seamless API integrations.', skills: ['Module Structuring', 'On-site Delivery', 'Odoo Integration'], color: 0x0D334E },
   { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Omar Ahmed', role: 'Senior Odoo Implementor', desc: 'Enterprise system deployment, staff training programs, and strategic module configuration.', skills: ['Odoo Implementation', 'Staff Training', 'System Settings'], color: 0xE52531 },
@@ -1849,10 +1847,7 @@ const teamData = [
   { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Dina Amin', role: 'Odoo Implementor', desc: 'Precision data entry management, inventory, sales, and accounting module fine-tuning.', skills: ['Accounting Tuning', 'Odoo Setup', 'Process Tracking'], color: 0x0D334E },
   // 7. Odoo Developers
   { dept: 'dev', avatar: '💻', badge: 'Senior Developer', name: 'Eslam Tarek', role: 'Senior Odoo Developer', desc: 'Custom module engineering, REST API integrations, backend architecture, and automated reports.', skills: ['Custom Python/Odoo', 'REST API', 'Backend Architecture'], color: 0xE52531 },
-  { dept: 'dev', avatar: '💻', badge: 'Odoo Developer', name: 'Ahmed Abo Shady', role: 'Odoo Developer', desc: 'Developing specialized web modules, UI extensions, and multi-system API bridges.', skills: ['Odoo Development', 'Custom Modules', 'Technical Bridges'], color: 0x0D334E },
-  { dept: 'dev', avatar: '💻', badge: 'Odoo Developer', name: 'Nader Yasser', role: 'Odoo Developer', desc: 'Building custom apps, user interface enhancements, and interactive web solutions.', skills: ['Odoo Coding', 'API Integrations', 'UI Extensions'], color: 0xE52531 },
-  // 8. Support
-  { dept: 'support', avatar: '👩‍💼', badge: 'Support Lead', name: 'Maram', role: 'Odoo Consultant & Support Lead', desc: '24/7 technical support, user enablement, and resolving operational queries for client success.', skills: ['24/7 Tech Support', 'User Enablement', 'Customer Success'], color: 0x0D334E }
+  { dept: 'dev', avatar: '💻', badge: 'Odoo Developer', name: 'Ahmed Abo Shady', role: 'Odoo Developer', desc: 'Developing specialized web modules, UI extensions, and multi-system API bridges.', skills: ['Odoo Development', 'Custom Modules', 'Technical Bridges'], color: 0x0D334E }
 ];
 
 let activeTeamIdx = 0;
