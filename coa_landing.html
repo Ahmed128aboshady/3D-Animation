@@ -491,154 +491,167 @@ nav ul a:hover { color: var(--coa-red); }
 .card-region-tag { font-size: 0.72rem; color: var(--coa-red); letter-spacing: 1px; font-weight: 800; }
 .card-country-title { font-size: 1.6rem; color: var(--coa-navy); margin-bottom: 8px; font-weight: 800; }
 .card-body-text { font-size: 0.9rem; color: var(--text-sub); line-height: 1.65; margin-bottom: 16px; }
-./* ── REAL THREE.JS 3D WEBGL TEAM STAGE ── */
+/* ── TEAM SHOWCASE SECTION ── */
 #s-why { padding: 6rem 2rem; flex-direction: column; background: transparent; }
-.why-wrap { max-width: 1150px; margin: 0 auto; width: 100%; }
-.why-top { text-align: center; margin-bottom: 2.5rem; }
+.why-wrap { max-width: 1100px; margin: 0 auto; width: 100%; }
+.why-top { text-align: center; margin-bottom: 3rem; }
 
-.team-3d-stage-wrapper {
-  position: relative;
-  width: 100%;
-  min-height: 520px;
-  background: rgba(248, 250, 252, 0.6);
-  border: 1.5px solid var(--border-light);
-  border-radius: 32px;
-  overflow: hidden;
-  backdrop-filter: blur(16px);
-  box-shadow: 0 20px 60px rgba(13, 51, 78, 0.08);
-  padding: 85px 2rem 2.5rem;
-}
-
+/* Member Tabs */
 .team-tabs-row {
-  position: absolute;
-  top: 24px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 8px 14px; border-radius: 50px;
-  border: 1px solid var(--border-light);
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+  margin-bottom: 2.5rem;
+  background: rgba(255,255,255,0.9);
+  padding: 10px 16px; border-radius: 50px;
+  border: 1.5px solid var(--border-light);
   backdrop-filter: blur(12px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  width: fit-content;
+  margin-left: auto; margin-right: auto;
 }
 
 .team-tab-btn {
   background: transparent; border: none;
-  padding: 8px 18px; border-radius: 50px;
-  font-family: inherit; font-size: 0.82rem; font-weight: 800;
+  padding: 9px 20px; border-radius: 50px;
+  font-family: inherit; font-size: 0.84rem; font-weight: 800;
   color: var(--text-sub); cursor: pointer;
   transition: all 0.3s;
+  white-space: nowrap;
 }
-
 .team-tab-btn:hover, .team-tab-btn.active {
-  background: var(--coa-red);
-  color: white;
-  box-shadow: 0 4px 15px rgba(229, 37, 49, 0.35);
+  background: var(--coa-red); color: white;
+  box-shadow: 0 4px 15px rgba(229,37,49,0.35);
 }
 
-.team-split-stage {
+/* ── Main Stage Card ── */
+.team-showcase-card {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 2.5rem;
-  align-items: center;
-  max-width: 1000px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 5;
-}
-
-.team-portrait-3d-col {
-  position: relative;
-  height: 390px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#team-webgl-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.portrait-photo-holder {
-  position: relative;
-  z-index: 2;
-  width: 270px;
-  height: 350px;
-  border-radius: 28px;
+  grid-template-columns: 320px 1fr;
+  min-height: 440px;
+  border-radius: 32px;
   overflow: hidden;
-  box-shadow: 0 25px 60px rgba(13, 51, 78, 0.22), 0 0 35px rgba(229, 37, 49, 0.18);
-  border: 3.5px solid rgba(255, 255, 255, 0.9);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
-  transform: perspective(1000px) rotateY(-6deg) rotateX(2deg);
+  box-shadow: 0 24px 70px rgba(13,51,78,0.13);
+  border: 1.5px solid rgba(13,51,78,0.08);
+  background: white;
+  transition: all 0.5s ease;
 }
 
-.portrait-photo-holder:hover {
-  transform: perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.03);
-  box-shadow: 0 30px 70px rgba(229, 37, 49, 0.28);
+/* Portrait Column */
+.team-photo-col {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0D334E 0%, #1a4f75 50%, #E52531 100%);
 }
-
-.portrait-photo-holder img {
-  width: 100%;
-  height: 100%;
+.team-photo-col img {
+  width: 100%; height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.6s ease;
 }
+.team-photo-col:hover img { transform: scale(1.04); }
 
-.portrait-glow-ring {
-  position: absolute;
-  inset: -12px;
-  border-radius: 36px;
-  border: 2px dashed rgba(229, 37, 49, 0.4);
+.team-photo-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,51,78,0.6) 0%, transparent 60%);
   pointer-events: none;
-  animation: rotateHalo 16s linear infinite;
 }
 
-.team-info-3d-col {
-  background: rgba(255, 255, 255, 0.94);
-  border: 1.5px solid var(--border-light);
-  border-radius: 28px;
-  padding: 32px 36px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.06);
-  transition: all 0.4s ease;
+.team-photo-avatar {
+  position: absolute;
+  inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 12px;
+}
+.team-avatar-emoji {
+  font-size: 7rem;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.4));
+}
+.team-avatar-name-big {
+  color: white; font-size: 1.3rem; font-weight: 900;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  text-align: center; padding: 0 1rem;
+}
+
+/* Info Column */
+.team-info-col {
+  padding: 3rem 3.5rem;
+  display: flex; flex-direction: column; justify-content: center;
   text-align: right;
+  background: white;
 }
 
-.profile-card-header {
-  display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
-}
-
-.profile-avatar-box {
-  width: 60px; height: 60px; border-radius: 50%;
-  background: var(--grad-btn);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.8rem;
-  box-shadow: 0 6px 18px rgba(229, 37, 49, 0.3);
-}
-
-.profile-badge-tag {
+.team-badge-pill {
   display: inline-block;
-  background: rgba(229, 37, 49, 0.1);
-  color: var(--coa-red); border: 1px solid rgba(229, 37, 49, 0.3);
-  padding: 3px 12px; border-radius: 50px; font-size: 0.72rem; font-weight: 800;
-  margin-bottom: 4px;
+  background: linear-gradient(135deg, rgba(229,37,49,0.12), rgba(229,37,49,0.06));
+  color: var(--coa-red);
+  border: 1px solid rgba(229,37,49,0.25);
+  padding: 5px 16px; border-radius: 50px;
+  font-size: 0.74rem; font-weight: 900; letter-spacing: 0.5px;
+  margin-bottom: 1rem;
+  width: fit-content; margin-right: auto;
 }
 
-.profile-name { font-size: 1.4rem; font-weight: 900; color: var(--coa-navy); line-height: 1.2; }
-.profile-role { font-size: 0.85rem; font-weight: 800; color: var(--coa-red); }
+.team-member-name {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 900; color: var(--coa-navy);
+  line-height: 1.15; margin-bottom: 0.4rem;
+}
 
-.profile-desc { font-size: 0.88rem; color: var(--text-sub); line-height: 1.65; margin-bottom: 12px; }
+.team-member-role {
+  font-size: 1rem; font-weight: 800;
+  color: var(--coa-red); margin-bottom: 1.5rem;
+}
 
-.profile-skills-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.team-divider {
+  width: 50px; height: 3px;
+  background: var(--grad-btn);
+  border-radius: 2px; margin-right: auto;
+  margin-bottom: 1.4rem;
+}
+
+.team-member-desc {
+  font-size: 0.95rem; color: var(--text-sub);
+  line-height: 1.75; margin-bottom: 1.8rem;
+}
+
+.team-skills-row {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;
+}
+
 .skill-tag {
-  background: rgba(229, 37, 49, 0.08); border: 1px solid rgba(229, 37, 49, 0.2);
-  color: var(--coa-red); padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
+  background: rgba(229,37,49,0.07); border: 1.5px solid rgba(229,37,49,0.2);
+  color: var(--coa-red); padding: 6px 14px; border-radius: 50px;
+  font-size: 0.78rem; font-weight: 800; transition: all 0.2s;
 }
-.skill-tag.navy { background: rgba(13, 51, 78, 0.08); border-color: rgba(13, 51, 78, 0.2); color: var(--coa-navy); }
+.skill-tag:hover { background: var(--coa-red); color: white; }
+.skill-tag.navy { background: rgba(13,51,78,0.07); border-color: rgba(13,51,78,0.2); color: var(--coa-navy); }
+.skill-tag.navy:hover { background: var(--coa-navy); color: white; }
+
+/* Navigation Dots */
+.team-nav-dots {
+  display: flex; gap: 8px; justify-content: center; margin-top: 1.8rem;
+}
+.team-nav-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(13,51,78,0.15); border: none; cursor: pointer;
+  transition: all 0.3s; padding: 0;
+}
+.team-nav-dot.active {
+  background: var(--coa-red); width: 28px; border-radius: 4px;
+}
+
+@media (max-width: 720px) {
+  .team-showcase-card { grid-template-columns: 1fr; }
+  .team-photo-col { height: 280px; }
+  .team-info-col { padding: 2rem 1.5rem; }
+}
+
+/* Legacy compat */
+.profile-desc { font-size: 0.88rem; color: var(--text-sub); line-height: 1.65; margin-bottom: 12px; }
+.profile-skills-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.profile-name { font-size: 1.4rem; font-weight: 900; color: var(--coa-navy); }
+.profile-role { font-size: 0.85rem; font-weight: 800; color: var(--coa-red); }
+.profile-badge-tag { display: inline-block; background: rgba(229,37,49,0.1); color: var(--coa-red); border: 1px solid rgba(229,37,49,0.3); padding: 3px 12px; border-radius: 50px; font-size: 0.72rem; font-weight: 800; margin-bottom: 4px; }
 
 /* ── CTA & B2B LEAD FORM ── */
 #s-cta { padding: 6rem 2rem; text-align: center; background: transparent; }
@@ -860,58 +873,63 @@ footer ul a:hover { color: var(--coa-red); }
   </div>
 </section>
 
-<!-- SECTION 6: REAL THREE.JS 3D WEBGL TEAM SHOWCASE -->
+<!-- SECTION 6: TEAM SHOWCASE -->
 <section class="journey-section" id="s-why">
   <div class="why-wrap">
     <div class="why-top">
-      <div class="section-tag">مسرح الخبراء ثلاثي الأبعاد 3D WebGL</div>
-      <h2 class="sec-title">نخبة المهندسين والاستشاريين في <span class="acc">COA Egypt</span></h2>
-      <p class="sec-sub">اختر الخبير لمشاهدة بورتريه الصورة والسيرة الذاتية عبر المسرح التفاعلي 💎</p>
+      <div class="section-tag">فريق النخبة</div>
+      <h2 class="sec-title">المهندسون والاستشاريون في <span class="acc">COA Egypt</span></h2>
+      <p class="sec-sub">اختر عضو الفريق لاستعراض ملفه التنفيذي الكامل</p>
     </div>
 
-    <!-- 3D WebGL Team Stage Container -->
-    <div class="team-3d-stage-wrapper">
-      <!-- Interactive Team Member Switcher Tabs -->
-      <div class="team-tabs-row" id="teamTabs">
-        <button type="button" class="team-tab-btn active" onclick="selectTeam3D(0)">👨‍💼 إبراهيم رمضان</button>
-        <button type="button" class="team-tab-btn" onclick="selectTeam3D(1)">⚙️ إسماعيل الحريف</button>
-        <button type="button" class="team-tab-btn" onclick="selectTeam3D(2)">💼 مهند نبيل</button>
-        <button type="button" class="team-tab-btn" onclick="selectTeam3D(3)">🛠️ عبد الرحمن جمال</button>
-        <button type="button" class="team-tab-btn" onclick="selectTeam3D(4)">💻 نادر ياسر</button>
-        <button type="button" class="team-tab-btn" onclick="selectTeam3D(5)">👩‍💼 مرام</button>
-      </div>
+    <!-- Member Tabs -->
+    <div class="team-tabs-row" id="teamTabs">
+      <button type="button" class="team-tab-btn active" onclick="selectTeam3D(0)">👨‍💼 إبراهيم رمضان</button>
+      <button type="button" class="team-tab-btn" onclick="selectTeam3D(1)">⚙️ إسماعيل الحريف</button>
+      <button type="button" class="team-tab-btn" onclick="selectTeam3D(2)">💼 مهند نبيل</button>
+      <button type="button" class="team-tab-btn" onclick="selectTeam3D(3)">🛠️ عبد الرحمن جمال</button>
+      <button type="button" class="team-tab-btn" onclick="selectTeam3D(4)">💻 نادر ياسر</button>
+      <button type="button" class="team-tab-btn" onclick="selectTeam3D(5)">👩‍💼 مرام</button>
+    </div>
 
-      <!-- Split Layout Stage Grid -->
-      <div class="team-split-stage">
-        <!-- Right Column: 3D Full Portrait Standee Showcase -->
-        <div class="team-portrait-3d-col">
-          <canvas id="team-webgl-canvas"></canvas>
-          <div class="portrait-photo-holder" id="profPhotoHolder">
-            <img id="profFullPhoto" src="esmail_elhareef.png" alt="الخبير" />
-            <div class="portrait-glow-ring"></div>
-          </div>
-        </div>
+    <!-- Professional Showcase Card -->
+    <div class="team-showcase-card" id="teamShowcaseCard">
 
-        <!-- Left Column: Executive Details Card (Side-by-side, No Overlap!) -->
-        <div class="team-info-3d-col" id="teamProfileCard">
-          <div class="profile-card-header">
-            <div class="profile-avatar-box" id="profAvatar">👨‍💼</div>
-            <div>
-              <div class="profile-badge-tag" id="profBadge">Odoo Senior Expert</div>
-              <h3 class="profile-name" id="profName">إبراهيم رمضان</h3>
-              <div class="profile-role" id="profRole">Business Developer &amp; Odoo Consultant</div>
-            </div>
-          </div>
-          <p class="profile-desc" id="profDesc">
-            دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.
-          </p>
-          <div class="profile-skills-row" id="profSkills">
-            <span class="skill-tag">Odoo.sh Enterprise</span>
-            <span class="skill-tag navy">استشارات ERP</span>
-            <span class="skill-tag">تحول رقمي</span>
-          </div>
+      <!-- Left: Full Portrait Photo -->
+      <div class="team-photo-col" id="teamPhotoCol">
+        <img id="profFullPhoto" src="" alt="صورة العضو" style="display:none;" />
+        <div class="team-photo-overlay"></div>
+        <div class="team-photo-avatar" id="teamPhotoAvatar">
+          <span class="team-avatar-emoji" id="profAvatar">👨‍💼</span>
+          <span class="team-avatar-name-big" id="profAvatarName">إبراهيم رمضان</span>
         </div>
       </div>
+
+      <!-- Right: Executive Info Panel -->
+      <div class="team-info-col">
+        <div class="team-badge-pill" id="profBadge">Odoo Senior Expert</div>
+        <h3 class="team-member-name" id="profName">إبراهيم رمضان</h3>
+        <div class="team-member-role" id="profRole">Business Developer &amp; Odoo Consultant</div>
+        <div class="team-divider"></div>
+        <p class="team-member-desc" id="profDesc">
+          دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.
+        </p>
+        <div class="team-skills-row" id="profSkills">
+          <span class="skill-tag">Odoo.sh Enterprise</span>
+          <span class="skill-tag navy">استشارات ERP</span>
+          <span class="skill-tag">تحول رقمي</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="team-nav-dots" id="teamNavDots">
+      <button class="team-nav-dot active" onclick="selectTeam3D(0)"></button>
+      <button class="team-nav-dot" onclick="selectTeam3D(1)"></button>
+      <button class="team-nav-dot" onclick="selectTeam3D(2)"></button>
+      <button class="team-nav-dot" onclick="selectTeam3D(3)"></button>
+      <button class="team-nav-dot" onclick="selectTeam3D(4)"></button>
+      <button class="team-nav-dot" onclick="selectTeam3D(5)"></button>
     </div>
   </div>
 </section>
@@ -1421,25 +1439,40 @@ let targetStageRotY = 0;
 
 function selectTeam3D(idx) {
   activeTeamIdx = idx;
-  const tabs = document.querySelectorAll('.team-tab-btn');
-  tabs.forEach((tb, i) => tb.classList.toggle('active', i === idx));
+
+  // Update tabs
+  document.querySelectorAll('.team-tab-btn').forEach((tb, i) => tb.classList.toggle('active', i === idx));
+  // Update nav dots
+  document.querySelectorAll('.team-nav-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
 
   const t = teamData[idx];
-  const fullPhotoImg = document.getElementById('profFullPhoto');
-  if (fullPhotoImg) {
-    if (t.photo) {
-      fullPhotoImg.src = t.photo;
-    } else {
-      fullPhotoImg.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500"><rect width="400" height="500" fill="%230D334E"/><circle cx="200" cy="200" r="120" fill="rgba(255,255,255,0.15)"/><text x="50%" y="42%" dominant-baseline="middle" text-anchor="middle" font-size="110">${t.avatar}</text><text x="50%" y="74%" dominant-baseline="middle" text-anchor="middle" font-size="30" font-family="sans-serif" font-weight="bold" fill="%23FFFFFF">${t.name}</text></svg>`;
-    }
+
+  // --- Photo Column ---
+  const photoImg = document.getElementById('profFullPhoto');
+  const avatarDiv = document.getElementById('teamPhotoAvatar');
+  const avatarEmoji = document.getElementById('profAvatar');
+  const avatarNameEl = document.getElementById('profAvatarName');
+
+  if (t.photo) {
+    // Show real photo, hide emoji avatar
+    photoImg.src = t.photo;
+    photoImg.style.display = 'block';
+    photoImg.style.width = '100%';
+    photoImg.style.height = '100%';
+    photoImg.style.objectFit = 'cover';
+    photoImg.style.position = 'absolute';
+    photoImg.style.inset = '0';
+    photoImg.style.zIndex = '1';
+    if (avatarDiv) avatarDiv.style.display = 'none';
+  } else {
+    // Show emoji avatar
+    photoImg.style.display = 'none';
+    if (avatarDiv) avatarDiv.style.display = 'flex';
+    if (avatarEmoji) avatarEmoji.textContent = t.avatar;
+    if (avatarNameEl) avatarNameEl.textContent = t.name;
   }
 
-  const avatarBox = document.getElementById('profAvatar');
-  if (t.photo) {
-    avatarBox.innerHTML = `<img src="${t.photo}" alt="${t.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
-  } else {
-    avatarBox.textContent = t.avatar;
-  }
+  // --- Info Column ---
   document.getElementById('profBadge').textContent = t.badge;
   document.getElementById('profName').textContent = t.name;
   document.getElementById('profRole').textContent = t.role;
@@ -1448,7 +1481,17 @@ function selectTeam3D(idx) {
   const skRow = document.getElementById('profSkills');
   skRow.innerHTML = t.skills.map((s, i) => `<span class="skill-tag ${i===1?'navy':''}">${s}</span>`).join('');
 
-  targetStageRotY = -(idx * (Math.PI * 2 / teamData.length));
+  // Subtle fade-in animation on the card
+  const card = document.getElementById('teamShowcaseCard');
+  if (card) {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(8px)';
+    requestAnimationFrame(() => {
+      card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    });
+  }
 }
 
 (function initTeamWebGLStage() {
