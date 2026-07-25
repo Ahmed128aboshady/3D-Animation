@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>COA Egypt & KSA | شريك أودو الذهبي للتراخيص والتنفيذ</title>
+
+<!-- SEO & GEO Meta Tags -->
+<meta name="description" content="احجز نظام أودو Odoo ERP بخصم 20% وتجربة مجانية 15 يوم قبل ارتفاع الأسعار. COA شريك أودو الذهبي في مصر والسعودية لتنفيذ وتطوير الأنظمة الإدارية والمالية."/>
+<meta name="keywords" content="Odoo ERP, أودو مصر, أودو السعودية, تنفيذ أودو, COA Odoo, أسعار أودو, برنامج حسابات, تخطيط موارد المؤسسات"/>
+<meta property="og:title" content="عرض خاص: تنفيذ نظام Odoo ERP بخصم 20% | COA"/>
+<meta property="og:description" content="احصل على خصم 20% وتجربة مجانية 15 يوماً لنظام أودو المتكامل للشركات في مصر والسعودية قبل ارتفاع الأسعار."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://www.coa-egy.com/logo.png?company=1"/>
+
+<!-- JSON-LD Structured Data for SEO & AI Search (GEO) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "COA - Chartered Accountants & Odoo Gold Partner",
+  "url": "https://coa-egy.odoo.com/coa",
+  "logo": "https://www.coa-egy.com/logo.png?company=1",
+  "description": "Leading Odoo Gold Implementation Partner in Egypt and Saudi Arabia.",
+  "offers": {
+    "@type": "Offer",
+    "name": "20% Discount on Odoo Implementation",
+    "priceCurrency": "EGP",
+    "availability": "https://schema.org/InStock",
+    "validThrough": "2026-08-15"
+  }
+}
+</script>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+
+<!-- Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --odoo-purple: #875A7B;
+  --odoo-dark: #6C4262;
+  --gold: #FFC107;
+  --gold-glow: rgba(255, 193, 7, 0.4);
+  --cyan: #00D4FF;
+  --navy: #090C15;
+  --card-dark: rgba(18, 24, 38, 0.92);
+  --border-line: rgba(135, 90, 123, 0.35);
+  --red: #FF2D55;
+  --white: #FFFFFF;
+  --grad-odoo: linear-gradient(135deg, #875A7B 0%, #7C3AED 50%, #00AEEF 100%);
+  --grad-btn: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+  --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: var(--odoo-purple); border-radius: 3px; }
+
+/* ── URGENCY OFFER BAR (STICKY TOP) ── */
+#urgency-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: linear-gradient(90deg, #E65100 0%, #D84315 50%, #B71C1C 100%);
+  color: white;
+  padding: 8px 15px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(216, 67, 21, 0.5);
+  flex-wrap: wrap;
+}
+
+.countdown-box {
+  display: inline-flex;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 1px;
+}
+
+/* ── NAVBAR ── */
+#nav {
+  position: fixed;
+  top: 40px; left: 0; right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  height: 70px;
+  background: rgba(9, 12, 21, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-line);
+  transition: var(--transition);
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: white;
+}
+
+.logo-badge {
+  background: var(--odoo-purple);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  box-shadow: 0 0 15px rgba(135, 90, 123, 0.6);
+}
+
+.logo-sub {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+  font-weight: 600;
+}
+
+nav ul { display: flex; gap: 2rem; list-style: none; }
+nav ul a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.3s; }
+nav ul a:hover { color: var(--gold); }
+
+.nav-cta-btn {
+  background: var(--grad-btn);
+  color: #000;
+  text-decoration: none;
+  padding: 0.55rem 1.4rem;
+  border-radius: 50px;
+  font-weight: 800;
+  font-size: 0.88rem;
+  box-shadow: 0 4px 20px var(--gold-glow);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.nav-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px var(--gold-glow); }
+
+/* ── HERO SECTION ── */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  padding-top: 140px;
+  padding-bottom: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+#bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 900px;
+  padding: 0 1.5rem;
+}
+
+.gold-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 193, 7, 0.12);
+  border: 1.5px solid var(--gold);
+  padding: 6px 18px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  color: var(--gold);
+  font-weight: 800;
+  margin-bottom: 1.8rem;
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.2);
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 1.4rem;
+}
+
+.hero-title .g-text {
+  background: var(--grad-odoo);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: rgba(255,255,255,0.7);
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+  font-weight: 400;
+}
+
+.hero-action-row {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.btn-primary-gold {
+  background: var(--grad-btn);
+  color: #000;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: 1.05rem;
+  text-decoration: none;
+  box-shadow: 0 8px 30px var(--gold-glow);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-primary-gold:hover { transform: translateY(-3px); box-shadow: 0 15px 40px var(--gold-glow); }
+
+.btn-secondary-outline {
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 1rem 2.2rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+.btn-secondary-outline:hover { border-color: var(--odoo-purple); background: rgba(135, 90, 123, 0.2); transform: translateY(-3px); }
+
+.hero-stats-pills {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 22px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── LEAD CAPTURE FORM SECTION ── */
+#s-lead-form {
+  position: relative;
+  z-index: 10;
+  padding: 5rem 1.5rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(135, 90, 123, 0.08) 50%, transparent 100%);
+}
+
+.lead-box-wrapper {
+  max-width: 820px;
+  margin: 0 auto;
+  background: var(--card-dark);
+  border: 1.5px solid var(--border-line);
+  border-radius: 28px;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 40px rgba(135, 90, 123, 0.2);
+  backdrop-filter: blur(20px);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2.2rem;
+}
+
+.form-header h3 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.form-header p {
+  color: var(--gold);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.lead-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+}
+
+.form-group.full { grid-column: span 2; }
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.85);
+}
+
+.form-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: white;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: var(--transition);
+}
+
+.form-input:focus {
+  border-color: var(--gold);
+  background: rgba(255, 193, 7, 0.05);
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
+}
+
+.form-input option {
+  background: #121826;
+  color: white;
+}
+
+.submit-btn {
+  grid-column: span 2;
+  background: var(--grad-btn);
+  color: #000;
+  border: none;
+  padding: 1.1rem;
+  border-radius: 50px;
+  font-weight: 900;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 30px var(--gold-glow);
+  transition: var(--transition);
+  margin-top: 1rem;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px var(--gold-glow);
+}
+
+/* ── CLIENTS SHOWCASE SECTION (16 COMPANIES) ── */
+#s-clients {
+  padding: 6rem 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.sec-title-wrap {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.sec-tag {
+  display: inline-block;
+  color: var(--gold);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+
+.sec-main-title {
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-weight: 900;
+}
+
+.clients-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4rem;
+}
+
+.client-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1.6rem 1.2rem;
+  text-align: center;
+  position: relative;
+  transition: var(--transition);
+  overflow: hidden;
+}
+
+.client-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--grad-odoo);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+}
+
+.client-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--odoo-purple);
+  background: rgba(135, 90, 123, 0.1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+.client-card:hover::before { transform: scaleX(1); }
+
+.client-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.client-name {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 0.4rem;
+}
+
+.hosting-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.hosting-tag.sh {
+  background: rgba(0, 212, 255, 0.12);
+  color: var(--cyan);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.hosting-tag.vps {
+  background: rgba(255, 193, 7, 0.12);
+  color: var(--gold);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+/* ── EXPERTISE & TEAM ── */
+#s-team {
+  padding: 5rem 2rem;
+  background: rgba(9, 12, 21, 0.7);
+  position: relative;
+  z-index: 10;
+}
+
+.team-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.team-card {
+  background: var(--card-dark);
+  border: 1px solid var(--border-line);
+  border-radius: 22px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.team-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+}
+
+.team-avatar {
+  width: 75px; height: 75px;
+  border-radius: 50%;
+  background: var(--grad-odoo);
+  margin: 0 auto 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 0 20px rgba(135, 90, 123, 0.5);
+}
+
+.team-role {
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.team-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+/* ── 3D GLOBE IFRAME SECTION ── */
+#s-globe-section {
+  position: relative;
+  z-index: 10;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.globe-iframe-box {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 600px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1.5px solid var(--border-line);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+}
+
+.globe-iframe-box iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* FOOTER */
+footer {
+  padding: 2.5rem 3rem;
+  background: rgba(0,0,0,0.8);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+}
+
+/* SUCCESS MODAL */
+#success-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+#success-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-box {
+  background: var(--card-dark);
+  border: 1.5px solid var(--gold);
+  padding: 3rem 2.5rem;
+  border-radius: 28px;
+  text-align: center;
+  max-width: 480px;
+  box-shadow: 0 20px 60px rgba(255, 193, 7, 0.4);
+}
+
+/* RESPONSIVE */
+@media(max-width:900px) {
+  #nav { padding: 0 1.2rem; top: 36px; }
+  nav ul { display: none; }
+  .clients-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: 1fr; }
+  .lead-form-grid { grid-template-columns: 1fr; }
+  .submit-btn, .form-group.full { grid-column: span 1; }
+}
+@media(max-width:480px) {
+  .clients-grid { grid-template-columns: 1fr; }
+  .lead-box-wrapper { padding: 2rem 1.2rem; }
+  .globe-iframe-box { height: 450px; }
+}
+</style>
+</head>
+<body>
+
+<!-- URGENCY BAR -->
+<div id="urgency-bar">
+  <span>🚨 عرض خاص لفترة محدودة: احجز الآن قبل ارتفاع أسعار أودو - خصم 20% على تنفيذ Odoo ERP + تجربة مجانية 15 يوماً</span>
+  <div class="countdown-box" id="timer">14 : 23 : 59 : 45</div>
+</div>
+
+<!-- NAVBAR -->
+<div id="nav">
+  <a href="#" class="logo-wrap">
+    <div class="logo-badge">COA</div>
+    <div>
+      <div style="font-weight:800;font-size:0.95rem">شريك أودو الذهبي</div>
+      <div class="logo-sub">Chartered Accountants &amp; Odoo Gold Partner</div>
+    </div>
+  </a>
+  <nav><ul>
+    <li><a href="#hero">الرئيسية</a></li>
+    <li><a href="#s-lead-form">حجز الديمو والخصم</a></li>
+    <li><a href="#s-clients">عملاؤنا (16 شركة)</a></li>
+    <li><a href="#s-team">فريق الخبراء</a></li>
+    <li><a href="#s-globe-section">تغطينا الإقليمية</a></li>
+  </ul></nav>
+  <a href="#s-lead-form" class="nav-cta-btn">احجز ديمو مجاني 🚀</a>
+</div>
+
+<!-- HERO SECTION -->
+<section id="hero">
+  <canvas id="bg-canvas"></canvas>
+  <div class="hero-content">
+    <div class="gold-hero-badge">🏆 الشريك الذهبي المعتمد لنظام Odoo ERP في مصر والسعودية</div>
+    <h1 class="hero-title">
+      احجز نظام <span class="g-text">Odoo ERP</span> لشركتك<br/>
+      بخصم <span style="color:var(--gold)">20%</span> قبل ارتفاع الأسعار
+    </h1>
+    <p class="hero-sub">
+      نربط جميع قطاعات مؤسستك (الحسابات، المبيعات، المخازن، الموارد البشرية، والتصنيع) في سيستم موحد واحد يضمن لك أقصى كفاءة وتشغيل بدون أخطاء.
+    </p>
+    <div class="hero-action-row">
+      <a href="#s-lead-form" class="btn-primary-gold">🔥 احجز ديمو مجاني واستفد بالخصم</a>
+      <a href="https://wa.me/+201015380800" class="btn-secondary-outline" target="_blank">💬 استشارة فورية عبر واتساب</a>
+    </div>
+    <div class="hero-stats-pills">
+      <div class="stat-pill">✨ 200+ مشروع ناجح</div>
+      <div class="stat-pill">🏢 16+ شركة كبرى شريكة</div>
+      <div class="stat-pill">🎁 15 يوماً تجربة مجانية Free Demo</div>
+    </div>
+  </div>
+</section>
+
+<!-- LEAD CAPTURE FORM SECTION -->
+<section id="s-lead-form">
+  <div class="lead-box-wrapper">
+    <div class="form-header">
+      <h3>طلب استشارة وتجربة مجانية لنظام Odoo ERP</h3>
+      <p>ادخل بياناتك الآن ليقوم فريق خبراء COA بالتواصل معك وتفعيل خصم الـ 20%</p>
+    </div>
+    <form id="coaForm" class="lead-form-grid" onsubmit="handleFormSubmit(event)">
+      <div class="form-group">
+        <label>الاسم بالكامل *</label>
+        <input type="text" class="form-input" required placeholder="مثال: أحمد محمود"/>
+      </div>
+      <div class="form-group">
+        <label>رقم الهاتف / الواتساب *</label>
+        <input type="tel" class="form-input" required placeholder="مثال: 01012345678"/>
+      </div>
+      <div class="form-group">
+        <label>اسم الشركة / المؤسسة *</label>
+        <input type="text" class="form-input" required placeholder="مثال: شركة النور للصناعة"/>
+      </div>
+      <div class="form-group">
+        <label>الدولة *</label>
+        <select class="form-input" required>
+          <option value="مصر">جمهورية مصر العربية 🇪🇬</option>
+          <option value="السعودية">المملكة العربية السعودية 🇸🇦</option>
+          <option value="الإمارات">الإمارات العربية المتحدة 🇦🇪</option>
+          <option value="الكويت">دولة الكويت 🇰🇼</option>
+          <option value="أخرى">دولة أخرى</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>الموديولات المطلوب تطبيقها في Odoo</label>
+        <select class="form-input">
+          <option value="all">الحسابات والمالية + المبيعات + المخازن + HR (برنامج شامل)</option>
+          <option value="erp">الحسابات والمالية فقط (Accounting &amp; Invoicing)</option>
+          <option value="mfg">التصنيع وسلاسل الإمداد (Manufacturing &amp; MRP)</option>
+          <option value="hr">الموارد البشرية والمرتبات (HR &amp; Payroll)</option>
+        </select>
+      </div>
+      <button type="submit" class="submit-btn">🚀 احجز الديمو المجاني وتأكيد الخصم 20%</button>
+    </form>
+  </div>
+</section>
+
+<!-- CLIENTS SHOWCASE SECTION (16 COMPANIES FROM IMAGE) -->
+<section id="s-clients">
+  <div class="sec-title-wrap">
+    <span class="sec-tag">شركاء النجاح وحلفاؤنا</span>
+    <h2 class="sec-main-title">شركات وثقت في <span style="color:var(--odoo-purple)">COA</span> لنظام أودو</h2>
+  </div>
+
+  <div class="clients-grid">
+    <!-- 1 -->
+    <div class="client-card">
+      <div class="client-icon">🏢</div>
+      <div class="client-name">أرفاد (Arfad)</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 2 -->
+    <div class="client-card">
+      <div class="client-icon">🌾</div>
+      <div class="client-name">الرملة (Al-Ramlaa)</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 3 -->
+    <div class="client-card">
+      <div class="client-icon">🏭</div>
+      <div class="client-name">CFC Egypt (v18)</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 4 -->
+    <div class="client-card">
+      <div class="client-icon">🏗️</div>
+      <div class="client-name">Punalu (COA Eng)</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 5 -->
+    <div class="client-card">
+      <div class="client-icon">🥫</div>
+      <div class="client-name">أطياف للصناعات الغذائية</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 6 -->
+    <div class="client-card">
+      <div class="client-icon">🪵</div>
+      <div class="client-name">Odoo for Oud (عود)</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 7 -->
+    <div class="client-card">
+      <div class="client-icon">💊</div>
+      <div class="client-name">شفاء الدواء (Shefa)</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 8 -->
+    <div class="client-card">
+      <div class="client-icon">🌪️</div>
+      <div class="client-name">Tornado KSA (تورنيدو)</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 9 -->
+    <div class="client-card">
+      <div class="client-icon">🍞</div>
+      <div class="client-name">Wheat &amp; Butter</div>
+      <span class="hosting-tag sh">Odoo.sh Enterprise</span>
+    </div>
+    <!-- 10 -->
+    <div class="client-card">
+      <div class="client-icon">📡</div>
+      <div class="client-name">بيكون (Beacon)</div>
+      <span class="hosting-tag vps">VPS Enterprise</span>
+    </div>
+    <!-- 11 -->
+    <div class="client-card">
+      <div class="client-icon">📦</div>
+      <div class="client-name">عرب باك (Arab Pack)</div>
+      <span class="hosting-tag vps">VPS Enterprise</span>
+    </div>
+    <!-- 12 -->
+    <div class="client-card">
+      <div class="client-icon">💳</div>
+      <div class="client-name">Cofinance</div>
+      <span class="hosting-tag vps">VPS Enterprise</span>
+    </div>
+    <!-- 13 -->
+    <div class="client-card">
+      <div class="client-icon">🌐</div>
+      <div class="client-name">Dottopia</div>
+      <span class="hosting-tag vps">VPS Enterprise</span>
+    </div>
+    <!-- 14 -->
+    <div class="client-card">
+      <div class="client-icon">⭐</div>
+      <div class="client-name">الرضا (El-Reda)</div>
+      <span class="hosting-tag vps">VPS Enterprise</span>
+    </div>
+    <!-- 15 -->
+    <div class="client-card">
+      <div class="client-icon">⚖️</div>
+      <div class="client-name">المخلف (El-Mokhalaf)</div>
+      <span class="hosting-tag vps">VPS Enterprise</span>
+    </div>
+    <!-- 16 -->
+    <div class="client-card">
+      <div class="client-icon">🛒</div>
+      <div class="client-name">حلال ماركت (Halal Market)</div>
+      <span class="hosting-tag vps">VPS Enterprise</span>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE & TEAM SECTION -->
+<section id="s-team">
+  <div class="sec-title-wrap">
+    <span class="sec-tag">نخبة المهندسين والخبراء</span>
+    <h2 class="sec-main-title">فريق عمل معتمد لدعم مؤسستك</h2>
+  </div>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">👨‍💼</div>
+      <div class="team-role">Odoo Certified Functional Architect</div>
+      <div class="team-title">استشاريو التحول الرقمي</div>
+      <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:8px">دراسة دورات العمل وتخصيص الموديولات المالية والإدارية بدقة متناهية.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">💻</div>
+      <div class="team-role">Senior Odoo Developers</div>
+      <div class="team-title">مهندسو التطوير والربط</div>
+      <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:8px">برمجة الموديولات الخاصة وربط الفاتورة الإلكترونية والـ APIs مع الأنظمة الخارجية.</p>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">🎧</div>
+      <div class="team-role">24/7 Dedicated Support</div>
+      <div class="team-title">فريق الدعم الفني والتدريب</div>
+      <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:8px">تدريب كامل لموظفي الشركة وتوفير دعم فني فوري لضمان استقرار التشغيل.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3D GLOBE IFRAME SECTION -->
+<section id="s-globe-section">
+  <div class="sec-title-wrap">
+    <span class="sec-tag">تواجدنا في الشرق الأوسط والعالم</span>
+    <h2 class="sec-main-title">نخدم شركات كبرى في مصر، السعودية، والخليج</h2>
+  </div>
+
+  <div class="globe-iframe-box">
+    <iframe src="globe_standalone.html" title="COA 3D Global Presence"></iframe>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <strong>COA - Chartered Accountants &amp; Odoo Gold Partner</strong>. جميع الحقوق محفوظة.</p>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div id="success-modal">
+  <div class="modal-box">
+    <div style="font-size:3.5rem;margin-bottom:1rem">🎉</div>
+    <h3 style="font-size:1.8rem;margin-bottom:0.8rem;color:white">تم تسجيل طلبك بنجاح!</h3>
+    <p style="color:rgba(255,255,255,0.7);margin-bottom:1.8rem">تم حجز الخصم 20% وتفعيل التجربة المجانية 15 يوماً. سيتواصل معك أحد استشاريي أودو في COA خلال دقائق.</p>
+    <button type="button" onclick="closeModal()" class="btn-primary-gold" style="border:none;cursor:pointer;width:100%;justify-content:center">تم، شكراً لكم</button>
+  </div>
+</div>
+
+<script>
+// 1. THREE.JS BACKGROUND PARTICLES
+const bgCanvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 100;
+
+const count = 180;
+const positions = new Float32Array(count * 3);
+for (let i = 0; i < count * 3; i++) {
+  positions[i] = (Math.random() - 0.5) * 200;
+}
+
+const geo = new THREE.BufferGeometry();
+geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const mat = new THREE.PointsMaterial({ color: 0x875A7B, size: 1.5, transparent: true, opacity: 0.7 });
+const pts = new THREE.Points(geo, mat);
+scene.add(pts);
+
+function animate() {
+  requestAnimationFrame(animate);
+  pts.rotation.y += 0.001;
+  pts.rotation.x += 0.0005;
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// 2. FORM SUBMISSION HANDLER
+function handleFormSubmit(e) {
+  e.preventDefault();
+  document.getElementById('success-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('success-modal').classList.remove('open');
+  document.getElementById('coaForm').reset();
+}
+
+// 3. COUNTDOWN TIMER
+let seconds = 14 * 3600 + 23 * 60 + 59;
+setInterval(() => {
+  seconds--;
+  if (seconds < 0) seconds = 86400;
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  document.getElementById('timer').textContent = `${h < 10 ? '0'+h : h} : ${m < 10 ? '0'+m : m} : ${s < 10 ? '0'+s : s}`;
+}, 1000);
+</script>
+</body>
+</html>
