@@ -498,99 +498,104 @@ nav ul a:hover { color: var(--coa-red); }
 }
 .agency-pill.green { background: rgba(13, 51, 78, 0.08); border-color: rgba(13, 51, 78, 0.25); color: var(--coa-navy); }
 
-/* ── 3D TEAM SHOWCASE (NUKHBA 3D STAGE) ── */
+/* ── REAL THREE.JS 3D WEBGL TEAM STAGE ── */
 #s-why { padding: 6rem 2rem; flex-direction: column; background: white; }
 .why-wrap { max-width: 1150px; margin: 0 auto; width: 100%; }
-.why-top { text-align: center; margin-bottom: 3.8rem; }
-.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.8rem; perspective: 1200px; }
+.why-top { text-align: center; margin-bottom: 2.5rem; }
 
-.w-card-3d {
-  perspective: 1000px;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.w-card-inner-3d {
-  background: white;
+.team-3d-stage-wrapper {
+  position: relative;
+  width: 100%;
+  height: 580px;
+  background: var(--bg-slate);
   border: 1.5px solid var(--border-light);
-  border-radius: 26px;
-  padding: 2.5rem 1.8rem;
-  text-align: center;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.15s ease-out, box-shadow 0.4s ease, border-color 0.4s ease;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.04);
-  cursor: pointer;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(13, 51, 78, 0.08);
 }
 
-.w-card-inner-3d:hover {
-  border-color: var(--coa-red);
-  box-shadow: 0 30px 70px rgba(229, 37, 49, 0.18), 0 0 25px rgba(13, 51, 78, 0.08);
+#team-webgl-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  cursor: grab;
+}
+#team-webgl-canvas:active { cursor: grabbing; }
+
+.team-tabs-row {
+  position: absolute;
+  top: 24px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 8px 12px; border-radius: 50px;
+  border: 1px solid var(--border-light);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.05);
 }
 
-.w-avatar-3d {
-  width: 80px; height: 80px;
-  border-radius: 50%;
-  margin: 0 auto 1.2rem;
+.team-tab-btn {
+  background: transparent; border: none;
+  padding: 8px 18px; border-radius: 50px;
+  font-family: inherit; font-size: 0.82rem; font-weight: 800;
+  color: var(--text-sub); cursor: pointer;
+  transition: all 0.3s;
+}
+
+.team-tab-btn:hover, .team-tab-btn.active {
+  background: var(--coa-red);
+  color: white;
+  box-shadow: 0 4px 15px rgba(229, 37, 49, 0.35);
+}
+
+.team-profile-card-3d {
+  position: absolute;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 92%; max-width: 680px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1.5px solid var(--border-light);
+  border-radius: 24px;
+  padding: 24px 28px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+}
+
+.profile-card-header {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 12px;
+}
+
+.profile-avatar-box {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--grad-btn);
   display: flex; align-items: center; justify-content: center;
-  position: relative;
-  transform: translateZ(45px);
-  transition: transform 0.3s;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  font-size: 1.8rem;
+  box-shadow: 0 6px 18px rgba(229, 37, 49, 0.3);
 }
 
-.w-avatar-3d.c1 { background: linear-gradient(135deg, #E52531 0%, #0D334E 100%); }
-.w-avatar-3d.c2 { background: linear-gradient(135deg, #0D334E 0%, #1E40AF 100%); }
-.w-avatar-3d.c3 { background: linear-gradient(135deg, #E52531 0%, #D97706 100%); }
-.w-avatar-3d.c4 { background: linear-gradient(135deg, #0D334E 0%, #059669 100%); }
-.w-avatar-3d.c5 { background: linear-gradient(135deg, #E52531 0%, #7C3AED 100%); }
-.w-avatar-3d.c6 { background: linear-gradient(135deg, #0D334E 0%, #DB2777 100%); }
-
-.w-avatar-icon { font-size: 2.3rem; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2)); }
-
-.w-avatar-halo {
-  position: absolute; inset: -6px;
-  border-radius: 50%;
-  border: 1.5px dashed rgba(229, 37, 49, 0.4);
-  animation: rotateHalo 12s linear infinite;
-}
-@keyframes rotateHalo { 100% { transform: rotate(360deg); } }
-
-.w-badge-3d {
+.profile-badge-tag {
   display: inline-block;
-  padding: 4px 14px;
-  border-radius: 50px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  margin-bottom: 0.8rem;
-  transform: translateZ(30px);
-  letter-spacing: 0.5px;
-}
-.w-badge-3d.red { background: rgba(229, 37, 49, 0.1); color: var(--coa-red); border: 1px solid rgba(229, 37, 49, 0.25); }
-.w-badge-3d.navy { background: rgba(13, 51, 78, 0.1); color: var(--coa-navy); border: 1px solid rgba(13, 51, 78, 0.25); }
-
-.w-title-3d {
-  font-size: 1.3rem;
-  font-weight: 900;
-  color: var(--coa-navy);
+  background: rgba(229, 37, 49, 0.1);
+  color: var(--coa-red); border: 1px solid rgba(229, 37, 49, 0.3);
+  padding: 3px 12px; border-radius: 50px; font-size: 0.72rem; font-weight: 800;
   margin-bottom: 4px;
-  transform: translateZ(35px);
 }
 
-.w-role-3d {
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: var(--coa-red);
-  margin-bottom: 12px;
-  transform: translateZ(25px);
-}
+.profile-name { font-size: 1.4rem; font-weight: 900; color: var(--coa-navy); line-height: 1.2; }
+.profile-role { font-size: 0.85rem; font-weight: 800; color: var(--coa-red); }
 
-.w-text-3d {
-  font-size: 0.88rem;
-  color: var(--text-sub);
-  line-height: 1.7;
-  transform: translateZ(15px);
+.profile-desc { font-size: 0.88rem; color: var(--text-sub); line-height: 1.65; margin-bottom: 12px; }
+
+.profile-skills-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.skill-tag {
+  background: rgba(229, 37, 49, 0.08); border: 1px solid rgba(229, 37, 49, 0.2);
+  color: var(--coa-red); padding: 4px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 700;
 }
+.skill-tag.navy { background: rgba(13, 51, 78, 0.08); border-color: rgba(13, 51, 78, 0.2); color: var(--coa-navy); }
 
 /* ── CTA & B2B LEAD FORM ── */
 #s-cta { padding: 6rem 2rem; text-align: center; }
@@ -808,100 +813,48 @@ footer ul a:hover { color: var(--coa-red); }
   </div>
 </section>
 
-<!-- SECTION 6: 3D TEAM SHOWCASE (NUKHBA SHOWCASE) -->
+<!-- SECTION 6: REAL THREE.JS 3D WEBGL TEAM SHOWCASE -->
 <section class="journey-section" id="s-why">
   <div class="why-wrap">
     <div class="why-top">
-      <div class="section-tag">فريق العمل والخبراء</div>
+      <div class="section-tag">مسرح الخبراء ثلاثي الأبعاد 3D WebGL</div>
       <h2 class="sec-title">نخبة المهندسين والاستشاريين في <span class="acc">COA Egypt</span></h2>
-      <p class="sec-sub">حرك الماوس على أي كارت للتفاعل مع العرض ثلاثي الأبعاد 3D 💫</p>
+      <p class="sec-sub">استعرض فريق النخبة عبر المسرح المحسم 3D WebGL Interactive Engine 💎</p>
     </div>
-    <div class="why-grid">
+
+    <!-- 3D WebGL Team Stage Container -->
+    <div class="team-3d-stage-wrapper">
+      <canvas id="team-webgl-canvas"></canvas>
       
-      <!-- 1. Ibrahim Ramadan -->
-      <div class="w-card-3d" id="wc1" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
-        <div class="w-card-inner-3d">
-          <div class="w-avatar-3d c1">
-            <span class="w-avatar-icon">👨‍💼</span>
-            <div class="w-avatar-halo"></div>
-          </div>
-          <span class="w-badge-3d red">Odoo Expert</span>
-          <h4 class="w-title-3d">إبراهيم رمضان</h4>
-          <div class="w-role-3d">Business Developer &amp; Odoo Consultant</div>
-          <p class="w-text-3d">دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والخليج.</p>
-        </div>
+      <!-- Interactive Team Member Switcher Tabs -->
+      <div class="team-tabs-row" id="teamTabs">
+        <button type="button" class="team-tab-btn active" onclick="selectTeam3D(0)">👨‍💼 إبراهيم رمضان</button>
+        <button type="button" class="team-tab-btn" onclick="selectTeam3D(1)">⚙️ إسماعيل الحريف</button>
+        <button type="button" class="team-tab-btn" onclick="selectTeam3D(2)">💼 مهند نبيل</button>
+        <button type="button" class="team-tab-btn" onclick="selectTeam3D(3)">🛠️ عبد الرحمن جمال</button>
+        <button type="button" class="team-tab-btn" onclick="selectTeam3D(4)">💻 نادر ياسر</button>
+        <button type="button" class="team-tab-btn" onclick="selectTeam3D(5)">👩‍💼 مرام</button>
       </div>
 
-      <!-- 2. Esmail El-Hareef -->
-      <div class="w-card-3d" id="wc2" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
-        <div class="w-card-inner-3d">
-          <div class="w-avatar-3d c2">
-            <span class="w-avatar-icon">⚙️</span>
-            <div class="w-avatar-halo"></div>
+      <!-- 3D Active Profile Card Overlay -->
+      <div class="team-profile-card-3d" id="teamProfileCard">
+        <div class="profile-card-header">
+          <div class="profile-avatar-box" id="profAvatar">👨‍💼</div>
+          <div>
+            <div class="profile-badge-tag" id="profBadge">Odoo Senior Expert</div>
+            <h3 class="profile-name" id="profName">إبراهيم رمضان</h3>
+            <div class="profile-role" id="profRole">Business Developer &amp; Odoo Consultant</div>
           </div>
-          <span class="w-badge-3d navy">Operations Lead</span>
-          <h4 class="w-title-3d">إسماعيل الحريف</h4>
-          <div class="w-role-3d">Operation Manager</div>
-          <p class="w-text-3d">إشراف كامل على جودة وسرعة تنفيذ المشاريع وضمان التسليم وفق أعلى المعايير.</p>
+        </div>
+        <p class="profile-desc" id="profDesc">
+          دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.
+        </p>
+        <div class="profile-skills-row" id="profSkills">
+          <span class="skill-tag">Odoo.sh Enterprise</span>
+          <span class="skill-tag navy">استشارات ERP</span>
+          <span class="skill-tag">تحول رقمي</span>
         </div>
       </div>
-
-      <!-- 3. Mohanad Nabil -->
-      <div class="w-card-3d" id="wc3" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
-        <div class="w-card-inner-3d">
-          <div class="w-avatar-3d c3">
-            <span class="w-avatar-icon">💼</span>
-            <div class="w-avatar-halo"></div>
-          </div>
-          <span class="w-badge-3d red">Financial Architect</span>
-          <h4 class="w-title-3d">مهند نبيل</h4>
-          <div class="w-role-3d">Odoo Consultant</div>
-          <p class="w-text-3d">استشاري تحليل وتصميم الدورة المستندية وتعديل الموديولات المحاسبية للشركات.</p>
-        </div>
-      </div>
-
-      <!-- 4. Abdelrahman Gamal -->
-      <div class="w-card-3d" id="wc4" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
-        <div class="w-card-inner-3d">
-          <div class="w-avatar-3d c4">
-            <span class="w-avatar-icon">🛠️</span>
-            <div class="w-avatar-halo"></div>
-          </div>
-          <span class="w-badge-3d navy">Implementation Pro</span>
-          <h4 class="w-title-3d">عبد الرحمن جمال</h4>
-          <div class="w-role-3d">Odoo Implementer</div>
-          <p class="w-text-3d">تنفيذ وتطبيق الموديولات ونقل البيانات وتدريب فرق العمل ميدانياً.</p>
-        </div>
-      </div>
-
-      <!-- 5. Nader Yasser -->
-      <div class="w-card-3d" id="wc5" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
-        <div class="w-card-inner-3d">
-          <div class="w-avatar-3d c5">
-            <span class="w-avatar-icon">💻</span>
-            <div class="w-avatar-halo"></div>
-          </div>
-          <span class="w-badge-3d red">Dev Engine</span>
-          <h4 class="w-title-3d">نادر ياسر</h4>
-          <div class="w-role-3d">Odoo Developer</div>
-          <p class="w-text-3d">تطوير وبرمجة التعديلات المخصصة والربط البرمجي السحابي الـ APIs.</p>
-        </div>
-      </div>
-
-      <!-- 6. Maram -->
-      <div class="w-card-3d" id="wc6" onmousemove="handle3DTilt(event, this)" onmouseleave="reset3DTilt(this)">
-        <div class="w-card-inner-3d">
-          <div class="w-avatar-3d c6">
-            <span class="w-avatar-icon">👩‍💼</span>
-            <div class="w-avatar-halo"></div>
-          </div>
-          <span class="w-badge-3d navy">Support &amp; Success</span>
-          <h4 class="w-title-3d">مرام</h4>
-          <div class="w-role-3d">Odoo Consultant</div>
-          <p class="w-text-3d">متابعة الدعم الفني وتأهيل موظفي الشركات للعمل وسلاسة التشغيل اليومي.</p>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
@@ -1337,18 +1290,143 @@ ScrollTrigger.create({ trigger: '#s-globe', start:'top 60%', onEnter:() => setDo
 ScrollTrigger.create({ trigger: '#s-why', start:'top 60%', onEnter:() => setDot(5), onLeaveBack:() => setDot(4) });
 ScrollTrigger.create({ trigger: '#s-cta', start:'top 60%', onEnter:() => setDot(6), onLeaveBack:() => setDot(5) });
 
-// Elements are 100% visible by default in CSS
-let counted = false;
-ScrollTrigger.create({
-  trigger:'#s-stats', start:'top 75%',
-  onEnter:() => {
-    if(counted) return; counted=true;
-    document.querySelectorAll('.cnt').forEach(el => {
-      const target = +el.dataset.t; let cur = 0; const step = target / 100;
-      const t = setInterval(()=>{ cur+=step; if(cur>=target){cur=target;clearInterval(t);} el.textContent=Math.floor(cur); },16);
+// 6. REAL THREE.JS 3D WEBGL TEAM STAGE ANIMATION ENGINE
+const teamData = [
+  { avatar: '👨‍💼', badge: 'Odoo Senior Expert', name: 'إبراهيم رمضان', role: 'Business Developer & Odoo Consultant', desc: 'دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.', skills: ['Odoo.sh Enterprise', 'استشارات ERP', 'تحول رقمي'], color: 0xE52531 },
+  { avatar: '⚙️', badge: 'Operations Lead', name: 'إسماعيل الحريف', role: 'Operation Manager', desc: 'إشراف كامل على جودة وسرعة تنفيذ وتسليم مشاريع أودو والاستشارات المحاسبية لضمان أعلى مستويات الأداء والإنجاز.', skills: ['إدارة المشاريع', 'ضمان الجودة', 'قيادة العمليات'], color: 0x0D334E },
+  { avatar: '💼', badge: 'Financial Architect', name: 'مهند نبيل', role: 'Odoo Consultant', desc: 'استشاري متخصص في تحليل وتصميم الدورة المستندية وتصميم القوائم المالية وإعداد الموديولات المحاسبية للشركات.', skills: ['تحليل مالي', 'دورة مستندية', 'هندسة الحسابات'], color: 0xE52531 },
+  { avatar: '🛠️', badge: 'Implementation Pro', name: 'عبد الرحمن جمال', role: 'Odoo Implementer', desc: 'تطبيق وتنفيذ الموديولات الميدانية ونقل بيانات الشركات القديمة لأودو وتدريب الموظفين وفرق العمل بكفاءة.', skills: ['تطبيق أودو', 'ترحيل البيانات', 'تدريب الفرق'], color: 0x0D334E },
+  { avatar: '💻', badge: 'Dev Engine', name: 'نادر ياسر', role: 'Odoo Developer', desc: 'تطوير وبرمجة التطبيقات والتعديلات المخصصة في أودو وإجراء الربط البرمجي الكامل API بين الأنظمة المخلفة.', skills: ['برمجة Odoo', 'ربط API', 'Custom Modules'], color: 0xE52531 },
+  { avatar: '👩‍💼', badge: 'Support & Success', name: 'مرام', role: 'Odoo Consultant', desc: 'دعم فني وتأهيل موظفي المؤسسات للعمل التكتيكي على المنظومة وتذليل أي عقبات تشغيلية لضمان استقرار العمل.', skills: ['دعم فني 24/7', 'تأهيل المستخدمين', 'نجاح العملاء'], color: 0x0D334E }
+];
+
+let activeTeamIdx = 0;
+let teamMeshes = [];
+let teamStageGroup;
+let targetStageRotY = 0;
+
+function selectTeam3D(idx) {
+  activeTeamIdx = idx;
+  const tabs = document.querySelectorAll('.team-tab-btn');
+  tabs.forEach((tb, i) => tb.classList.toggle('active', i === idx));
+
+  const t = teamData[idx];
+  document.getElementById('profAvatar').textContent = t.avatar;
+  document.getElementById('profBadge').textContent = t.badge;
+  document.getElementById('profName').textContent = t.name;
+  document.getElementById('profRole').textContent = t.role;
+  document.getElementById('profDesc').textContent = t.desc;
+
+  const skRow = document.getElementById('profSkills');
+  skRow.innerHTML = t.skills.map((s, i) => `<span class="skill-tag ${i===1?'navy':''}">${s}</span>`).join('');
+
+  targetStageRotY = -(idx * (Math.PI * 2 / teamData.length));
+}
+
+(function initTeamWebGLStage() {
+  const canvas = document.getElementById('team-webgl-canvas');
+  if (!canvas) return;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  
+  const rect = canvas.getBoundingClientRect();
+  renderer.setSize(rect.width, 580);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, rect.width / 580, 0.1, 1000);
+  camera.position.set(0, 0, 14);
+
+  const ambientL = new THREE.AmbientLight(0xffffff, 0.95);
+  scene.add(ambientL);
+
+  const light1 = new THREE.DirectionalLight(0xE52531, 1.5);
+  light1.position.set(5, 5, 5);
+  scene.add(light1);
+
+  const light2 = new THREE.DirectionalLight(0x0D334E, 1.5);
+  light2.position.set(-5, -5, -5);
+  scene.add(light2);
+
+  teamStageGroup = new THREE.Group();
+  scene.add(teamStageGroup);
+
+  const radius = 6.5;
+  const numMembers = teamData.length;
+
+  const geometries = [
+    new THREE.IcosahedronGeometry(1.4, 0),
+    new THREE.OctahedronGeometry(1.4, 0),
+    new THREE.DodecahedronGeometry(1.3, 0),
+    new THREE.TorusKnotGeometry(0.9, 0.35, 64, 16),
+    new THREE.IcosahedronGeometry(1.4, 1),
+    new THREE.OctahedronGeometry(1.4, 1)
+  ];
+
+  teamData.forEach((td, i) => {
+    const angle = (i / numMembers) * Math.PI * 2;
+    const meshGroup = new THREE.Group();
+    meshGroup.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
+
+    const coreMat = new THREE.MeshStandardMaterial({
+      color: td.color,
+      roughness: 0.15,
+      metalness: 0.85,
+      wireframe: false
     });
+    const coreMesh = new THREE.Mesh(geometries[i], coreMat);
+    meshGroup.add(coreMesh);
+
+    const cageMat = new THREE.MeshBasicMaterial({
+      color: td.color === 0xE52531 ? 0x0D334E : 0xE52531,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.45
+    });
+    const cageMesh = new THREE.Mesh(geometries[i], cageMat);
+    cageMesh.scale.set(1.25, 1.25, 1.25);
+    meshGroup.add(cageMesh);
+
+    const ringMat = new THREE.MeshBasicMaterial({ color: td.color, transparent: true, opacity: 0.6 });
+    const ringMesh = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.03, 8, 32), ringMat);
+    ringMesh.rotation.x = Math.PI / 3;
+    meshGroup.add(ringMesh);
+
+    teamStageGroup.add(meshGroup);
+    teamMeshes.push({ group: meshGroup, core: coreMesh, cage: cageMesh, ring: ringMesh });
+  });
+
+  let mouseX = 0, mouseY = 0;
+  canvas.addEventListener('mousemove', e => {
+    const r = canvas.getBoundingClientRect();
+    mouseX = ((e.clientX - r.left) / r.width - 0.5) * 2;
+    mouseY = ((e.clientY - r.top) / r.height - 0.5) * 2;
+  });
+
+  function animateTeamWebGL() {
+    requestAnimationFrame(animateTeamWebGL);
+
+    teamStageGroup.rotation.y += (targetStageRotY - teamStageGroup.rotation.y) * 0.08;
+    teamStageGroup.rotation.x += (mouseY * 0.15 - teamStageGroup.rotation.x) * 0.05;
+
+    teamMeshes.forEach((tm, i) => {
+      tm.core.rotation.x += 0.01;
+      tm.core.rotation.y += 0.015;
+      tm.cage.rotation.y -= 0.008;
+      tm.ring.rotation.z += 0.02;
+
+      const isCurrent = (i === activeTeamIdx);
+      const targetScale = isCurrent ? 1.3 : 0.85;
+      tm.group.scale.x += (targetScale - tm.group.scale.x) * 0.08;
+      tm.group.scale.y += (targetScale - tm.group.scale.y) * 0.08;
+      tm.group.scale.z += (targetScale - tm.group.scale.z) * 0.08;
+    });
+
+    renderer.render(scene, camera);
   }
-});
+  animateTeamWebGL();
+})();
+</script>
 
 // 4. FORM & MODAL HANDLER
 function handleFormSubmit(e) {
