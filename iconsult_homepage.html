@@ -365,9 +365,9 @@ nav ul a:hover { color: white; }
   background: #0e2031;
   border: 1.5px solid var(--blue);
   color: #FFFFFF;
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 30px;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.5px;
   box-shadow: 0 8px 25px rgba(0, 174, 239, 0.5);
@@ -528,7 +528,7 @@ nav ul a:hover { color: white; }
 }
 
 .card-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.card-flag-badge { display: flex; align-items: center; gap: 8px; font-size: 1.6rem; }
+.card-flag-badge { display: flex; align-items: center; gap: 8px; font-size: 1.4rem; color: #FFFFFF; font-weight: 800; }
 .card-region-tag { font-size: 0.68rem; color: var(--blue); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; }
 .card-country-title { font-family: 'Playfair Display', serif; font-size: 1.75rem; color: white; margin-bottom: 8px; font-weight: 600; }
 .card-body-text { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.65; margin-bottom: 16px; }
@@ -932,16 +932,16 @@ animateBg();
 // 2. PHOTOREALISTIC 3D EARTH GLOBE ENGINE (SECTION 5)
 // ═════════════════════════════════════════════════════════
 const countryStops = [
-    { lat: 30.0, lon: 31.2, flag: '🇪🇬', country: 'Egypt', tag: 'Headquarters', title: 'Cairo HQ Hub', desc: 'Cairo Headquarters leading business transformation across North Africa. Specialized in Odoo ERP, strategic consulting & AI automation.', p1: '⚙️ Odoo ERP', p2: '200+ Projects' },
-    { lat: 24.7, lon: 46.7, flag: '🇸🇦', country: 'Saudi Arabia', tag: 'Vision 2030', title: 'Riyadh Operations', desc: 'Empowering major enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.', p1: '🎯 Strategic Planning', p2: '98% Satisfaction' },
-    { lat: 25.2, lon: 55.3, flag: '🇦🇪', country: 'UAE', tag: 'Innovation Hub', title: 'Dubai Office', desc: 'Driving high-performance digital marketing, brand acceleration, and AI workflow automation for Dubai corporations.', p1: '📣 Digital Marketing', p2: '3x ROI Growth' },
-    { lat: 29.3, lon: 47.7, flag: '🇰🇼', country: 'Kuwait', tag: 'GCC Region', title: 'Kuwait City', desc: 'Providing specialized ERP automation and workforce management solutions for industrial & commercial groups.', p1: '👥 Human Resources', p2: 'GCC Growth' },
-    { lat: 51.5, lon: -0.1, flag: '🇬🇧', country: 'United Kingdom', tag: 'European Gateway', title: 'London Partner', desc: 'Connecting European firms with Middle Eastern markets through seamless IT architecture and compliance consulting.', p1: '🌐 Global Tech', p2: 'UK Network' },
-    { lat: 52.5, lon: 13.4, flag: '🇩🇪', country: 'Germany', tag: 'Central Europe', title: 'Berlin Office', desc: 'Delivering Industry 4.0 data integration and cross-border ERP synchronization for German manufacturing firms.', p1: '⚙️ Industry 4.0', p2: 'Data Integration' },
-    { lat: 36.2, lon: 138.2, flag: '🇯🇵', country: 'Japan', tag: 'Tech Alliance', title: 'Tokyo Alliance', desc: 'Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.', p1: '🤖 AI Integration', p2: 'Tokyo Office' },
-    { lat: 1.3, lon: 103.8, flag: '🇸🇬', country: 'Singapore', tag: 'APAC Hub', title: 'Singapore Centre', desc: 'Expanding digital transformation and fintech integration for Asian multinational enterprises.', p1: '🚀 APAC Expansion', p2: 'Fintech ERP' },
-    { lat: 40.7, lon: -74.0, flag: '🇺🇸', country: 'United States', tag: 'Americas Hub', title: 'New York Office', desc: 'Providing US corporations expanding into MENA with strategic market entry, ERP migration, and localization.', p1: '🗽 Market Entry', p2: 'US Alliance' },
-    { lat: -23.5, lon: -46.6, flag: '🇧🇷', country: 'Brazil', tag: 'Latin America', title: 'São Paulo Partner', desc: 'Supporting South American agritech and industrial leaders with cloud ERP infrastructure and analytics.', p1: '🌱 Agritech ERP', p2: 'LATAM Reach' }
+    { lat: 30.0, lon: 31.2, country: 'Egypt', tag: 'Headquarters', title: 'Cairo HQ Hub', desc: 'Cairo Headquarters leading business transformation across North Africa. Specialized in Odoo ERP, strategic consulting & AI automation.', p1: '⚙️ Odoo ERP', p2: '200+ Projects' },
+    { lat: 24.7, lon: 46.7, country: 'Saudi Arabia', tag: 'Vision 2030', title: 'Riyadh Operations', desc: 'Empowering major enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.', p1: '🎯 Strategic Planning', p2: '98% Satisfaction' },
+    { lat: 25.2, lon: 55.3, country: 'UAE', tag: 'Innovation Hub', title: 'Dubai Office', desc: 'Driving high-performance digital marketing, brand acceleration, and AI workflow automation for Dubai corporations.', p1: '📣 Digital Marketing', p2: '3x ROI Growth' },
+    { lat: 29.3, lon: 47.7, country: 'Kuwait', tag: 'GCC Region', title: 'Kuwait City', desc: 'Providing specialized ERP automation and workforce management solutions for industrial & commercial groups.', p1: '👥 Human Resources', p2: 'GCC Growth' },
+    { lat: 51.5, lon: -0.1, country: 'United Kingdom', tag: 'European Gateway', title: 'London Partner', desc: 'Connecting European firms with Middle Eastern markets through seamless IT architecture and compliance consulting.', p1: '🌐 Global Tech', p2: 'UK Network' },
+    { lat: 52.5, lon: 13.4, country: 'Germany', tag: 'Central Europe', title: 'Berlin Office', desc: 'Delivering Industry 4.0 data integration and cross-border ERP synchronization for German manufacturing firms.', p1: '⚙️ Industry 4.0', p2: 'Data Integration' },
+    { lat: 36.2, lon: 138.2, country: 'Japan', tag: 'Tech Alliance', title: 'Tokyo Alliance', desc: 'Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.', p1: '🤖 AI Integration', p2: 'Tokyo Office' },
+    { lat: 1.3, lon: 103.8, country: 'Singapore', tag: 'APAC Hub', title: 'Singapore Centre', desc: 'Expanding digital transformation and fintech integration for Asian multinational enterprises.', p1: '🚀 APAC Expansion', p2: 'Fintech ERP' },
+    { lat: 40.7, lon: -74.0, country: 'United States', tag: 'Americas Hub', title: 'New York Office', desc: 'Providing US corporations expanding into MENA with strategic market entry, ERP migration, and localization.', p1: '🗽 Market Entry', p2: 'US Alliance' },
+    { lat: -23.5, lon: -46.6, country: 'Brazil', tag: 'Latin America', title: 'São Paulo Partner', desc: 'Supporting South American agritech and industrial leaders with cloud ERP infrastructure and analytics.', p1: '🌱 Agritech ERP', p2: 'LATAM Reach' }
 ];
 
 const globeCardInner = document.getElementById('globe-card-inner');
@@ -956,7 +956,7 @@ countryStops.forEach((st, i) => {
     panel.id = `globe-panel-${i}`;
     panel.innerHTML = `
         <div class="card-top-row">
-            <div class="card-flag-badge"><span>${st.flag}</span> <strong>${st.country}</strong></div>
+            <div class="card-flag-badge"><strong>${st.country}</strong></div>
             <span class="card-region-tag">${st.tag}</span>
         </div>
         <h2 class="card-country-title">${st.title}</h2>
@@ -1250,7 +1250,7 @@ function updatePinTooltipBadge() {
     pinTooltipBadge.style.display = 'flex';
     pinTooltipBadge.style.opacity = '1';
     pinTooltipBadge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 32}px)`;
-    pinTooltipBadge.innerHTML = `<span>${st.flag}</span> <strong>${st.country}</strong>`;
+    pinTooltipBadge.innerHTML = `<strong>${st.country}</strong>`;
 }
 
 function animateGlobe() {
