@@ -1348,7 +1348,7 @@ ScrollTrigger.create({ trigger: '#s-cta', start:'top 60%', onEnter:() => setDot(
 // 6. REAL THREE.JS 3D WEBGL TEAM STAGE ANIMATION ENGINE
 const teamData = [
   { avatar: '👨‍💼', badge: 'Odoo Senior Expert', name: 'إبراهيم رمضان', role: 'Business Developer & Odoo Consultant', desc: 'دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.', skills: ['Odoo.sh Enterprise', 'استشارات ERP', 'تحول رقمي'], color: 0xE52531 },
-  { avatar: '⚙️', badge: 'Operations Lead', name: 'إسماعيل الحريف', role: 'Operation Manager', desc: 'إشراف كامل على جودة وسرعة تنفيذ وتسليم مشاريع أودو والاستشارات المحاسبية لضمان أعلى مستويات الأداء والإنجاز.', skills: ['إدارة المشاريع', 'ضمان الجودة', 'قيادة العمليات'], color: 0x0D334E },
+  { avatar: '⚙️', photo: 'esmail_elhareef.png', badge: 'Operations Lead', name: 'إسماعيل الحريف', role: 'Operation Manager', desc: 'إشراف كامل على جودة وسرعة تنفيذ وتسليم مشاريع أودو والاستشارات المحاسبية لضمان أعلى مستويات الأداء والإنجاز.', skills: ['إدارة المشاريع', 'ضمان الجودة', 'قيادة العمليات'], color: 0x0D334E },
   { avatar: '💼', badge: 'Financial Architect', name: 'مهند نبيل', role: 'Odoo Consultant', desc: 'استشاري متخصص في تحليل وتصميم الدورة المستندية وتصميم القوائم المالية وإعداد الموديولات المحاسبية للشركات.', skills: ['تحليل مالي', 'دورة مستندية', 'هندسة الحسابات'], color: 0xE52531 },
   { avatar: '🛠️', badge: 'Implementation Pro', name: 'عبد الرحمن جمال', role: 'Odoo Implementer', desc: 'تطبيق وتنفيذ الموديولات الميدانية ونقل بيانات الشركات القديمة لأودو وتدريب الموظفين وفرق العمل بكفاءة.', skills: ['تطبيق أودو', 'ترحيل البيانات', 'تدريب الفرق'], color: 0x0D334E },
   { avatar: '💻', badge: 'Dev Engine', name: 'نادر ياسر', role: 'Odoo Developer', desc: 'تطوير وبرمجة التطبيقات والتعديلات المخصصة في أودو وإجراء الربط البرمجي الكامل API بين الأنظمة المخلفة.', skills: ['برمجة Odoo', 'ربط API', 'Custom Modules'], color: 0xE52531 },
@@ -1366,7 +1366,12 @@ function selectTeam3D(idx) {
   tabs.forEach((tb, i) => tb.classList.toggle('active', i === idx));
 
   const t = teamData[idx];
-  document.getElementById('profAvatar').textContent = t.avatar;
+  const avatarBox = document.getElementById('profAvatar');
+  if (t.photo) {
+    avatarBox.innerHTML = `<img src="${t.photo}" alt="${t.name}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+  } else {
+    avatarBox.textContent = t.avatar;
+  }
   document.getElementById('profBadge').textContent = t.badge;
   document.getElementById('profName').textContent = t.name;
   document.getElementById('profRole').textContent = t.role;
@@ -1416,49 +1421,73 @@ function selectTeam3D(idx) {
     canvas.height = 512;
     const ctx = canvas.getContext('2d');
 
-    // Background Gradient
-    const grad = ctx.createLinearGradient(0, 0, 512, 512);
-    grad.addColorStop(0, member.color === 0xE52531 ? '#E52531' : '#0D334E');
-    grad.addColorStop(1, '#081D2C');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 512, 512);
+    function drawBadge(imgObj = null) {
+      ctx.clearRect(0, 0, 512, 512);
 
-    // Glowing Border Circle
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth = 12;
-    ctx.beginPath();
-    ctx.arc(256, 210, 140, 0, Math.PI * 2);
-    ctx.stroke();
+      // Background Gradient
+      const grad = ctx.createLinearGradient(0, 0, 512, 512);
+      grad.addColorStop(0, member.color === 0xE52531 ? '#E52531' : '#0D334E');
+      grad.addColorStop(1, '#081D2C');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 512, 512);
 
-    // Inner Circle for Avatar / Photo
-    ctx.fillStyle = 'rgba(255,255,255,0.15)';
-    ctx.beginPath();
-    ctx.arc(256, 210, 134, 0, Math.PI * 2);
-    ctx.fill();
+      // Glowing Border Circle
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 12;
+      ctx.beginPath();
+      ctx.arc(256, 210, 140, 0, Math.PI * 2);
+      ctx.stroke();
 
-    // Avatar Emoji or Photo Placeholder
-    ctx.font = '120px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(member.avatar, 256, 215);
+      // Inner Circle for Avatar / Photo
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(256, 210, 134, 0, Math.PI * 2);
+      ctx.clip();
 
-    // Name Tag Box
-    ctx.fillStyle = 'rgba(255,255,255,0.95)';
-    ctx.roundRect(40, 390, 432, 85, 20);
-    ctx.fill();
+      if (imgObj) {
+        ctx.drawImage(imgObj, 256 - 134, 210 - 134, 268, 268);
+      } else {
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.fillRect(0, 0, 512, 512);
+        ctx.font = '120px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(member.avatar, 256, 215);
+      }
+      ctx.restore();
 
-    // Name Text
-    ctx.fillStyle = '#0D334E';
-    ctx.font = 'bold 36px "Tajawal", sans-serif';
-    ctx.fillText(member.name, 256, 430);
+      // Name Tag Box
+      ctx.fillStyle = 'rgba(255,255,255,0.95)';
+      ctx.roundRect(40, 390, 432, 85, 20);
+      ctx.fill();
 
-    // Role Text
-    ctx.fillStyle = '#E52531';
-    ctx.font = 'bold 22px "Tajawal", sans-serif';
-    ctx.fillText(member.role, 256, 460);
+      // Name Text
+      ctx.fillStyle = '#0D334E';
+      ctx.font = 'bold 36px "Tajawal", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(member.name, 256, 430);
+
+      // Role Text
+      ctx.fillStyle = '#E52531';
+      ctx.font = 'bold 22px "Tajawal", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(member.role, 256, 460);
+    }
 
     const texture = new THREE.CanvasTexture(canvas);
-    texture.needsUpdate = true;
+
+    if (member.photo) {
+      const img = new Image();
+      img.onload = () => {
+        drawBadge(img);
+        texture.needsUpdate = true;
+      };
+      img.src = member.photo;
+    } else {
+      drawBadge(null);
+      texture.needsUpdate = true;
+    }
+
     return texture;
   }
 
