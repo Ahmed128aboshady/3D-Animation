@@ -817,8 +817,21 @@ footer ul a:hover { color: var(--coa-red); }
     width: 100% !important;
     height: 100% !important;
   }
-  /* Hide floating badges on mobile — too cluttered */
-  #globe-badges-container { display: none !important; }
+  /* Enable floating badges on mobile with compact styling */
+  #globe-badges-container { display: block !important; }
+  .floating-glass-badge {
+    font-size: 0.68rem !important;
+    padding: 4px 9px !important;
+    border-radius: 12px !important;
+    gap: 4px !important;
+    background: rgba(8, 14, 24, 0.92) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 45, 85, 0.8) !important;
+  }
+  .floating-glass-badge .badge-dot {
+    width: 5px !important;
+    height: 5px !important;
+  }
   /* Info card: full-width slide-up from bottom */
   .globe-card-stage {
     position: fixed !important;
@@ -851,12 +864,24 @@ footer ul a:hover { color: var(--coa-red); }
     position: absolute !important;
     top: 14px !important; left: 16px !important;
   }
-  /* Zoom controls */
+  /* Zoom & Scroll controls */
   .mobile-zoom-controls {
-    right: 16px !important;
+    right: 14px !important;
     top: auto !important;
-    bottom: 28px !important;
+    bottom: 24px !important;
     transform: none !important;
+  }
+  .scroll-next-btn {
+    background: var(--grad-btn) !important;
+    color: white !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(229, 37, 49, 0.4) !important;
+    animation: bounceDown 2s infinite;
+  }
+  @keyframes bounceDown {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(5px); }
+    60% { transform: translateY(3px); }
   }
   /* Show mobile globe header */
   .globe-mobile-header { display: block !important; }
@@ -1142,6 +1167,7 @@ footer ul a:hover { color: var(--coa-red); }
     <div class="mobile-zoom-controls">
       <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
       <button type="button" class="zoom-btn" id="btn-zoom-out" aria-label="Zoom Out">−</button>
+      <a href="#s-why" class="zoom-btn scroll-next-btn" aria-label="Next Section" style="text-decoration:none;">↓</a>
     </div>
 
     <div class="globe-card-stage" id="globe-card-stage">
