@@ -24,6 +24,7 @@
   --blue2: #00D4FF;
   --purple: #7C3AED;
   --navy: #03070c;
+  --red: #FF2D55;
   --card-obsidian: rgba(8, 14, 24, 0.94);
   --border-hairline: rgba(0, 174, 239, 0.3);
   --white: #fff;
@@ -363,14 +364,14 @@ nav ul a:hover { color: white; }
   align-items: center;
   gap: 8px;
   background: #0e2031;
-  border: 1.5px solid var(--blue);
+  border: 1.5px solid var(--red);
   color: #FFFFFF;
   padding: 6px 16px;
   border-radius: 30px;
   font-size: 0.88rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  box-shadow: 0 8px 25px rgba(0, 174, 239, 0.5);
+  box-shadow: 0 8px 25px rgba(255, 45, 85, 0.5);
   pointer-events: none;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -387,7 +388,7 @@ nav ul a:hover { color: white; }
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 6px solid var(--blue);
+  border-top: 6px solid var(--red);
 }
 
 /* Mobile Floating Zoom & Scroll Controls (+ / - / ↓) on Left Side */
@@ -1028,29 +1029,29 @@ function ll2xyz(lat, lon, radius = R + 0.04) {
     return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta));
 }
 
-// Custom 3D Pin styled with requested navy color #0e2031 & glowing cyan accent
+// Custom 3D Pin styled with requested vibrant RED color (#FF2D55)
 function create3DPin() {
     const pg = new THREE.Group();
-    const pinNavyColor = 0x0e2031;
+    const pinRedColor = 0xFF2D55;
 
-    // Pin head (sphere) with #0e2031 color
+    // Pin head (sphere) with #FF2D55 color
     const h = new THREE.Mesh(
         new THREE.SphereGeometry(0.14, 16, 16),
-        new THREE.MeshPhongMaterial({ color: pinNavyColor, emissive: 0x00AEEF, emissiveIntensity: 0.3, shininess: 30 })
+        new THREE.MeshPhongMaterial({ color: pinRedColor, emissive: 0xFF2D55, emissiveIntensity: 0.4, shininess: 40 })
     );
     h.position.y = 0.28; pg.add(h);
 
-    // Pin center eye (glowing white-cyan center)
+    // Pin center eye (glowing white center)
     const e = new THREE.Mesh(
         new THREE.SphereGeometry(0.065, 12, 12),
-        new THREE.MeshBasicMaterial({ color: 0x00D4FF })
+        new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
     );
     e.position.set(0, 0.28, 0.1); pg.add(e);
 
     // Pin cone stem
     const c = new THREE.Mesh(
         new THREE.ConeGeometry(0.11, 0.28, 16),
-        new THREE.MeshPhongMaterial({ color: pinNavyColor, emissive: 0x00AEEF, emissiveIntensity: 0.2 })
+        new THREE.MeshPhongMaterial({ color: pinRedColor, emissive: 0xFF2D55, emissiveIntensity: 0.3 })
     );
     c.position.y = 0.14; c.rotation.x = Math.PI; pg.add(c);
 
@@ -1076,7 +1077,7 @@ countryStops.forEach(st => {
     pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
     beaconGroup.add(pin);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.015, 8, 32), new THREE.MeshBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.85 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.015, 8, 32), new THREE.MeshBasicMaterial({ color: 0xFF2D55, transparent: true, opacity: 0.9 }));
     ring.position.copy(pos); ring.lookAt(0,0,0); beaconGroup.add(ring);
     beaconMeshes.push({ pin, ring, pos });
 });
