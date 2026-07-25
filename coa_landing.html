@@ -1296,6 +1296,55 @@ ScrollTrigger.create({ trigger: '#s-globe', start:'top 60%', onEnter:() => setDo
 ScrollTrigger.create({ trigger: '#s-why', start:'top 60%', onEnter:() => setDot(5), onLeaveBack:() => setDot(4) });
 ScrollTrigger.create({ trigger: '#s-cta', start:'top 60%', onEnter:() => setDot(6), onLeaveBack:() => setDot(5) });
 
+// 4. STATS SMOOTH COUNTER ANIMATION ENGINE
+(function initStatsCounter() {
+  const statsSec = document.getElementById('s-stats');
+  if (!statsSec) return;
+
+  let hasAnimated = false;
+  
+  function startCounters() {
+    if (hasAnimated) return;
+    hasAnimated = true;
+    
+    document.querySelectorAll('.cnt').forEach(el => {
+      const target = parseInt(el.dataset.t, 10) || 0;
+      const duration = 2200;
+      const startTime = performance.now();
+
+      function updateNumber(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 4);
+        const current = Math.floor(easeProgress * target);
+        el.textContent = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateNumber);
+        } else {
+          el.textContent = target;
+        }
+      }
+      requestAnimationFrame(updateNumber);
+    });
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        startCounters();
+      }
+    });
+  }, { threshold: 0.15 });
+
+  observer.observe(statsSec);
+  
+  // Fallback trigger if already in viewport
+  if (statsSec.getBoundingClientRect().top < window.innerHeight) {
+    startCounters();
+  }
+})();
+
 // 6. REAL THREE.JS 3D WEBGL TEAM STAGE ANIMATION ENGINE
 const teamData = [
   { avatar: '👨‍💼', badge: 'Odoo Senior Expert', name: 'إبراهيم رمضان', role: 'Business Developer & Odoo Consultant', desc: 'دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.', skills: ['Odoo.sh Enterprise', 'استشارات ERP', 'تحول رقمي'], color: 0xE52531 },
