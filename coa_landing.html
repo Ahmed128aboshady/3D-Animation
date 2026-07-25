@@ -2342,8 +2342,8 @@ function closeProfileModal() {
       // Keep 3D Portrait Standees facing forward toward camera
       tm.group.rotation.y = -teamStageGroup.rotation.y;
       
-      // Floating Y-bobbing animation
-      tm.core.position.y = Math.sin(Date.now() * 0.002 + i) * 0.15;
+      // Steady Y position for clean & professional look
+      tm.core.position.y = 0;
 
       const isCurrent = (i === activeTeamIdx);
       const targetScale = isCurrent ? (isMobile ? 1.15 : 1.35) : (isMobile ? 0.72 : 0.85);
