@@ -1337,9 +1337,7 @@ ScrollTrigger.create({ trigger: '#s-globe', start:'top 60%', onEnter:() => setDo
 ScrollTrigger.create({ trigger: '#s-why', start:'top 60%', onEnter:() => setDot(5), onLeaveBack:() => setDot(4) });
 ScrollTrigger.create({ trigger: '#s-cta', start:'top 60%', onEnter:() => setDot(6), onLeaveBack:() => setDot(5) });
 
-gsap.to(['#sc1','#sc2','#sc3','#sc4'], { opacity:1, y:0, duration:0.75, stagger:0.15, ease:'power2.out', scrollTrigger:{ trigger:'#s-services', start:'top 65%' } });
-gsap.to(['#st1','#st2','#st3','#st4'], { opacity:1, scale:1, duration:0.65, stagger:0.12, ease:'back.out(1.5)', scrollTrigger:{ trigger:'#s-stats', start:'top 70%' } });
-
+// Elements are 100% visible by default in CSS
 let counted = false;
 ScrollTrigger.create({
   trigger:'#s-stats', start:'top 75%',
@@ -1351,9 +1349,6 @@ ScrollTrigger.create({
     });
   }
 });
-
-gsap.to(['#wc1','#wc2','#wc3','#wc4','#wc5','#wc6'], { opacity:1, y:0, duration:0.65, stagger:0.1, ease:'power2.out', scrollTrigger:{ trigger:'#s-why', start:'top 70%' } });
-gsap.to('#ctaBox', { opacity:1, y:0, duration:0.9, ease:'power2.out', scrollTrigger:{ trigger:'#s-cta', start:'top 75%' } });
 
 // 4. FORM & MODAL HANDLER
 function handleFormSubmit(e) {
