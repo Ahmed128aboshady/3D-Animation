@@ -1496,16 +1496,16 @@ function selectTeam3D(idx) {
     const meshGroup = new THREE.Group();
     meshGroup.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
 
-    // 3D Photo Badge Mesh (Front & Back Photo Disc)
+    // Front-Facing 3D Crystal Card Mesh (BoxGeometry)
     const photoTex = create3DPhotoTexture(td);
-    const discGeo = new THREE.CylinderGeometry(1.6, 1.6, 0.15, 32);
+    const cardGeo = new THREE.BoxGeometry(2.4, 3.1, 0.12);
     
     const matSide = new THREE.MeshStandardMaterial({ color: td.color, roughness: 0.2, metalness: 0.8 });
-    const matCap = new THREE.MeshStandardMaterial({ map: photoTex, roughness: 0.1 });
+    const matFront = new THREE.MeshStandardMaterial({ map: photoTex, roughness: 0.1, metalness: 0.1 });
     
-    const materials = [matSide, matCap, matCap];
-    const coreMesh = new THREE.Mesh(discGeo, materials);
-    coreMesh.rotation.x = Math.PI / 2;
+    // Materials array: Right, Left, Top, Bottom, Front, Back
+    const materials = [matSide, matSide, matSide, matSide, matFront, matSide];
+    const coreMesh = new THREE.Mesh(cardGeo, materials);
     meshGroup.add(coreMesh);
 
     // Outer Glowing Wireframe Octahedron Cage
@@ -1515,17 +1515,17 @@ function selectTeam3D(idx) {
       transparent: true,
       opacity: 0.45
     });
-    const cageMesh = new THREE.Mesh(new THREE.OctahedronGeometry(2.0, 1), cageMat);
+    const cageMesh = new THREE.Mesh(new THREE.OctahedronGeometry(2.2, 1), cageMat);
     meshGroup.add(cageMesh);
 
     // Orbiting Torus Ring
     const ringMat = new THREE.MeshBasicMaterial({ color: td.color, transparent: true, opacity: 0.6 });
-    const ringMesh = new THREE.Mesh(new THREE.TorusGeometry(2.3, 0.035, 8, 32), ringMat);
+    const ringMesh = new THREE.Mesh(new THREE.TorusGeometry(2.5, 0.035, 8, 32), ringMat);
     ringMesh.rotation.x = Math.PI / 3;
     meshGroup.add(ringMesh);
 
     teamStageGroup.add(meshGroup);
-    teamMeshes.push({ group: meshGroup, core: coreMesh, cage: cageMesh, ring: ringMesh, photoTex: photoTex });
+    teamMeshes.push({ group: meshGroup, core: coreMesh, cage: cageMesh, ring: ringMesh, photoTex: photoTex, angle: angle });
   });
 
   let mouseX = 0, mouseY = 0;
@@ -1542,13 +1542,16 @@ function selectTeam3D(idx) {
     teamStageGroup.rotation.x += (mouseY * 0.15 - teamStageGroup.rotation.x) * 0.05;
 
     teamMeshes.forEach((tm, i) => {
-      tm.core.rotation.x += 0.01;
-      tm.core.rotation.y += 0.015;
-      tm.cage.rotation.y -= 0.008;
-      tm.ring.rotation.z += 0.02;
+      // Keep 3D Portrait Cards facing forward toward the camera
+      tm.group.rotation.y = -teamStageGroup.rotation.y;
+      
+      // Floating Y-bobbing & spinning cage/ring
+      tm.core.position.y = Math.sin(Date.now() * 0.002 + i) * 0.15;
+      tm.cage.rotation.y += 0.01;
+      tm.ring.rotation.z += 0.015;
 
       const isCurrent = (i === activeTeamIdx);
-      const targetScale = isCurrent ? 1.3 : 0.85;
+      const targetScale = isCurrent ? 1.35 : 0.85;
       tm.group.scale.x += (targetScale - tm.group.scale.x) * 0.08;
       tm.group.scale.y += (targetScale - tm.group.scale.y) * 0.08;
       tm.group.scale.z += (targetScale - tm.group.scale.z) * 0.08;
