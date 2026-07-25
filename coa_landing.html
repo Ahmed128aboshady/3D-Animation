@@ -1970,39 +1970,42 @@ function selectTeam3D(idx) {
 
   const t = teamData[idx];
 
-  // --- Photo Column ---
+  // --- Photo Column & Info Elements ---
   const photoImg = document.getElementById('profFullPhoto');
   const avatarDiv = document.getElementById('teamPhotoAvatar');
   const avatarEmoji = document.getElementById('profAvatar');
   const avatarNameEl = document.getElementById('profAvatarName');
 
   if (t.photo) {
-    // Show real photo, hide emoji avatar
-    photoImg.src = t.photo;
-    photoImg.style.display = 'block';
-    photoImg.style.width = '100%';
-    photoImg.style.height = '100%';
-    photoImg.style.objectFit = 'cover';
-    photoImg.style.position = 'absolute';
-    photoImg.style.inset = '0';
-    photoImg.style.zIndex = '1';
+    if (photoImg) {
+      photoImg.src = t.photo;
+      photoImg.style.display = 'block';
+      photoImg.style.width = '100%';
+      photoImg.style.height = '100%';
+      photoImg.style.objectFit = 'cover';
+      photoImg.style.position = 'absolute';
+      photoImg.style.inset = '0';
+      photoImg.style.zIndex = '1';
+    }
     if (avatarDiv) avatarDiv.style.display = 'none';
   } else {
-    // Show emoji avatar
-    photoImg.style.display = 'none';
+    if (photoImg) photoImg.style.display = 'none';
     if (avatarDiv) avatarDiv.style.display = 'flex';
     if (avatarEmoji) avatarEmoji.textContent = t.avatar;
     if (avatarNameEl) avatarNameEl.textContent = t.name;
   }
 
-  // --- Info Column ---
-  document.getElementById('profBadge').textContent = t.badge;
-  document.getElementById('profName').textContent = t.name;
-  document.getElementById('profRole').textContent = t.role;
-  document.getElementById('profDesc').textContent = t.desc;
-
+  const profBadge = document.getElementById('profBadge');
+  const profName = document.getElementById('profName');
+  const profRole = document.getElementById('profRole');
+  const profDesc = document.getElementById('profDesc');
   const skRow = document.getElementById('profSkills');
-  skRow.innerHTML = t.skills.map((s, i) => `<span class="skill-tag ${i===1?'navy':''}">${s}</span>`).join('');
+
+  if (profBadge) profBadge.textContent = t.badge;
+  if (profName) profName.textContent = t.name;
+  if (profRole) profRole.textContent = t.role;
+  if (profDesc) profDesc.textContent = t.desc;
+  if (skRow) skRow.innerHTML = t.skills.map((s, i) => `<span class="skill-tag ${i===1?'navy':''}">${s}</span>`).join('');
 
   // --- Rotate 3D WebGL Carousel Stage ---
   targetStageRotY = -(idx / teamData.length) * Math.PI * 2;
@@ -2202,13 +2205,31 @@ function closeProfileModal() {
   });
 
   let mouseX = 0, mouseY = 0;
+  let isPointerDown = false;
+  let pointerStartX = 0, pointerStartY = 0;
   const raycaster = new THREE.Raycaster();
   const mouseVec = new THREE.Vector2();
 
-  canvas.addEventListener('mousemove', e => {
+  canvas.addEventListener('pointerdown', e => {
+    isPointerDown = true;
+    pointerStartX = e.clientX;
+    pointerStartY = e.clientY;
+  });
+
+  canvas.addEventListener('pointermove', e => {
     const r = canvas.getBoundingClientRect();
     mouseX = ((e.clientX - r.left) / r.width - 0.5) * 2;
     mouseY = ((e.clientY - r.top) / r.height - 0.5) * 2;
+
+    if (isPointerDown) {
+      const deltaX = e.clientX - pointerStartX;
+      targetStageRotY += deltaX * 0.005;
+      pointerStartX = e.clientX;
+    }
+  });
+
+  window.addEventListener('pointerup', e => {
+    isPointerDown = false;
   });
 
   canvas.addEventListener('click', e => {
