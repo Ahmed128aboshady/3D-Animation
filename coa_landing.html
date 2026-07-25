@@ -483,7 +483,10 @@ nav ul a:hover { color: var(--coa-red); }
 }
 
 .explode-text.active {
-  opacity: 1; visibility: visible; pointer-events: auto;
+  position: relative !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
 .card-top-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -845,8 +848,12 @@ footer ul a:hover { color: var(--coa-red); }
   }
   .double-bezel-inner {
     border-radius: 16px !important;
-    padding: 18px 18px 22px !important;
+    padding: 16px 16px 20px !important;
     min-height: auto !important;
+    position: relative !important;
+  }
+  .explode-text {
+    width: 100% !important;
   }
   .mobile-card-close {
     display: flex !important;
