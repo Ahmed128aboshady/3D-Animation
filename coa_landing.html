@@ -43,25 +43,9 @@
   --coa-navy: #0D334E;
   --coa-red: #E52531;
   --coa-red-dark: #C41C27;
-  --gold: #F59E0B;
+  --gold: #D97706;
   
-  /* DEFAULT DARK THEME TOKENS */
-  --bg-main: #0B1724;
-  --bg-card: #132235;
-  --bg-card-border: rgba(255, 255, 255, 0.08);
-  --text-dark: #F8FAFC;
-  --text-sub: #94A3B8;
-  --border-light: rgba(255, 255, 255, 0.12);
-  --nav-bg: rgba(11, 23, 36, 0.92);
-  --glass-bg: rgba(19, 34, 53, 0.75);
-  
-  --grad-coa: linear-gradient(135deg, #0D334E 0%, #E52531 100%);
-  --grad-btn: linear-gradient(135deg, #E52531 0%, #C41C27 100%);
-  --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* LIGHT THEME OVERRIDE */
-[data-theme="light"] {
+  /* DEFAULT LIGHT THEME TOKENS */
   --bg-main: #F8FAFC;
   --bg-card: #FFFFFF;
   --bg-card-border: rgba(13, 51, 78, 0.08);
@@ -70,6 +54,22 @@
   --border-light: rgba(13, 51, 78, 0.15);
   --nav-bg: rgba(255, 255, 255, 0.95);
   --glass-bg: rgba(255, 255, 255, 0.85);
+  
+  --grad-coa: linear-gradient(135deg, #0D334E 0%, #E52531 100%);
+  --grad-btn: linear-gradient(135deg, #E52531 0%, #C41C27 100%);
+  --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* DARK THEME OVERRIDE */
+[data-theme="dark"] {
+  --bg-main: #0B1724;
+  --bg-card: #132235;
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --text-dark: #F8FAFC;
+  --text-sub: #94A3B8;
+  --border-light: rgba(255, 255, 255, 0.12);
+  --nav-bg: rgba(11, 23, 36, 0.92);
+  --glass-bg: rgba(19, 34, 53, 0.75);
 }
 
 html { scroll-behavior: auto; }
@@ -1236,7 +1236,7 @@ footer ul a:hover { color: var(--coa-red); }
   </ul></nav>
   <div style="display:flex;align-items:center;gap:14px;">
     <button type="button" class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="تبديل المظهر">
-      <span id="themeIcon">☀️</span> <span id="themeText">وضع أبيض</span>
+      <span id="themeIcon">🌙</span> <span id="themeText">وضع داكن</span>
     </button>
     <a href="#s-cta" class="nav-btn">احجز استشارة مجانية 🚀</a>
   </div>
@@ -1249,7 +1249,7 @@ footer ul a:hover { color: var(--coa-red); }
 <!-- Mobile Drawer Menu -->
 <div class="mobile-drawer" id="mobileDrawer">
   <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" style="margin: 0 auto 1rem; width: fit-content;">
-    <span class="mobileThemeIcon">☀️</span> <span class="mobileThemeText">تغيير المظهر</span>
+    <span class="mobileThemeIcon">🌙</span> <span class="mobileThemeText">وضع داكن</span>
   </button>
   <a href="#s-services" onclick="toggleMobileMenu()">خدماتنا</a>
   <a href="#s-globe" onclick="toggleMobileMenu()">عملاؤنا وتواجدنا الدولي</a>
@@ -1405,38 +1405,7 @@ footer ul a:hover { color: var(--coa-red); }
     <!-- 3D WebGL Executive Carousel Stage Canvas -->
     <div class="team-webgl-stage-wrap">
       <canvas id="team-webgl-canvas"></canvas>
-      <div class="stage-instructions-hint">💡 Click or drag 3D standees to rotate members seamlessly</div>
-    </div>
-
-    <!-- Professional Showcase Card -->
-    <div class="team-showcase-card" id="teamShowcaseCard">
-
-      <!-- Left: Full Portrait Photo -->
-      <div class="team-photo-col" id="teamPhotoCol" onclick="openProfileModal(activeTeamIdx)" style="cursor:pointer;" title="انقر لتكبير بيانات العضو">
-        <img id="profFullPhoto" src="" alt="صورة العضو" style="display:none;" />
-        <div class="team-photo-overlay"></div>
-        <div class="team-photo-avatar" id="teamPhotoAvatar">
-          <span class="team-avatar-emoji" id="profAvatar">👨‍💼</span>
-          <span class="team-avatar-name-big" id="profAvatarName">إبراهيم رمضان</span>
-        </div>
-        <div style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.5);color:white;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:800;backdrop-filter:blur(6px);z-index:5;pointer-events:none;">🔍 تكبير الملف</div>
-      </div>
-
-      <!-- Right: Executive Info Panel -->
-      <div class="team-info-col">
-        <div class="team-badge-pill" id="profBadge">Odoo Senior Expert</div>
-        <h3 class="team-member-name" id="profName">إبراهيم رمضان</h3>
-        <div class="team-member-role" id="profRole">Business Developer &amp; Odoo Consultant</div>
-        <div class="team-divider"></div>
-        <p class="team-member-desc" id="profDesc">
-          دراسة وتطوير حلول أودو ERP للشركات والمؤسسات الكبرى في مصر والسعودية، وتحليل متطلبات التحول الرقمي والدورة المحاسبية الكاملة.
-        </p>
-        <div class="team-skills-row" id="profSkills">
-          <span class="skill-tag">Odoo.sh Enterprise</span>
-          <span class="skill-tag navy">استشارات ERP</span>
-          <span class="skill-tag">تحول رقمي</span>
-        </div>
-      </div>
+      <div class="stage-instructions-hint">💡 اضغط أو اسحب أي عضو لاستعراض ملفه التنفيذي الكامل 🚀</div>
     </div>
 
     <!-- Navigation Dots -->
@@ -2369,14 +2338,14 @@ function toggleMobileMenu() {
 // 9. DARK/LIGHT THEME SWITCHER LOGIC
 function toggleTheme() {
   const html = document.documentElement;
-  const currentTheme = html.getAttribute('data-theme') || 'dark';
-  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  const currentTheme = html.getAttribute('data-theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
   
   html.setAttribute('data-theme', newTheme);
   localStorage.setItem('coa_theme', newTheme);
   
-  const icon = newTheme === 'light' ? '🌙' : '☀️';
-  const text = newTheme === 'light' ? 'وضع داكن' : 'وضع أبيض';
+  const icon = newTheme === 'dark' ? '☀️' : '🌙';
+  const text = newTheme === 'dark' ? 'وضع أبيض' : 'وضع داكن';
   
   const themeIconEl = document.getElementById('themeIcon');
   const themeTextEl = document.getElementById('themeText');
@@ -2387,17 +2356,17 @@ function toggleTheme() {
   document.querySelectorAll('.mobileThemeText').forEach(el => el.textContent = text);
 }
 
-// Restore saved theme on page load
+// Restore saved theme on page load (Default is Light)
 (function initTheme() {
-  const saved = localStorage.getItem('coa_theme') || 'dark';
+  const saved = localStorage.getItem('coa_theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
-  if (saved === 'light') {
+  if (saved === 'dark') {
     const themeIconEl = document.getElementById('themeIcon');
     const themeTextEl = document.getElementById('themeText');
-    if (themeIconEl) themeIconEl.textContent = '🌙';
-    if (themeTextEl) themeTextEl.textContent = 'وضع داكن';
-    document.querySelectorAll('.mobileThemeIcon').forEach(el => el.textContent = '🌙');
-    document.querySelectorAll('.mobileThemeText').forEach(el => el.textContent = 'وضع داكن');
+    if (themeIconEl) themeIconEl.textContent = '☀️';
+    if (themeTextEl) themeTextEl.textContent = 'وضع أبيض';
+    document.querySelectorAll('.mobileThemeIcon').forEach(el => el.textContent = '☀️');
+    document.querySelectorAll('.mobileThemeText').forEach(el => el.textContent = 'وضع أبيض');
   }
 })();
 </script>
