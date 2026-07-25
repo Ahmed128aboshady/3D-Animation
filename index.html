@@ -1010,7 +1010,6 @@ const rimL = new THREE.DirectionalLight(0x00AEEF, 0.8); rimL.position.set(-5, -2
 
 const globeGroup = new THREE.Group();
 globeGroup.position.set(-1.7, 0, 0);
-globeGroup.rotation.reorder('YXZ'); // YXZ Euler order for exact pitch & yaw targeting
 globeScene.add(globeGroup);
 
 function updateGlobeCam() {
@@ -1137,20 +1136,22 @@ countryStops.forEach((st, idx) => {
     beaconMeshes.push({ marker, pos });
 });
 
-// ── EXACT 3D QUATERNION ROTATION FUNCTION: BRINGS ANY 3D PIN EXACTLY TO CAMERA CENTER ──
-function getRotForPos(pos) {
+// ── 100% ACCURATE 3D QUATERNION ROTATION (ZERO GIMBAL LOCK, ZERO FLIP TO JAPAN) ──
+const targetQuaternion = new THREE.Quaternion();
+const currentQuaternion = new THREE.Quaternion();
+
+function getQuaternionForPos(pos) {
     const norm = pos.clone().normalize();
-    const targetVec = new THREE.Vector3(0, 0, 1);
-    const q = new THREE.Quaternion().setFromUnitVectors(norm, targetVec);
-    const euler = new THREE.Euler().setFromQuaternion(q, 'YXZ');
-    return { x: euler.x, y: euler.y };
+    const cameraDir = new THREE.Vector3(0, 0, 1); // Point directly towards camera
+    return new THREE.Quaternion().setFromUnitVectors(norm, cameraDir);
 }
 
-let targetRot = getRotForPos(beaconMeshes[0].pos);
-globeGroup.rotation.x = targetRot.x; globeGroup.rotation.y = targetRot.y;
+// Set initial rotation directly to Cairo, Egypt HQ
+targetQuaternion.copy(getQuaternionForPos(beaconMeshes[0].pos));
+globeGroup.quaternion.copy(targetQuaternion);
 
-// ── MOUSE & TOUCH GESTURES WITH INSTANT DIRECT PIN ROTATION (0 LAG!) ──
-let isDrag = false, prevM = { x: 0, y: 0 }, rotOff = { x: 0, y: 0 };
+// ── MOUSE & TOUCH GESTURES WITH SLERPED QUATERNIONS ──
+let isDrag = false, prevM = { x: 0, y: 0 };
 let targetCamZ2 = 5.8;
 let touchPinchDist = null;
 
@@ -1160,11 +1161,8 @@ const mouseVec = new THREE.Vector2();
 function triggerPinCard(idx) {
     activePinIdx = idx;
 
-    // INSTANT EXACT ROTATION DIRECTLY TO CLICKED PIN AT CAMERA CENTER
-    const tr = getRotForPos(beaconMeshes[idx].pos);
-    targetRot = tr;
-    rotOff.x = 0;
-    rotOff.y = 0;
+    // DIRECT SPHERICAL SLERP TO CLICKED PIN - 100% ACCURATE POSITIONING!
+    targetQuaternion.copy(getQuaternionForPos(beaconMeshes[idx].pos));
 
     // Synchronize continuous scroll progress
     targetGlobeProgress = idx / (countryStops.length - 1);
@@ -1208,9 +1206,13 @@ globeCanvas.addEventListener('click', e => { checkPinTap(e.clientX, e.clientY); 
 
 window.addEventListener('mousemove', e => {
     if (!isDrag) return;
-    rotOff.y += (e.clientX - prevM.x) * 0.006;
-    rotOff.x += (e.clientY - prevM.y) * 0.004;
-    rotOff.x = Math.max(-0.8, Math.min(0.8, rotOff.x));
+    const deltaX = e.clientX - prevM.x;
+    const deltaY = e.clientY - prevM.y;
+
+    const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.005);
+    const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.005);
+    targetQuaternion.premultiply(qY).premultiply(qX);
+
     prevM = { x: e.clientX, y: e.clientY };
 });
 
@@ -1234,9 +1236,11 @@ globeCanvas.addEventListener('touchmove', e => {
     if (e.touches.length === 1 && isDrag) {
         const deltaX = e.touches[0].clientX - prevM.x;
         const deltaY = e.touches[0].clientY - prevM.y;
-        rotOff.y += deltaX * 0.008;
-        rotOff.x += deltaY * 0.006;
-        rotOff.x = Math.max(-0.8, Math.min(0.8, rotOff.x));
+
+        const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.006);
+        const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.006);
+        targetQuaternion.premultiply(qY).premultiply(qX);
+
         prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     } else if (e.touches.length === 2 && touchPinchDist !== null) {
         const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -1336,7 +1340,7 @@ function animateGlobe() {
         if (Math.abs(diff) > 0.0003) {
             currentGlobeProgress += diff * 0.09;
             const activeIdx = Math.min(countryStops.length - 1, Math.floor(currentGlobeProgress * countryStops.length));
-            targetRot = getRotForPos(beaconMeshes[activeIdx].pos);
+            targetQuaternion.copy(getQuaternionForPos(beaconMeshes[activeIdx].pos));
 
             activePinIdx = activeIdx;
 
@@ -1358,9 +1362,8 @@ function animateGlobe() {
         }
     }
 
-    // Direct Smooth Rotation to target country without intermediate jumps
-    globeGroup.rotation.x += (targetRot.x + rotOff.x - globeGroup.rotation.x) * 0.08;
-    globeGroup.rotation.y += (targetRot.y + rotOff.y - globeGroup.rotation.y) * 0.08;
+    // Direct Smooth Spherical SLERP to target quaternion without intermediate jumps or angle flips
+    globeGroup.quaternion.slerp(targetQuaternion, 0.08);
 
     updateAllFloatingBadges();
     globeRenderer.render(globeScene, globeCamera);
