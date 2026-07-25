@@ -393,30 +393,51 @@ nav ul a:hover { color: var(--coa-red); }
 .floating-glass-badge {
   position: absolute;
   top: 0; left: 0;
-  display: flex; align-items: center; gap: 7px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1.5px solid var(--coa-red);
-  color: var(--text-dark);
-  padding: 6px 14px; border-radius: 20px;
-  font-size: 0.8rem; font-weight: 800;
-  backdrop-filter: blur(14px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(229, 37, 49, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: #ffffff;
+  padding: 4px 10px; border-radius: 14px;
+  font-size: 0.72rem; font-weight: 800;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(229, 37, 49, 0.4), 0 0 10px rgba(0,0,0,0.2);
   pointer-events: auto; cursor: pointer;
-  transition: all 0.3s; white-space: nowrap;
+  transition: all 0.25s ease; white-space: nowrap;
   user-select: none;
+  z-index: 100;
+}
+
+.floating-glass-badge::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid rgba(229, 37, 49, 0.92);
 }
 
 .floating-glass-badge:hover, .floating-glass-badge.active {
-  background: var(--coa-red);
-  color: white;
+  background: #ffffff;
+  color: var(--coa-red);
   border-color: var(--coa-red);
-  box-shadow: 0 8px 25px rgba(229, 37, 49, 0.4);
+  box-shadow: 0 6px 20px rgba(229, 37, 49, 0.6);
+  transform: scale(1.15) !important;
+}
+
+.floating-glass-badge:hover::after, .floating-glass-badge.active::after {
+  border-top-color: #ffffff;
 }
 
 .floating-glass-badge .badge-dot {
-  width: 8px; height: 8px;
-  background: var(--coa-navy); border-radius: 50%;
-  box-shadow: 0 0 8px var(--coa-navy);
+  width: 6px; height: 6px;
+  background: #ffffff; border-radius: 50%;
+  box-shadow: 0 0 6px #ffffff;
+}
+.floating-glass-badge.active .badge-dot {
+  background: var(--coa-red);
+  box-shadow: 0 0 6px var(--coa-red);
 }
 
 .mobile-zoom-controls {
@@ -819,8 +840,18 @@ footer ul a:hover { color: var(--coa-red); }
     width: 100% !important;
     height: 100% !important;
   }
-  /* Hide floating badges on mobile to keep screen ultra clean & prevent text overlap */
-  #globe-badges-container, .floating-glass-badge { display: none !important; }
+  /* Enable floating pin badges on mobile with compact scaling */
+  #globe-badges-container, .floating-glass-badge { display: flex !important; }
+  .floating-glass-badge {
+    font-size: 0.65rem !important;
+    padding: 3px 8px !important;
+    border-radius: 10px !important;
+    gap: 3px !important;
+  }
+  .floating-glass-badge .badge-dot {
+    width: 4px !important;
+    height: 4px !important;
+  }
 
   /* Info card: Slide-up bottom sheet on mobile */
   .globe-card-stage {
@@ -1511,13 +1542,9 @@ function ll2xyz(lat, lon, radius = R + 0.02) {
 
 function createRedLocationMarker() {
   const group = new THREE.Group();
-  const coreNode = new THREE.Mesh(new THREE.SphereGeometry(0.048, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFF2D55 }));
+  const coreNode = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 12), new THREE.MeshBasicMaterial({ color: 0xE52531 }));
   group.add(coreNode);
-  const ringInner = new THREE.Mesh(new THREE.TorusGeometry(0.085, 0.009, 8, 32), new THREE.MeshBasicMaterial({ color: 0xFF2D55, transparent: true, opacity: 0.9 }));
-  ringInner.lookAt(0, 0, 0); group.add(ringInner);
-  const ringOuter = new THREE.Mesh(new THREE.TorusGeometry(0.145, 0.005, 8, 32), new THREE.MeshBasicMaterial({ color: 0xFF3B30, transparent: true, opacity: 0.45 }));
-  ringOuter.lookAt(0, 0, 0); group.add(ringOuter);
-  const hitSphere = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 16), new THREE.MeshBasicMaterial({ visible: false }));
+  const hitSphere = new THREE.Mesh(new THREE.SphereGeometry(0.42, 16, 16), new THREE.MeshBasicMaterial({ visible: false }));
   group.add(hitSphere);
   return group;
 }
@@ -1640,12 +1667,6 @@ globeCanvas.addEventListener('wheel', e => { targetCamZ2 = Math.max(3.0, Math.mi
 
 const tempVec = new THREE.Vector3();
 function updateAllFloatingBadges() {
-  if (window.innerWidth <= 850) {
-    badgeElements.forEach(badge => {
-      if (badge) { badge.style.opacity = '0'; badge.style.pointerEvents = 'none'; }
-    });
-    return;
-  }
   beaconMeshes.forEach((bm, i) => {
     const badge = badgeElements[i];
     if (!badge) return;
@@ -1658,7 +1679,7 @@ function updateAllFloatingBadges() {
     const x = (tempVec.x * 0.5 + 0.5) * window.innerWidth;
     const y = -(tempVec.y * 0.5 - 0.5) * window.innerHeight;
     badge.style.opacity = '1'; badge.style.pointerEvents = 'auto';
-    badge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 12}px) ${i === activePinIdx ? 'scale(1.12)' : 'scale(1)'}`;
+    badge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 12}px) ${i === activePinIdx ? 'scale(1.15)' : 'scale(1)'}`;
   });
 }
 
