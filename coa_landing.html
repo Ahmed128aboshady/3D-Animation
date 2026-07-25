@@ -43,25 +43,44 @@
   --coa-navy: #0D334E;
   --coa-red: #E52531;
   --coa-red-dark: #C41C27;
-  --gold: #D97706;
-  --bg-white: #FFFFFF;
-  --bg-slate: #F8FAFC;
-  --text-dark: #0F172A;
-  --text-sub: #475569;
-  --border-light: rgba(13, 51, 78, 0.15);
+  --gold: #F59E0B;
+  
+  /* DEFAULT DARK THEME TOKENS */
+  --bg-main: #0B1724;
+  --bg-card: #132235;
+  --bg-card-border: rgba(255, 255, 255, 0.08);
+  --text-dark: #F8FAFC;
+  --text-sub: #94A3B8;
+  --border-light: rgba(255, 255, 255, 0.12);
+  --nav-bg: rgba(11, 23, 36, 0.92);
+  --glass-bg: rgba(19, 34, 53, 0.75);
+  
   --grad-coa: linear-gradient(135deg, #0D334E 0%, #E52531 100%);
   --grad-btn: linear-gradient(135deg, #E52531 0%, #C41C27 100%);
   --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* LIGHT THEME OVERRIDE */
+[data-theme="light"] {
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-card-border: rgba(13, 51, 78, 0.08);
+  --text-dark: #0F172A;
+  --text-sub: #475569;
+  --border-light: rgba(13, 51, 78, 0.15);
+  --nav-bg: rgba(255, 255, 255, 0.95);
+  --glass-bg: rgba(255, 255, 255, 0.85);
 }
 
 html { scroll-behavior: auto; }
 
 body {
   font-family: 'Cairo', sans-serif;
-  background: var(--bg-slate);
+  background: var(--bg-main);
   color: var(--text-dark);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
 ::-webkit-scrollbar { width: 6px; }
@@ -108,7 +127,7 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: rgba(248, 250, 252, 0.15);
+  background: transparent;
 }
 
 /* ── NAVBAR WITH OFFICIAL COA EGYPT LOGO ── */
@@ -122,10 +141,10 @@ body {
   padding: 0 3rem;
   height: 76px;
   transition: all 0.5s;
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--nav-bg);
   backdrop-filter: blur(20px);
   border-bottom: 1.5px solid var(--border-light);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
 .logo {
@@ -136,16 +155,35 @@ body {
   height: 48px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(13, 51, 78, 0.15));
+  filter: drop-shadow(0 2px 6px rgba(229, 37, 49, 0.25));
 }
 
 nav ul { display: flex; gap: 2rem; list-style: none; }
 nav ul a {
-  color: var(--coa-navy);
+  color: var(--text-dark);
   text-decoration: none; font-size: 0.9rem; font-weight: 800;
   transition: color 0.3s;
 }
 nav ul a:hover { color: var(--coa-red); }
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  background: var(--glass-bg);
+  border: 1.5px solid var(--border-light);
+  color: var(--text-dark);
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-family: inherit; font-size: 0.84rem; font-weight: 800;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.theme-toggle-btn:hover {
+  border-color: var(--coa-red);
+  transform: translateY(-2px);
+  color: var(--coa-red);
+}
 
 .nav-btn {
   background: var(--grad-btn);
@@ -555,19 +593,19 @@ nav ul a:hover { color: var(--coa-red); }
 }
 
 .dept-btn {
-  background: white; border: 1.5px solid var(--border-light);
+  background: var(--glass-bg); border: 1.5px solid var(--border-light);
   padding: 8px 18px; border-radius: 50px;
   font-family: inherit; font-size: 0.8rem; font-weight: 800;
-  color: var(--coa-navy); cursor: pointer;
+  color: var(--text-dark); cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 .dept-btn:hover, .dept-btn.active {
-  background: var(--coa-navy);
+  background: var(--coa-red);
   color: white;
-  border-color: var(--coa-navy);
-  box-shadow: 0 6px 20px rgba(13, 51, 78, 0.25);
+  border-color: var(--coa-red);
+  box-shadow: 0 6px 20px rgba(229, 37, 49, 0.4);
   transform: translateY(-2px);
 }
 
@@ -634,9 +672,9 @@ nav ul a:hover { color: var(--coa-red); }
   min-height: 440px;
   border-radius: 32px;
   overflow: hidden;
-  box-shadow: 0 24px 70px rgba(13,51,78,0.13);
-  border: 1.5px solid rgba(13,51,78,0.08);
-  background: white;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.3);
+  border: 1.5px solid var(--bg-card-border);
+  background: var(--bg-card);
   transition: all 0.5s ease;
 }
 
@@ -682,14 +720,14 @@ nav ul a:hover { color: var(--coa-red); }
   padding: 3rem 3.5rem;
   display: flex; flex-direction: column; justify-content: center;
   text-align: right;
-  background: white;
+  background: var(--bg-card);
 }
 
 .team-badge-pill {
   display: inline-block;
-  background: linear-gradient(135deg, rgba(229,37,49,0.12), rgba(229,37,49,0.06));
+  background: linear-gradient(135deg, rgba(229,37,49,0.15), rgba(229,37,49,0.08));
   color: var(--coa-red);
-  border: 1px solid rgba(229,37,49,0.25);
+  border: 1px solid rgba(229,37,49,0.3);
   padding: 5px 16px; border-radius: 50px;
   font-size: 0.74rem; font-weight: 900; letter-spacing: 0.5px;
   margin-bottom: 1rem;
@@ -698,7 +736,7 @@ nav ul a:hover { color: var(--coa-red); }
 
 .team-member-name {
   font-size: clamp(1.8rem, 3vw, 2.4rem);
-  font-weight: 900; color: var(--coa-navy);
+  font-weight: 900; color: var(--text-dark);
   line-height: 1.15; margin-bottom: 0.4rem;
 }
 
@@ -801,17 +839,79 @@ footer ul { display: flex; gap: 1.5rem; list-style: none; }
 footer ul a { font-size: 0.85rem; color: var(--text-sub); text-decoration: none; font-weight: 600; }
 footer ul a:hover { color: var(--coa-red); }
 
-/* MODAL */
-#success-modal {
-  position: fixed; inset: 0; z-index: 9999;
-  background: rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+/* TEAM MEMBER POPUP MODAL STYLES */
+.profile-modal-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(8, 18, 30, 0.75); backdrop-filter: blur(14px);
   display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 1.5rem;
 }
-#success-modal.open { opacity: 1; pointer-events: auto; }
-.modal-box {
-  background: white; border: 2px solid var(--coa-red); padding: 3rem 2.5rem;
-  border-radius: 28px; text-align: center; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+.profile-modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+.profile-modal-box {
+  position: relative;
+  background: var(--bg-card);
+  border: 1.5px solid var(--bg-card-border);
+  border-radius: 32px;
+  max-width: 860px; width: 100%;
+  overflow: hidden;
+  box-shadow: 0 30px 90px rgba(0,0,0,0.5);
+  transform: scale(0.92) translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.profile-modal-overlay.open .profile-modal-box {
+  transform: scale(1) translateY(0);
+}
+
+.profile-modal-close {
+  position: absolute; top: 16px; left: 20px; z-index: 10;
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2);
+  color: white; width: 36px; height: 36px; border-radius: 50%;
+  font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+}
+.profile-modal-close:hover {
+  background: var(--coa-red); border-color: var(--coa-red);
+  transform: rotate(90deg);
+}
+
+.profile-modal-grid {
+  display: grid; grid-template-columns: 340px 1fr;
+  min-height: 440px;
+}
+.profile-modal-photo-col {
+  position: relative; overflow: hidden;
+  background: linear-gradient(160deg, #0D334E 0%, #E52531 100%);
+}
+.profile-modal-photo-col img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.profile-modal-avatar-fallback {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.profile-modal-avatar-emoji { font-size: 7rem; }
+
+.profile-modal-info-col {
+  padding: 3rem 3rem; display: flex; flex-direction: column;
+  justify-content: center; text-align: right;
+}
+.profile-modal-name {
+  font-size: clamp(1.8rem, 3vw, 2.3rem); font-weight: 900;
+  color: var(--text-dark); margin-bottom: 0.3rem;
+}
+.profile-modal-role {
+  font-size: 1rem; font-weight: 800; color: var(--coa-red); margin-bottom: 1.2rem;
+}
+.profile-modal-desc {
+  font-size: 0.95rem; color: var(--text-sub); line-height: 1.75; margin-bottom: 1.5rem;
+}
+
+@media(max-width: 768px) {
+  .profile-modal-grid { grid-template-columns: 1fr; }
+  .profile-modal-photo-col { height: 260px; }
+  .profile-modal-info-col { padding: 2rem 1.5rem; }
 }
 
 /* ══════════════════════════════════════════════
@@ -1134,7 +1234,12 @@ footer ul a:hover { color: var(--coa-red); }
     <li><a href="#s-why">فريقنا</a></li>
     <li><a href="#s-cta">حجز الديمو والخصم</a></li>
   </ul></nav>
-  <a href="#s-cta" class="nav-btn">احجز استشارة مجانية 🚀</a>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <button type="button" class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" aria-label="تبديل المظهر">
+      <span id="themeIcon">☀️</span> <span id="themeText">وضع أبيض</span>
+    </button>
+    <a href="#s-cta" class="nav-btn">احجز استشارة مجانية 🚀</a>
+  </div>
   <!-- Mobile Hamburger -->
   <button class="hamburger-btn" id="hamburgerBtn" aria-label="القائمة" onclick="toggleMobileMenu()">
     <span></span><span></span><span></span>
@@ -1143,6 +1248,9 @@ footer ul a:hover { color: var(--coa-red); }
 
 <!-- Mobile Drawer Menu -->
 <div class="mobile-drawer" id="mobileDrawer">
+  <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" style="margin: 0 auto 1rem; width: fit-content;">
+    <span class="mobileThemeIcon">☀️</span> <span class="mobileThemeText">تغيير المظهر</span>
+  </button>
   <a href="#s-services" onclick="toggleMobileMenu()">خدماتنا</a>
   <a href="#s-globe" onclick="toggleMobileMenu()">عملاؤنا وتواجدنا الدولي</a>
   <a href="#s-why" onclick="toggleMobileMenu()">فريقنا</a>
@@ -1304,13 +1412,14 @@ footer ul a:hover { color: var(--coa-red); }
     <div class="team-showcase-card" id="teamShowcaseCard">
 
       <!-- Left: Full Portrait Photo -->
-      <div class="team-photo-col" id="teamPhotoCol">
+      <div class="team-photo-col" id="teamPhotoCol" onclick="openProfileModal(activeTeamIdx)" style="cursor:pointer;" title="انقر لتكبير بيانات العضو">
         <img id="profFullPhoto" src="" alt="صورة العضو" style="display:none;" />
         <div class="team-photo-overlay"></div>
         <div class="team-photo-avatar" id="teamPhotoAvatar">
           <span class="team-avatar-emoji" id="profAvatar">👨‍💼</span>
           <span class="team-avatar-name-big" id="profAvatarName">إبراهيم رمضان</span>
         </div>
+        <div style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.5);color:white;padding:4px 10px;border-radius:20px;font-size:0.72rem;font-weight:800;backdrop-filter:blur(6px);z-index:5;pointer-events:none;">🔍 تكبير الملف</div>
       </div>
 
       <!-- Right: Executive Info Panel -->
@@ -1407,6 +1516,32 @@ footer ul a:hover { color: var(--coa-red); }
     <h3 style="font-size:1.8rem;margin-bottom:0.8rem;color:var(--text-dark)">تم تسجيل طلب العرض بنجاح!</h3>
     <p style="color:var(--text-sub);margin-bottom:1.8rem">تم تثبيت خصم الـ 20% وتأكيد تفعيل التجربة المجانية 15 يوماً. سيتواصل معك أحد استشاريي أودو خلال دقائق.</p>
     <button type="button" onclick="closeModal()" class="btn-main" style="border:none;cursor:pointer;width:100%;justify-content:center">تم، شكراً لكم</button>
+  </div>
+</div>
+
+<!-- TEAM MEMBER EXECUTIVE PROFILE POPUP MODAL -->
+<div id="profile-modal" class="profile-modal-overlay">
+  <div class="profile-modal-box">
+    <button type="button" class="profile-modal-close" onclick="closeProfileModal()">✕</button>
+    <div class="profile-modal-grid">
+      <!-- Member Photo Side -->
+      <div class="profile-modal-photo-col" id="popPhotoCol">
+        <img id="popFullPhoto" src="" alt="Profile Photo" style="display:none;" />
+        <div class="profile-modal-avatar-fallback" id="popAvatarFallback">
+          <span class="profile-modal-avatar-emoji" id="popAvatarEmoji">👨‍💼</span>
+        </div>
+      </div>
+      <!-- Member Details Side -->
+      <div class="profile-modal-info-col">
+        <div class="team-badge-pill" id="popBadge">Role Badge</div>
+        <h3 class="profile-modal-name" id="popName">Executive Name</h3>
+        <div class="profile-modal-role" id="popRole">Official Title</div>
+        <div class="team-divider"></div>
+        <p class="profile-modal-desc" id="popDesc">Executive description goes here...</p>
+        <div class="team-skills-row" id="popSkills"></div>
+        <button type="button" class="btn-main" onclick="closeProfileModal()" style="margin-top:1.8rem;width:100%;justify-content:center;border:none;cursor:pointer;">إغلاق والعودة للمسرح الـ 3D ✨</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1934,13 +2069,45 @@ function selectTeam3D(idx) {
       card.style.opacity = '1';
       card.style.transform = 'translateY(0)';
     });
-
-    // Scroll to details card gracefully
-    const cardRect = card.getBoundingClientRect();
-    if (cardRect.top < 0 || cardRect.bottom > window.innerHeight) {
-      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
   }
+}
+
+function openProfileModal(idx) {
+  selectTeam3D(idx);
+  const t = teamData[idx];
+  if (!t) return;
+
+  const modal = document.getElementById('profile-modal');
+  const popPhoto = document.getElementById('popFullPhoto');
+  const popFallback = document.getElementById('popAvatarFallback');
+  const popEmoji = document.getElementById('popAvatarEmoji');
+
+  if (t.photo) {
+    popPhoto.src = t.photo;
+    popPhoto.style.display = 'block';
+    if (popFallback) popFallback.style.display = 'none';
+  } else {
+    popPhoto.style.display = 'none';
+    if (popFallback) popFallback.style.display = 'flex';
+    if (popEmoji) popEmoji.textContent = t.avatar;
+  }
+
+  document.getElementById('popBadge').textContent = t.badge;
+  document.getElementById('popName').textContent = t.name;
+  document.getElementById('popRole').textContent = t.role;
+  document.getElementById('popDesc').textContent = t.desc;
+
+  const skRow = document.getElementById('popSkills');
+  skRow.innerHTML = t.skills.map((s, i) => `<span class="skill-tag ${i===1?'navy':''}">${s}</span>`).join('');
+
+  if (modal) modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProfileModal() {
+  const modal = document.getElementById('profile-modal');
+  if (modal) modal.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 (function initTeamWebGLStage() {
@@ -2111,7 +2278,7 @@ function selectTeam3D(idx) {
       }
       const hitIdx = teamMeshes.findIndex(tm => tm.group === hitObj);
       if (hitIdx !== -1) {
-        selectTeam3D(hitIdx);
+        openProfileModal(hitIdx);
       }
     }
   });
@@ -2199,16 +2366,40 @@ function toggleMobileMenu() {
   document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 
-// Close drawer on scroll
-window.addEventListener('scroll', () => {
-  const drawer = document.getElementById('mobileDrawer');
-  const btn = document.getElementById('hamburgerBtn');
-  if (drawer && drawer.classList.contains('open')) {
-    drawer.classList.remove('open');
-    if (btn) btn.classList.remove('open');
-    document.body.style.overflow = '';
+// 9. DARK/LIGHT THEME SWITCHER LOGIC
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme') || 'dark';
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('coa_theme', newTheme);
+  
+  const icon = newTheme === 'light' ? '🌙' : '☀️';
+  const text = newTheme === 'light' ? 'وضع داكن' : 'وضع أبيض';
+  
+  const themeIconEl = document.getElementById('themeIcon');
+  const themeTextEl = document.getElementById('themeText');
+  if (themeIconEl) themeIconEl.textContent = icon;
+  if (themeTextEl) themeTextEl.textContent = text;
+
+  document.querySelectorAll('.mobileThemeIcon').forEach(el => el.textContent = icon);
+  document.querySelectorAll('.mobileThemeText').forEach(el => el.textContent = text);
+}
+
+// Restore saved theme on page load
+(function initTheme() {
+  const saved = localStorage.getItem('coa_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  if (saved === 'light') {
+    const themeIconEl = document.getElementById('themeIcon');
+    const themeTextEl = document.getElementById('themeText');
+    if (themeIconEl) themeIconEl.textContent = '🌙';
+    if (themeTextEl) themeTextEl.textContent = 'وضع داكن';
+    document.querySelectorAll('.mobileThemeIcon').forEach(el => el.textContent = '🌙');
+    document.querySelectorAll('.mobileThemeText').forEach(el => el.textContent = 'وضع داكن');
   }
-});
+})();
 </script>
 </body>
 </html>
