@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>iCONSULT — 3D Wireframe (FiveHills Style)</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: #030712;
+  color: white;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: #00AEEF; }
+
+/* ── HEADER / HERO ── */
+.hero {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  background: radial-gradient(circle at center, #0B192E 0%, #030712 100%);
+}
+.hero-tag {
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #00AEEF;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.hero-sub {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  max-width: 500px;
+}
+
+/* ── FIVEHILLS STYLE SECTION ── */
+.fivehills-section {
+  position: relative;
+  min-height: 120vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+}
+
+/* Background Subtle Grid Canvas */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+/* 3D Container */
+.wireframe-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  height: 580px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Three.js Canvas */
+#wireframe-canvas {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Glassmorphism Card (integrated with 3D model) */
+.glass-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 680px;
+  background: rgba(10, 20, 38, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 28px;
+  padding: 3.5rem 3rem 3rem 3rem;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  margin-top: 100px;
+  transition: border-color 0.4s;
+}
+
+.glass-card:hover {
+  border-color: rgba(0, 174, 239, 0.3);
+}
+
+.card-subtitle {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #F59E0B;
+  margin-bottom: 0.8rem;
+}
+
+.card-h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+  color: #FFFFFF;
+}
+
+.card-p {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.75;
+  max-width: 520px;
+  margin: 0 auto 2rem auto;
+  font-weight: 300;
+}
+
+/* Feature pills inside card */
+.feature-pills {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.pill.blue { border-color: rgba(0, 174, 239, 0.3); color: #00AEEF; }
+.pill.green { border-color: rgba(16, 185, 129, 0.3); color: #10B981; }
+.pill.gold { border-color: rgba(245, 158, 11, 0.3); color: #F59E0B; }
+.pill.purple { border-color: rgba(168, 85, 247, 0.3); color: #A855F7; }
+
+/* Responsive adjustments */
+@media(max-width: 650px) {
+  .glass-card { padding: 2.5rem 1.5rem; margin-top: 60px; }
+  .wireframe-container { height: 500px; }
+}
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-tag">iCONSULT Architecture</div>
+    <h1 class="hero-title">Integrated Business Solutions</h1>
+    <p class="hero-sub">Scroll down to explore our 3D interactive wireframe model</p>
+  </div>
+
+  <!-- FIVEHILLS-STYLE 3D WIREFRAME SECTION -->
+  <section class="fivehills-section">
+    <div class="grid-bg"></div>
+
+    <div class="wireframe-container">
+      <!-- 3D Canvas rendering FiveHills-style multi-color neon wireframes -->
+      <canvas id="wireframe-canvas"></canvas>
+
+      <!-- Glass Content Card -->
+      <div class="glass-card">
+        <div class="card-subtitle">ABOUT iCONSULT</div>
+        <h2 class="card-h2">Integrated Digital &amp; ERP Solutions</h2>
+        <p class="card-p">
+          Transforming businesses across MENA with unified strategy, Odoo ERP implementation, digital marketing, and HR solutions into a single cohesive ecosystem.
+        </p>
+
+        <div class="feature-pills">
+          <div class="pill blue">⚙️ Odoo ERP</div>
+          <div class="pill green">📣 Digital Marketing</div>
+          <div class="pill gold">🎯 Strategic Planning</div>
+          <div class="pill purple">👥 Human Resources</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<script>
+// ====================================================
+// FIVEHILLS-STYLE 3D WIREFRAME ENGINE (THREE.JS)
+// Multi-colored vector wireframes + glowing nodes
+// ====================================================
+(function() {
+  const canvas = document.getElementById('wireframe-canvas');
+  const container = canvas.parentElement;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+  camera.position.set(0, 2.2, 7.5);
+  camera.lookAt(0, 0, 0);
+
+  function resize() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Group to hold all 3D wireframe components
+  const buildingGroup = new THREE.Group();
+  scene.add(buildingGroup);
+
+  // Helper to create colored line wireframe from geometry
+  function createColoredWireframe(geometry, colorHex, opacity = 0.85) {
+    const edges = new THREE.EdgesGeometry(geometry);
+    const lineMat = new THREE.LineBasicMaterial({
+      color: colorHex,
+      transparent: true,
+      opacity: opacity,
+      linewidth: 1.5
+    });
+    return new THREE.LineSegments(edges, lineMat);
+  }
+
+  // Helper to create vertex glow dots (FiveHills yellow/cyan dots)
+  function createVertexDots(geometry, colorHex, size = 0.05) {
+    const positions = geometry.attributes.position.array;
+    const dotGroup = new THREE.Group();
+    const dotGeo = new THREE.SphereGeometry(size, 12, 12);
+    const dotMat = new THREE.MeshBasicMaterial({ color: colorHex });
+
+    // Deduplicate vertices
+    const seen = new Set();
+    for (let i = 0; i < positions.length; i += 3) {
+      const key = `${positions[i].toFixed(2)},${positions[i+1].toFixed(2)},${positions[i+2].toFixed(2)}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        const dot = new THREE.Mesh(dotGeo, dotMat);
+        dot.position.set(positions[i], positions[i+1], positions[i+2]);
+        dotGroup.add(dot);
+      }
+    }
+    return dotGroup;
+  }
+
+  // --- 1. BASE PLATFORM (Neon Green Wireframe) ---
+  const baseGeo = new THREE.BoxGeometry(3.6, 0.3, 2.6);
+  const baseMesh = createColoredWireframe(baseGeo, 0x10B981, 0.7);
+  baseMesh.position.y = -0.15;
+  buildingGroup.add(baseMesh);
+
+  // --- 2. MAIN BUILDING STRUCTURE (White Wireframe) ---
+  const houseBodyGeo = new THREE.BoxGeometry(3.2, 1.6, 2.2);
+  const houseBody = createColoredWireframe(houseBodyGeo, 0xFFFFFF, 0.95);
+  houseBody.position.y = 0.8;
+  buildingGroup.add(houseBody);
+
+  // --- 3. ROOF STRUCTURE (White / Cyan Lines) ---
+  const roofGeo = new THREE.ConeGeometry(2.3, 1.1, 4); // 4-sided pyramid roof
+  const roofWire = createColoredWireframe(roofGeo, 0xFFFFFF, 0.9);
+  roofWire.position.y = 2.15;
+  roofWire.rotation.y = Math.PI / 4;
+  buildingGroup.add(roofWire);
+
+  // --- 4. INNER COLUMNS & MODULES (Cyan & Gold Lines) ---
+  // Cyan Side Block
+  const sideGeo = new THREE.BoxGeometry(0.9, 0.6, 1.2);
+  const sideWire = createColoredWireframe(sideGeo, 0x00AEEF, 0.85);
+  sideWire.position.set(-1.1, 0.3, 0.4);
+  buildingGroup.add(sideWire);
+
+  // Gold Inner Beams (FiveHills Yellow Accents)
+  const beamGeo1 = new THREE.CylinderGeometry(0.015, 0.015, 2.8, 8);
+  const beam1 = new THREE.Mesh(beamGeo1, new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+  beam1.rotation.z = Math.PI / 2;
+  beam1.position.set(0, 1.3, 0.6);
+  buildingGroup.add(beam1);
+
+  const beam2 = beam1.clone();
+  beam2.position.set(0, 1.3, -0.6);
+  buildingGroup.add(beam2);
+
+  // --- 5. GLOWING VERTEX DOTS (Gold / Cyan) ---
+  const roofDots = createVertexDots(roofGeo, 0xF59E0B, 0.045);
+  roofDots.position.y = 2.15;
+  roofDots.rotation.y = Math.PI / 4;
+  buildingGroup.add(roofDots);
+
+  const bodyDots = createVertexDots(houseBodyGeo, 0x00AEEF, 0.035);
+  bodyDots.position.y = 0.8;
+  buildingGroup.add(bodyDots);
+
+  // Initial tilt like FiveHills reference photo
+  buildingGroup.rotation.x = 0.28;
+  buildingGroup.rotation.y = -0.55;
+
+  // --- MOUSE & SCROLL INTERACTION ---
+  let mouseX = 0, mouseY = 0;
+  let targetRotY = -0.55;
+  let targetRotX = 0.28;
+
+  document.addEventListener('mousemove', (e) => {
+    const normX = (e.clientX / window.innerWidth - 0.5) * 2;
+    const normY = (e.clientY / window.innerHeight - 0.5) * 2;
+    mouseX = normX * 0.4;
+    mouseY = normY * 0.2;
+  });
+
+  // GSAP ScrollTrigger for 3D rotation on scroll
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.to(buildingGroup.rotation, {
+    y: Math.PI * 1.25,
+    x: 0.15,
+    scrollTrigger: {
+      trigger: '.fivehills-section',
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 1.2
+    }
+  });
+
+  // Render Loop
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Smooth lerp following mouse
+    buildingGroup.rotation.y += (targetRotY + mouseX - buildingGroup.rotation.y) * 0.05;
+    buildingGroup.rotation.x += (targetRotX + mouseY - buildingGroup.rotation.x) * 0.05;
+
+    // Slow ambient rotation offset
+    targetRotY += 0.002;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+</script>
+</body>
+</html>

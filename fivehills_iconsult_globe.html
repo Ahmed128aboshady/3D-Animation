@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCONSULT | Giant 3D Wireframe Globe (FiveHills Engine)</title>
+
+    <!-- Google Fonts (Plus Jakarta Sans + Playfair Display) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ---- FiveHills System ---- */
+        :root {
+            --color-bg-obsidian: #03070c;
+            --color-card-obsidian: rgba(10, 16, 26, 0.92);
+            --color-accent-green: #1b8243;
+            --color-gold-agency: #cfa15c;
+            --color-cyan-agency: #00AEEF;
+            --color-border-hairline: rgba(207, 161, 92, 0.25);
+            --color-text-bright: #FFFFFF;
+            --color-text-muted: #cbd5e1;
+            --color-outer-bezel-bg: rgba(255, 255, 255, 0.02);
+            --color-outer-bezel-border: rgba(255, 255, 255, 0.05);
+            --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--color-bg-obsidian);
+            color: var(--color-text-bright);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Subtle film grain effect */
+        .film-grain {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Hero Header Space */
+        .hero-space {
+            height: 35vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(ellipse at 50% 30%, rgba(0, 174, 239, 0.08), transparent 70%);
+        }
+        .hero-tag {
+            font-size: 0.8rem;
+            color: var(--color-gold-agency);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            font-weight: 500;
+            color: var(--color-text-bright);
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+        .hero-sub {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        /* ═════════════════════════════════════════════════════════
+           GIANT GLOBE STICKY SCROLL SECTION
+           ═════════════════════════════════════════════════════════ */
+        #exploding-scroll {
+            height: 600vh;
+            position: relative;
+        }
+
+        .sticky-wrapper {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* GIANT 3D CANVAS (Covering full screen) */
+        #explode-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* FiveHills Radial Vignettes */
+        .vignette-radial {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 75% 65% at center, transparent 30%, var(--color-bg-obsidian) 85%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .fade-top {
+            position: absolute;
+            inset-x: 0; top: 0; height: 8rem;
+            background: linear-gradient(to bottom, var(--color-bg-obsidian), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .fade-bottom {
+            position: absolute;
+            inset-x: 0; bottom: 0; height: 8rem;
+            background: linear-gradient(to top, var(--color-bg-obsidian), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ── SLEEK, COMPACT FLOATING CARD (Right/Bottom Aligned) ── */
+        .compact-card-stage {
+            position: absolute;
+            right: 4vw;
+            bottom: 8vh;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px; /* Small, compact card as requested! */
+            padding: 0 10px;
+        }
+
+        /* Double-Bezel Compact Card */
+        .double-bezel-outer {
+            background: var(--color-outer-bezel-bg);
+            border: 1px solid var(--color-outer-bezel-border);
+            padding: 10px;
+            border-radius: 22px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.85);
+            transition: var(--transition-spring);
+        }
+
+        .double-bezel-inner {
+            background: var(--color-card-obsidian);
+            border: 1px solid var(--color-border-hairline);
+            border-radius: calc(22px - 10px);
+            padding: 24px 22px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Asymmetric Text Transitions */
+        .explode-text {
+            position: absolute;
+            width: calc(100% - 44px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .explode-text.active {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1) !important;
+            pointer-events: auto;
+        }
+
+        #explode-text-0 { transform: translate3d(0, 30px, 0); }
+        #explode-text-1 { transform: translate3d(80px, -40px, 0); }
+        #explode-text-2 { transform: translate3d(-80px, 40px, 0); }
+        #explode-text-3 { transform: translate3d(80px, 40px, 0); }
+        #explode-text-4 { transform: translate3d(-80px, -40px, 0); }
+
+        .card-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .card-flag-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.5rem;
+        }
+
+        .card-region-tag {
+            font-size: 0.68rem;
+            color: var(--color-gold-agency);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .card-country-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.65rem;
+            color: var(--color-text-bright);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .card-body-text {
+            font-size: 0.86rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        /* Badge Row */
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .agency-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(207, 161, 92, 0.08);
+            border: 1px solid rgba(207, 161, 92, 0.25);
+            color: var(--color-gold-agency);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .agency-pill.green {
+            background: rgba(27, 130, 67, 0.12);
+            border-color: rgba(27, 130, 67, 0.35);
+            color: #25d366;
+        }
+        .agency-pill.cyan {
+            background: rgba(0, 174, 239, 0.12);
+            border-color: rgba(0, 174, 239, 0.35);
+            color: #00AEEF;
+        }
+
+        /* Compact Dots Navigation (Left Aligned) */
+        .progress-indicator {
+            position: absolute;
+            left: 4vw;
+            bottom: 8vh;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .dot-item {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            border: 1.5px solid var(--color-border-hairline);
+            cursor: pointer;
+            transition: var(--transition-spring);
+        }
+        .dot-item.active {
+            background: var(--color-cyan-agency);
+            border-color: var(--color-cyan-agency);
+            transform: scale(1.4);
+            box-shadow: 0 0 12px rgba(0, 174, 239, 0.8);
+        }
+
+        /* Footer Section */
+        .footer-space {
+            height: 35vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-top: 1px solid var(--color-border-hairline);
+            background: var(--color-bg-obsidian);
+        }
+
+        @media (max-width: 768px) {
+            .compact-card-stage { right: 5%; left: 5%; bottom: 4vh; max-width: 90%; }
+            .progress-indicator { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="film-grain"></div>
+
+    <!-- HERO HEADER -->
+    <div class="hero-space">
+        <span class="hero-tag">Global Business Transformation</span>
+        <h1 class="hero-title">Our International Reach</h1>
+        <p class="hero-sub">Scroll to navigate the giant 3D wireframe globe</p>
+    </div>
+
+    <!-- STICKY GIANT GLOBE SCROLL SECTION -->
+    <section id="exploding-scroll">
+        <div class="sticky-wrapper">
+
+            <!-- Real-time 3D projected Canvas (GIANT GLOBE) -->
+            <canvas id="explode-canvas"></canvas>
+
+            <!-- FiveHills Vignettes -->
+            <div class="vignette-radial"></div>
+            <div class="fade-top"></div>
+            <div class="fade-bottom"></div>
+
+            <!-- Dots Navigation (Left Side) -->
+            <div class="progress-indicator">
+                <div class="dot-item active" id="dot-0"></div>
+                <div class="dot-item" id="dot-1"></div>
+                <div class="dot-item" id="dot-2"></div>
+                <div class="dot-item" id="dot-3"></div>
+                <div class="dot-item" id="dot-4"></div>
+            </div>
+
+            <!-- COMPACT SLEEK CARD (Right Side) -->
+            <div class="compact-card-stage">
+                <div class="double-bezel-outer">
+                    <div class="double-bezel-inner">
+
+                        <!-- Panel 0: Egypt 🇪🇬 -->
+                        <div class="explode-text active" id="explode-text-0">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇪🇬</span> <strong>Egypt</strong></div>
+                                <span class="card-region-tag">Headquarters</span>
+                            </div>
+                            <h2 class="card-country-title">Cairo HQ Hub</h2>
+                            <p class="card-body-text">
+                                Cairo Headquarters leading business transformation across North Africa. Enterprise Odoo ERP & strategy consulting.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill green">⚙️ Odoo ERP</span>
+                                <span class="agency-pill">200+ Projects</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 1: Saudi Arabia 🇸🇦 -->
+                        <div class="explode-text" id="explode-text-1">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇸🇦</span> <strong>Saudi Arabia</strong></div>
+                                <span class="card-region-tag">Vision 2030</span>
+                            </div>
+                            <h2 class="card-country-title">Riyadh Operations</h2>
+                            <p class="card-body-text">
+                                Empowering enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill cyan">🎯 Strategic Planning</span>
+                                <span class="agency-pill green">98% Satisfaction</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 2: UAE 🇦🇪 -->
+                        <div class="explode-text" id="explode-text-2">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇦🇪</span> <strong>UAE</strong></div>
+                                <span class="card-region-tag">Innovation Hub</span>
+                            </div>
+                            <h2 class="card-country-title">Dubai Office</h2>
+                            <p class="card-body-text">
+                                Driving high-performance digital marketing, brand acceleration, and AI automation for Dubai corporations.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill">📣 Digital Marketing</span>
+                                <span class="agency-pill cyan">3x ROI Growth</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 3: Japan 🇯🇵 -->
+                        <div class="explode-text" id="explode-text-3">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇯🇵</span> <strong>Japan</strong></div>
+                                <span class="card-region-tag">Tech Alliance</span>
+                            </div>
+                            <h2 class="card-country-title">Tokyo Partner</h2>
+                            <p class="card-body-text">
+                                Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill green">🤖 AI Integration</span>
+                                <span class="agency-pill">Tokyo Office</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 4: Europe 🇪🇺 -->
+                        <div class="explode-text" id="explode-text-4">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇪🇺</span> <strong>Europe</strong></div>
+                                <span class="card-region-tag">Global Network</span>
+                            </div>
+                            <h2 class="card-country-title">Western Europe</h2>
+                            <p class="card-body-text">
+                                Facilitating cross-border expansion and market localization for European firms targeting MENA regions.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill cyan">👥 Human Resources</span>
+                                <span class="agency-pill">Global Network</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="footer-space">
+        <div>
+            <h2 style="font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:15px; font-weight:500;">Ready to Transform Your Enterprise?</h2>
+            <a href="https://wa.me/+201015380800" target="_blank" style="display:inline-block; background:var(--color-accent-green); color:#FFF; padding:12px 30px; border-radius:50px; text-decoration:none; font-weight:600; font-size:0.88rem; box-shadow:0 8px 25px rgba(27,130,67,0.4)">💬 Talk to Our Experts</a>
+        </div>
+    </div>
+
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // GIANT 3D WIREFRAME GLOBE ENGINE (FiveHills 120 FPS Projection Matrix)
+        // ═══════════════════════════════════════════════════════════════════════════
+        const explodeSection = document.getElementById('exploding-scroll');
+        const explodeCanvas = document.getElementById('explode-canvas');
+        const explodeCtx = explodeCanvas.getContext('2d');
+
+        const explodeTexts = [
+            document.getElementById('explode-text-0'),
+            document.getElementById('explode-text-1'),
+            document.getElementById('explode-text-2'),
+            document.getElementById('explode-text-3'),
+            document.getElementById('explode-text-4')
+        ];
+
+        const dots = [
+            document.getElementById('dot-0'),
+            document.getElementById('dot-1'),
+            document.getElementById('dot-2'),
+            document.getElementById('dot-3'),
+            document.getElementById('dot-4')
+        ];
+
+        let deconstructProgress = 0;
+        let angleY = 0.5;
+        let angleX = 0.2;
+
+        const countryStops = [
+            { lat: 26.8, lon: 30.8, color: '#1b8243', name: 'Egypt' },       // Stop 0
+            { lat: 23.8, lon: 45.0, color: '#cfa15c', name: 'Saudi Arabia' },// Stop 1
+            { lat: 24.4, lon: 54.3, color: '#00AEEF', name: 'UAE' },         // Stop 2
+            { lat: 36.2, lon: 138.2, color: '#FFFFFF', name: 'Japan' },       // Stop 3
+            { lat: 48.8, lon: 2.3, color: '#cfa15c', name: 'Europe' }         // Stop 4
+        ];
+
+        // GIANT GLOBE RADIUS (R = 3.65 for dominant full-stage globe!)
+        const R = 3.65;
+
+        // CONTINENT VECTOR OUTLINES
+        const continentPolygons = [
+            // Africa & Egypt
+            { color: '#1b8243', width: 2.0, points: [[37,10],[37,34],[30,32],[30,35],[22,37],[12,44],[11,51],[2,41],[-10,40],[-26,33],[-34,26],[-34,18],[-18,12],[-5,12],[4,7],[10,-14],[15,-17],[28,-13],[36,-5],[37,10]] },
+            
+            // Arabian Peninsula (Saudi Arabia, UAE, Kuwait)
+            { color: '#cfa15c', width: 2.2, points: [[30,35],[30,48],[26,56],[22,59],[16,53],[12,44],[22,37],[30,35]] },
+            
+            // Europe
+            { color: '#00AEEF', width: 1.8, points: [[36,-9],[43,-9],[44,-1],[50,-1],[54,5],[58,6],[60,11],[60,25],[70,25],[70,30],[55,38],[45,35],[40,26],[38,23],[38,15],[44,12],[41,9],[43,6],[36,-5],[36,-9]] },
+            
+            // Asia & Japan
+            { color: '#00AEEF', width: 1.8, points: [[70,30],[75,80],[70,130],[60,165],[50,140],[40,120],[30,120],[22,114],[20,106],[10,104],[1,104],[10,98],[22,90],[15,80],[8,77],[20,70],[25,62],[30,48],[45,35],[55,38],[70,30]] },
+            // Japan Archipelago
+            { color: '#FFFFFF', width: 2.4, points: [[45,142],[41,140],[35,136],[31,130],[33,132],[36,139],[42,144],[45,142]] },
+            
+            // North America
+            { color: '#cfa15c', width: 1.8, points: [[70,-165],[70,-130],[60,-80],[50,-55],[47,-52],[30,-80],[25,-80],[25,-97],[15,-92],[15,-88],[8,-78],[15,-95],[20,-105],[30,-115],[48,-125],[60,-140],[65,-168],[70,-165]] },
+            
+            // South America
+            { color: '#1b8243', width: 1.8, points: [[12,-73],[10,-62],[0,-50],[-10,-35],[-22,-40],[-34,-53],[-54,-68],[-45,-75],[-18,-70],[-5,-81],[5,-77],[12,-73]] },
+            
+            // Australia
+            { color: '#cfa15c', width: 1.8, points: [[-12,130],[-12,142],[-25,153],[-38,148],[-35,117],[-22,114],[-15,125],[-12,130]] }
+        ];
+
+        function ll2xyz(lat, lon, radius = R) {
+            const phi = lat * Math.PI / 180;
+            const theta = lon * Math.PI / 180;
+            return [
+                radius * Math.cos(phi) * Math.cos(theta),
+                radius * Math.sin(phi),
+                radius * Math.cos(phi) * Math.sin(theta)
+            ];
+        }
+
+        // Build 3D Lat/Lon Wireframe Grid
+        const globeWireframe = {
+            latitudeRings: [],
+            longitudeRings: [],
+            continents3D: [],
+            beacons: []
+        };
+
+        // Latitude circles
+        for (let lat = -75; lat <= 75; lat += 20) {
+            const r = R * Math.cos(lat * Math.PI / 180);
+            const y = R * Math.sin(lat * Math.PI / 180);
+            const ringPoints = [];
+            for (let lon = 0; lon <= 360; lon += 10) {
+                const theta = lon * Math.PI / 180;
+                ringPoints.push([r * Math.cos(theta), y, r * Math.sin(theta)]);
+            }
+            globeWireframe.latitudeRings.push({
+                color: lat === 0 ? '#FFFFFF' : 'rgba(255, 255, 255, 0.16)',
+                points: ringPoints
+            });
+        }
+
+        // Longitude circles
+        for (let lon = 0; lon < 360; lon += 25) {
+            const theta = lon * Math.PI / 180;
+            const ringPoints = [];
+            for (let lat = -90; lat <= 90; lat += 8) {
+                const r = R * Math.cos(lat * Math.PI / 180);
+                const y = R * Math.sin(lat * Math.PI / 180);
+                ringPoints.push([r * Math.cos(theta), y, r * Math.sin(theta)]);
+            }
+            globeWireframe.longitudeRings.push({
+                color: (lon === 0 || lon === 180) ? 'rgba(0, 174, 239, 0.6)' : 'rgba(255, 255, 255, 0.12)',
+                points: ringPoints
+            });
+        }
+
+        // Convert continent polygons
+        continentPolygons.forEach(poly => {
+            const pts3D = poly.points.map(pt => ll2xyz(pt[0], pt[1], R + 0.02));
+            globeWireframe.continents3D.push({
+                color: poly.color,
+                width: poly.width,
+                points: pts3D
+            });
+        });
+
+        // 3D Country Beacons
+        countryStops.forEach(st => {
+            const pt = ll2xyz(st.lat, st.lon, R + 0.05);
+            globeWireframe.beacons.push({ x: pt[0], y: pt[1], z: pt[2], color: st.color, name: st.name });
+        });
+
+        function resizeCanvas() {
+            explodeCanvas.width = explodeCanvas.clientWidth * window.devicePixelRatio;
+            explodeCanvas.height = explodeCanvas.clientHeight * window.devicePixelRatio;
+            render3DScene();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        // 3D Matrix Projection Engine (Pushes Giant Globe slightly to center-left)
+        function project3D(x, y, z) {
+            const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+            const x1 = x * cosY - z * sinY;
+            const z1 = x * sinY + z * cosY;
+
+            const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+            const y2 = y * cosX - z1 * sinX;
+            const z1_rotated = y * sinX + z1 * cosX;
+
+            const fov = 460;
+            const cameraZ = 6.0;
+            const scale = fov / (z1_rotated + cameraZ);
+
+            // Center giant globe on screen with slight left bias (-120px) to clear right compact card
+            const screenX = (explodeCanvas.width / window.devicePixelRatio) / 2 + x1 * scale - 120;
+            const screenY = (explodeCanvas.height / window.devicePixelRatio) / 2 + y2 * scale;
+
+            return [screenX, screenY, z1_rotated];
+        }
+
+        let pulseTime = 0;
+
+        function render3DScene() {
+            explodeCtx.clearRect(0, 0, explodeCanvas.width, explodeCanvas.height);
+            explodeCtx.save();
+            explodeCtx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+            const width = explodeCanvas.width / window.devicePixelRatio;
+            const height = explodeCanvas.height / window.devicePixelRatio;
+
+            // FiveHills background grid
+            explodeCtx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+            explodeCtx.lineWidth = 0.5;
+            const gridSize = 35;
+
+            explodeCtx.beginPath();
+            for(let x = 0; x < width; x += gridSize) { explodeCtx.moveTo(x, 0); explodeCtx.lineTo(x, height); }
+            for(let y = 0; y < height; y += gridSize) { explodeCtx.moveTo(0, y); explodeCtx.lineTo(width, y); }
+            explodeCtx.stroke();
+
+            // 1. Draw Lat/Lon Grid Lines
+            globeWireframe.latitudeRings.forEach(ring => {
+                explodeCtx.strokeStyle = ring.color;
+                explodeCtx.lineWidth = ring.color === '#FFFFFF' ? 1.5 : 0.7;
+                explodeCtx.beginPath();
+                ring.points.forEach((pt, idx) => {
+                    const [sx, sy] = project3D(pt[0], pt[1], pt[2]);
+                    if (idx === 0) explodeCtx.moveTo(sx, sy);
+                    else explodeCtx.lineTo(sx, sy);
+                });
+                explodeCtx.stroke();
+            });
+
+            globeWireframe.longitudeRings.forEach(ring => {
+                explodeCtx.strokeStyle = ring.color;
+                explodeCtx.lineWidth = 0.7;
+                explodeCtx.beginPath();
+                ring.points.forEach((pt, idx) => {
+                    const [sx, sy] = project3D(pt[0], pt[1], pt[2]);
+                    if (idx === 0) explodeCtx.moveTo(sx, sy);
+                    else explodeCtx.lineTo(sx, sy);
+                });
+                explodeCtx.stroke();
+            });
+
+            // 2. Draw CONTINENT VECTOR OUTLINES (Bold Multi-Color Neon Lines)
+            globeWireframe.continents3D.forEach(cont => {
+                explodeCtx.strokeStyle = cont.color;
+                explodeCtx.lineWidth = cont.width;
+                explodeCtx.beginPath();
+
+                cont.points.forEach((pt, idx) => {
+                    const [sx, sy, sz] = project3D(pt[0], pt[1], pt[2]);
+                    if (idx === 0) explodeCtx.moveTo(sx, sy);
+                    else explodeCtx.lineTo(sx, sy);
+                });
+                explodeCtx.closePath();
+                explodeCtx.stroke();
+            });
+
+            // 3. Draw Country Beacons
+            pulseTime += 0.05;
+
+            globeWireframe.beacons.forEach((beacon, i) => {
+                const [sx, sy, sz] = project3D(beacon.x, beacon.y, beacon.z);
+
+                if (sz > -0.5) {
+                    const isActive = Math.round(deconstructProgress * 4) === i;
+                    const dotRadius = isActive ? 7 : 4;
+
+                    if (isActive) {
+                        const pulseRadius = dotRadius + (Math.sin(pulseTime) + 1) * 10;
+                        explodeCtx.beginPath();
+                        explodeCtx.arc(sx, sy, pulseRadius, 0, Math.PI * 2);
+                        explodeCtx.strokeStyle = beacon.color;
+                        explodeCtx.lineWidth = 1.6;
+                        explodeCtx.stroke();
+                    }
+
+                    explodeCtx.beginPath();
+                    explodeCtx.arc(sx, sy, dotRadius, 0, Math.PI * 2);
+                    explodeCtx.fillStyle = beacon.color;
+                    explodeCtx.fill();
+                    explodeCtx.strokeStyle = '#FFFFFF';
+                    explodeCtx.lineWidth = 1.5;
+                    explodeCtx.stroke();
+                }
+            });
+
+            explodeCtx.restore();
+        }
+
+        // FiveHills Smooth Interpolation Loop
+        let targetProgress = 0;
+        let currentProgress = 0;
+        let isAnimating = false;
+
+        function animate3D() {
+            const diff = targetProgress - currentProgress;
+            if (Math.abs(diff) > 0.0005) {
+                currentProgress += diff * 0.12;
+                deconstructProgress = currentProgress;
+
+                const activeIndex = Math.min(4, Math.floor(deconstructProgress * 5));
+                const currentStop = countryStops[activeIndex];
+
+                const targetAngleY = -currentStop.lon * Math.PI / 180 - Math.PI / 2;
+                angleY += (targetAngleY - angleY) * 0.1;
+                angleX = -currentStop.lat * Math.PI / 180 * 0.35 + 0.15;
+
+                render3DScene();
+
+                explodeTexts.forEach((el, i) => {
+                    const start = i / 5;
+                    const end = (i + 1) / 5;
+                    if (deconstructProgress >= start && deconstructProgress < end + 0.02) {
+                        el.classList.add('active');
+                        if (dots[i]) dots[i].classList.add('active');
+                    } else {
+                        el.classList.remove('active');
+                        if (dots[i]) dots[i].classList.remove('active');
+                    }
+                });
+
+                requestAnimationFrame(animate3D);
+            } else {
+                currentProgress = targetProgress;
+                deconstructProgress = currentProgress;
+                render3DScene();
+                isAnimating = false;
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const rect = explodeSection.getBoundingClientRect();
+            const sectionHeight = explodeSection.offsetHeight - window.innerHeight;
+            const scrolled = -rect.top;
+            targetProgress = Math.max(0, Math.min(0.99, scrolled / sectionHeight));
+
+            if (!isAnimating) {
+                isAnimating = true;
+                requestAnimationFrame(animate3D);
+            }
+        }, { passive: true });
+
+        setTimeout(() => {
+            resizeCanvas();
+            render3DScene();
+        }, 150);
+    </script>
+</body>
+</html>

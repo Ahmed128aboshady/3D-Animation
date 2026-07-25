@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCONSULT | Photorealistic 3D Earth Globe (10 Country Journey)</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* ---- FiveHills System ---- */
+        :root {
+            --color-bg-obsidian: #03070c;
+            --color-card-obsidian: rgba(8, 14, 24, 0.94);
+            --color-accent-green: #1b8243;
+            --color-gold-agency: #cfa15c;
+            --color-cyan-agency: #00AEEF;
+            --color-border-hairline: rgba(0, 174, 239, 0.25);
+            --color-text-bright: #FFFFFF;
+            --color-text-muted: #cbd5e1;
+            --color-outer-bezel-bg: rgba(255, 255, 255, 0.02);
+            --color-outer-bezel-border: rgba(255, 255, 255, 0.05);
+            --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--color-bg-obsidian);
+            color: var(--color-text-bright);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Subtle film grain effect */
+        .film-grain {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Hero Header Space */
+        .hero-space {
+            height: 25vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(ellipse at 30% 30%, rgba(0, 174, 239, 0.12), transparent 70%);
+        }
+        .hero-tag {
+            font-size: 0.8rem;
+            color: var(--color-cyan-agency);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            font-weight: 500;
+            color: var(--color-text-bright);
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+        .hero-sub {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            max-width: 540px;
+            line-height: 1.6;
+        }
+
+        /* ═════════════════════════════════════════════════════════
+           GIANT REALISTIC 3D GLOBE STICKY SECTION
+           (Globe on LEFT, Compact Card on RIGHT)
+           ═════════════════════════════════════════════════════════ */
+        #exploding-scroll {
+            height: 1000vh; /* 10 stops track */
+            position: relative;
+        }
+
+        .sticky-wrapper {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Three.js Canvas (FullScreen, globe aligned LEFT) */
+        #three-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* FiveHills Vignette Overlays */
+        .vignette-radial {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 75% 65% at 30% 50%, transparent 25%, var(--color-bg-obsidian) 85%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .fade-top {
+            position: absolute;
+            inset-x: 0; top: 0; height: 8rem;
+            background: linear-gradient(to bottom, var(--color-bg-obsidian), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .fade-bottom {
+            position: absolute;
+            inset-x: 0; bottom: 0; height: 8rem;
+            background: linear-gradient(to top, var(--color-bg-obsidian), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ── COMPACT FLOATING CARD (Positioned RIGHT) ── */
+        .compact-card-stage {
+            position: absolute;
+            right: 5vw;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            padding: 0 10px;
+        }
+
+        /* Double-Bezel Card (FiveHills Doppelrand) */
+        .double-bezel-outer {
+            background: var(--color-outer-bezel-bg);
+            border: 1px solid var(--color-outer-bezel-border);
+            padding: 10px;
+            border-radius: 24px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.95);
+            transition: var(--transition-spring);
+        }
+
+        .double-bezel-inner {
+            background: var(--color-card-obsidian);
+            border: 1px solid var(--color-border-hairline);
+            border-radius: calc(24px - 10px);
+            padding: 26px 24px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .explode-text {
+            position: absolute;
+            width: calc(100% - 48px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .explode-text.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate3d(0, 0, 0) scale(1) !important;
+            pointer-events: auto;
+        }
+
+        /* FiveHills explode text direction entries */
+        .t-0 { transform: translate3d(0, 30px, 0); }
+        .t-1 { transform: translate3d(80px, -40px, 0); }
+        .t-2 { transform: translate3d(-80px, 40px, 0); }
+        .t-3 { transform: translate3d(80px, 40px, 0); }
+        .t-4 { transform: translate3d(-80px, -40px, 0); }
+
+        .card-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .card-flag-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.6rem;
+        }
+
+        .card-region-tag {
+            font-size: 0.68rem;
+            color: var(--color-cyan-agency);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .card-country-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--color-text-bright);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .card-body-text {
+            font-size: 0.88rem;
+            color: var(--color-text-muted);
+            line-height: 1.65;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .agency-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0, 174, 239, 0.1);
+            border: 1px solid rgba(0, 174, 239, 0.3);
+            color: var(--color-cyan-agency);
+            padding: 5px 13px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .agency-pill.green {
+            background: rgba(27, 130, 67, 0.12);
+            border-color: rgba(27, 130, 67, 0.35);
+            color: #25d366;
+        }
+        .agency-pill.gold {
+            background: rgba(207, 161, 92, 0.12);
+            border-color: rgba(207, 161, 92, 0.35);
+            color: #cfa15c;
+        }
+
+        /* ── MOBILE FLOATING ZOOM BUTTONS ── */
+        .mobile-zoom-controls {
+            position: absolute;
+            left: 20px;
+            bottom: 30vh;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .zoom-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(10, 16, 26, 0.88);
+            border: 1px solid var(--color-border-hairline);
+            color: #FFFFFF;
+            font-size: 1.4rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            transition: var(--transition-spring);
+        }
+
+        .zoom-btn:active {
+            transform: scale(0.9);
+            background: var(--color-cyan-agency);
+        }
+
+        /* Location Pin Dots Navigation (Far Left Side) */
+        .progress-indicator {
+            position: absolute;
+            left: 3vw;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .dot-item {
+            width: 18px; height: 24px;
+            cursor: pointer;
+            transition: var(--transition-spring);
+            background: rgba(0, 174, 239, 0.4);
+            clip-path: polygon(50% 0%, 100% 35%, 80% 65%, 50% 100%, 20% 65%, 0% 35%);
+            opacity: 0.5;
+        }
+        .dot-item.active {
+            background: var(--color-cyan-agency);
+            opacity: 1;
+            transform: scale(1.3);
+            box-shadow: 0 0 16px rgba(0, 174, 239, 1);
+        }
+
+        /* Footer Section */
+        .footer-space {
+            height: 30vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-top: 1px solid var(--color-border-hairline);
+            background: var(--color-bg-obsidian);
+        }
+
+        /* ── RESPONSIVE MOBILE MEDIA QUERIES ── */
+        @media (max-width: 850px) {
+            .hero-space { height: 28vh; padding: 1.5rem 1rem; }
+            .hero-title { font-size: 2rem; }
+            
+            .sticky-wrapper {
+                flex-direction: column;
+                justify-content: flex-end;
+            }
+
+            .compact-card-stage {
+                right: 0; left: 0;
+                top: auto; bottom: 3vh;
+                transform: none;
+                max-width: 92%;
+                margin: 0 auto;
+            }
+
+            .double-bezel-inner {
+                padding: 18px 16px;
+                min-height: 200px;
+            }
+
+            .card-country-title { font-size: 1.4rem; }
+            .card-body-text { font-size: 0.82rem; margin-bottom: 12px; }
+            .badge-row { gap: 6px; }
+            .agency-pill { font-size: 0.7rem; padding: 4px 10px; }
+
+            .progress-indicator {
+                left: 12px;
+                gap: 8px;
+            }
+            .dot-item { width: 14px; height: 18px; }
+        }
+
+        @media (max-width: 480px) {
+            .compact-card-stage { max-width: 95%; bottom: 2vh; }
+            .double-bezel-inner { padding: 16px 14px; min-height: 190px; }
+            .card-country-title { font-size: 1.25rem; }
+            .card-flag-badge { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="film-grain"></div>
+
+    <!-- HERO HEADER -->
+    <div class="hero-space">
+        <span class="hero-tag">Global Business Transformation</span>
+        <h1 class="hero-title">10 International Destinations</h1>
+        <p class="hero-sub">Scroll to navigate the 3D globe on the left and explore our cards on the right</p>
+    </div>
+
+    <!-- STICKY SCROLL SECTION -->
+    <section id="exploding-scroll">
+        <div class="sticky-wrapper">
+
+            <!-- Three.js Canvas (Globe on LEFT) -->
+            <canvas id="three-canvas"></canvas>
+
+            <!-- Vignettes -->
+            <div class="vignette-radial"></div>
+            <div class="fade-top"></div>
+            <div class="fade-bottom"></div>
+
+            <!-- 10 Dots Navigation (Far Left) -->
+            <div class="progress-indicator" id="dots-container"></div>
+
+            <!-- Mobile Floating Zoom Buttons (+ / -) -->
+            <div class="mobile-zoom-controls">
+                <button class="zoom-btn" onclick="zoomInMobile()">+</button>
+                <button class="zoom-btn" onclick="zoomOutMobile()">−</button>
+            </div>
+
+            <!-- COMPACT FLOATING CARD (RIGHT SIDE) -->
+            <div class="compact-card-stage">
+                <div class="double-bezel-outer">
+                    <div class="double-bezel-inner" id="card-inner">
+                        <!-- 10 Explode Panels will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="footer-space">
+        <div>
+            <h2 style="font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:15px; font-weight:500;">Ready to Transform Your Enterprise?</h2>
+            <a href="https://wa.me/+201015380800" target="_blank" style="display:inline-block; background:var(--color-accent-green); color:#FFF; padding:12px 30px; border-radius:50px; text-decoration:none; font-weight:600; font-size:0.88rem; box-shadow:0 8px 25px rgba(27,130,67,0.4)">💬 Talk to Our Experts</a>
+        </div>
+    </div>
+
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // 10 COUNTRY STOPS DATA
+        // ═══════════════════════════════════════════════════════════════════════════
+        const countryStops = [
+            {
+                lat: 30.0, lon: 31.2, flag: '🇪🇬', country: 'Egypt', tag: 'Headquarters',
+                title: 'Cairo HQ Hub',
+                desc: 'Cairo Headquarters leading business transformation across North Africa. Specialized in Odoo ERP, strategic consulting & AI automation.',
+                p1: '⚙️ Odoo ERP', p2: '200+ Projects', color: 0x1b8243
+            },
+            {
+                lat: 24.7, lon: 46.7, flag: '🇸🇦', country: 'Saudi Arabia', tag: 'Vision 2030',
+                title: 'Riyadh Operations',
+                desc: 'Empowering major enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.',
+                p1: '🎯 Strategic Planning', p2: '98% Satisfaction', color: 0xcfa15c
+            },
+            {
+                lat: 25.2, lon: 55.3, flag: '🇦🇪', country: 'UAE', tag: 'Innovation Hub',
+                title: 'Dubai Office',
+                desc: 'Driving high-performance digital marketing, brand acceleration, and AI workflow automation for Dubai corporations.',
+                p1: '📣 Digital Marketing', p2: '3x ROI Growth', color: 0x00AEEF
+            },
+            {
+                lat: 29.3, lon: 47.7, flag: '🇰🇼', country: 'Kuwait', tag: 'GCC Region',
+                title: 'Kuwait City',
+                desc: 'Providing specialized ERP automation and workforce management solutions for industrial & commercial groups.',
+                p1: '👥 Human Resources', p2: 'GCC Growth', color: 0x25d366
+            },
+            {
+                lat: 51.5, lon: -0.1, flag: '🇬🇧', country: 'United Kingdom', tag: 'European Gateway',
+                title: 'London Partner',
+                desc: 'Connecting European firms with Middle Eastern markets through seamless IT architecture and compliance consulting.',
+                p1: '🌐 Global Tech', p2: 'UK Network', color: 0xcfa15c
+            },
+            {
+                lat: 52.5, lon: 13.4, flag: '🇩🇪', country: 'Germany', tag: 'Central Europe',
+                title: 'Berlin Office',
+                desc: 'Delivering Industry 4.0 data integration and cross-border ERP synchronization for German manufacturing firms.',
+                p1: '⚙️ Industry 4.0', p2: 'Data Integration', color: 0x00AEEF
+            },
+            {
+                lat: 36.2, lon: 138.2, flag: '🇯🇵', country: 'Japan', tag: 'Tech Alliance',
+                title: 'Tokyo Alliance',
+                desc: 'Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.',
+                p1: '🤖 AI Integration', p2: 'Tokyo Office', color: 0xFFFFFF
+            },
+            {
+                lat: 1.3, lon: 103.8, flag: '🇸🇬', country: 'Singapore', tag: 'APAC Hub',
+                title: 'Singapore Centre',
+                desc: 'Expanding digital transformation and fintech integration for Asian multinational enterprises.',
+                p1: '🚀 APAC Expansion', p2: 'Fintech ERP', color: 0x25d366
+            },
+            {
+                lat: 40.7, lon: -74.0, flag: '🇺🇸', country: 'United States', tag: 'Americas Hub',
+                title: 'New York Office',
+                desc: 'Providing US corporations expanding into MENA with strategic market entry, ERP migration, and localization.',
+                p1: '🗽 Market Entry', p2: 'US Alliance', color: 0x00AEEF
+            },
+            {
+                lat: -23.5, lon: -46.6, flag: '🇧🇷', country: 'Brazil', tag: 'Latin America',
+                title: 'São Paulo Partner',
+                desc: 'Supporting South American agritech and industrial leaders with cloud ERP infrastructure and analytics.',
+                p1: '🌱 Agritech ERP', p2: 'LATAM Reach', color: 0xcfa15c
+            }
+        ];
+
+        // DYNAMICALLY GENERATE CARDS & DOTS
+        const cardInner = document.getElementById('card-inner');
+        const dotsContainer = document.getElementById('dots-container');
+
+        countryStops.forEach((st, i) => {
+            const panel = document.createElement('div');
+            panel.className = `explode-text t-${i % 5}` + (i === 0 ? ' active' : '');
+            panel.id = `explode-text-${i}`;
+            panel.innerHTML = `
+                <div class="card-top-row">
+                    <div class="card-flag-badge"><span>${st.flag}</span> <strong>${st.country}</strong></div>
+                    <span class="card-region-tag">${st.tag}</span>
+                </div>
+                <h2 class="card-country-title">${st.title}</h2>
+                <p class="card-body-text">${st.desc}</p>
+                <div class="badge-row">
+                    <span class="agency-pill green">${st.p1}</span>
+                    <span class="agency-pill gold">${st.p2}</span>
+                </div>
+            `;
+            cardInner.appendChild(panel);
+
+            const dot = document.createElement('div');
+            dot.className = 'dot-item' + (i === 0 ? ' active' : '');
+            dot.id = `dot-${i}`;
+            dot.addEventListener('click', () => {
+                const sectionHeight = document.getElementById('exploding-scroll').offsetHeight - window.innerHeight;
+                window.scrollTo({
+                    top: document.getElementById('exploding-scroll').offsetTop + (i / countryStops.length) * sectionHeight,
+                    behavior: 'smooth'
+                });
+            });
+            dotsContainer.appendChild(dot);
+        });
+
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PHOTOREALISTIC 3D EARTH GLOBE ENGINE
+        // ═══════════════════════════════════════════════════════════════════════════
+        const canvas = document.getElementById('three-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 5.8);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.65);
+        scene.add(ambientLight);
+
+        const sunLight = new THREE.DirectionalLight(0xffffff, 1.8);
+        sunLight.position.set(5, 3, 5);
+        scene.add(sunLight);
+
+        const blueRimLight = new THREE.DirectionalLight(0x00AEEF, 0.8);
+        blueRimLight.position.set(-5, -2, -3);
+        scene.add(blueRimLight);
+
+        const globeGroup = new THREE.Group();
+        globeGroup.position.set(-1.7, 0, 0); // Shift Globe to LEFT side for desktop
+        scene.add(globeGroup);
+
+        function updateCameraPos() {
+            if (window.innerWidth < 850) {
+                globeGroup.position.set(0, 0.7, 0); // Position Globe at upper-center for mobile
+                camera.position.set(0, 0, 6.8);
+            } else {
+                globeGroup.position.set(-1.7, 0, 0); // Position Globe on Left for desktop
+                camera.position.set(0, 0, 5.8);
+            }
+        }
+        updateCameraPos();
+
+        const R = 2.45; // Globe Radius
+
+        // 1. PHOTOREALISTIC EARTH MATERIAL (NASA Maps)
+        const textureLoader = new THREE.TextureLoader();
+        const dayMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+        const bumpMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg');
+        const specularMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg');
+        const cloudsMap = textureLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
+
+        const earthGeo = new THREE.SphereGeometry(R, 64, 64);
+        const earthMat = new THREE.MeshPhongMaterial({
+            map: dayMap,
+            normalMap: bumpMap,
+            normalScale: new THREE.Vector2(0.85, 0.85),
+            specularMap: specularMap,
+            specular: new THREE.Color(0x333333),
+            shininess: 15,
+        });
+
+        const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+        globeGroup.add(earthMesh);
+
+        // 2. CLOUD LAYER
+        const cloudGeo = new THREE.SphereGeometry(R * 1.015, 64, 64);
+        const cloudMat = new THREE.MeshStandardMaterial({
+            map: cloudsMap,
+            transparent: true,
+            opacity: 0.4,
+            blending: THREE.NormalBlending
+        });
+        const cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+        globeGroup.add(cloudMesh);
+
+        // 3. ATMOSPHERE SCATTERING AURA
+        const atmGeo = new THREE.SphereGeometry(R * 1.1, 64, 64);
+        const atmMat = new THREE.MeshBasicMaterial({
+            color: 0x00AEEF,
+            transparent: true,
+            opacity: 0.12,
+            side: THREE.BackSide
+        });
+        globeGroup.add(new THREE.Mesh(atmGeo, atmMat));
+
+        // 4. OVERLAY WIREFRAME VECTOR RINGS
+        const gridGroup = new THREE.Group();
+        const gridMat = new THREE.LineBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.18 });
+        for (let lat = -60; lat <= 60; lat += 30) {
+            const r = (R + 0.02) * Math.cos(lat * Math.PI / 180);
+            const y = (R + 0.02) * Math.sin(lat * Math.PI / 180);
+            const pts = [];
+            for (let l = 0; l <= 360; l += 10) {
+                const theta = l * Math.PI / 180;
+                pts.push(new THREE.Vector3(r * Math.cos(theta), y, r * Math.sin(theta)));
+            }
+            gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
+        }
+        globeGroup.add(gridGroup);
+
+        // 5. 10 COUNTRY 3D LOCATION PINS
+        function ll2xyz(lat, lon, radius = R + 0.04) {
+            const phi = (90 - lat) * Math.PI / 180;
+            const theta = (lon + 180) * Math.PI / 180;
+            return new THREE.Vector3(
+                -radius * Math.sin(phi) * Math.cos(theta),
+                 radius * Math.cos(phi),
+                 radius * Math.sin(phi) * Math.sin(theta)
+            );
+        }
+
+        function create3DLocationPin(colorHex) {
+            const pinGroup = new THREE.Group();
+
+            const headGeo = new THREE.SphereGeometry(0.09, 16, 16);
+            const headMat = new THREE.MeshPhongMaterial({
+                color: colorHex,
+                emissive: colorHex,
+                emissiveIntensity: 0.4,
+                shininess: 80
+            });
+            const headMesh = new THREE.Mesh(headGeo, headMat);
+            headMesh.position.y = 0.22;
+            pinGroup.add(headMesh);
+
+            const eyeGeo = new THREE.SphereGeometry(0.038, 12, 12);
+            const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const eyeMesh = new THREE.Mesh(eyeGeo, eyeMat);
+            eyeMesh.position.set(0, 0.22, 0.07);
+            pinGroup.add(eyeMesh);
+
+            const coneGeo = new THREE.ConeGeometry(0.08, 0.22, 16);
+            const coneMat = new THREE.MeshPhongMaterial({
+                color: colorHex,
+                emissive: colorHex,
+                emissiveIntensity: 0.4,
+                shininess: 80
+            });
+            const coneMesh = new THREE.Mesh(coneGeo, coneMat);
+            coneMesh.position.y = 0.11;
+            coneMesh.rotation.x = Math.PI;
+            pinGroup.add(coneMesh);
+
+            return pinGroup;
+        }
+
+        const beaconGroup = new THREE.Group();
+        globeGroup.add(beaconGroup);
+
+        const beaconMeshes = [];
+        countryStops.forEach(st => {
+            const pos = ll2xyz(st.lat, st.lon);
+
+            const pinMesh = create3DLocationPin(st.color);
+            pinMesh.position.copy(pos);
+            pinMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
+            beaconGroup.add(pinMesh);
+
+            const ring = new THREE.Mesh(
+                new THREE.TorusGeometry(0.14, 0.009, 8, 32),
+                new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.8 })
+            );
+            ring.position.copy(pos);
+            ring.lookAt(0, 0, 0);
+            beaconGroup.add(ring);
+
+            beaconMeshes.push({ pinMesh, ring, pos, color: st.color });
+        });
+
+        // 6. ROTATION HELPER
+        function getRotationFor(lat, lon) {
+            const rotY = (lon + 180) * Math.PI / 180 - Math.PI / 2;
+            const rotX = (lat) * Math.PI / 180 * 0.38;
+            return { x: rotX, y: rotY };
+        }
+
+        const initRot = getRotationFor(countryStops[0].lat, countryStops[0].lon);
+        globeGroup.rotation.x = initRot.x;
+        globeGroup.rotation.y = initRot.y;
+
+        // 7. MOUSE & TOUCH INTERACTIVE DRAG AND ZOOM CONTROLS
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let userRotationOffset = { x: 0, y: 0 };
+
+        let targetCameraZ = 5.8;
+        const minCameraZ = 3.2;
+        const maxCameraZ = 9.5;
+
+        canvas.style.cursor = 'grab';
+
+        canvas.addEventListener('wheel', (e) => {
+            if (e.clientX < window.innerWidth * 0.65) {
+                e.preventDefault();
+                const zoomSpeed = 0.003;
+                targetCameraZ += e.deltaY * zoomSpeed;
+                targetCameraZ = Math.max(minCameraZ, Math.min(maxCameraZ, targetCameraZ));
+            }
+        }, { passive: false });
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+            canvas.style.cursor = 'grabbing';
+        });
+
+        function zoomInMobile() {
+            targetCameraZ = Math.max(minCameraZ, targetCameraZ - 0.7);
+        }
+
+        function zoomOutMobile() {
+            targetCameraZ = Math.min(maxCameraZ, targetCameraZ + 0.7);
+        }
+
+        // 3D LOCATION PIN RAYCASTER (Tap 📍 Pin to Reveal Country Card)
+        const raycaster = new THREE.Raycaster();
+        const mouseVector = new THREE.Vector2();
+
+        function handlePinTap(clientX, clientY) {
+            mouseVector.x = (clientX / window.innerWidth) * 2 - 1;
+            mouseVector.y = -(clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouseVector, camera);
+            const intersects = raycaster.intersectObjects(beaconGroup.children, true);
+
+            if (intersects.length > 0) {
+                const hitObj = intersects[0].object;
+                beaconMeshes.forEach((bm, idx) => {
+                    if (bm.pinMesh === hitObj || bm.pinMesh.children.includes(hitObj) || bm.ring === hitObj) {
+                        const explodeSection = document.getElementById('exploding-scroll');
+                        const sectionHeight = explodeSection.offsetHeight - window.innerHeight;
+                        const targetScroll = (idx / countryStops.length) * sectionHeight;
+                        window.scrollTo({
+                            top: explodeSection.offsetTop + targetScroll,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        }
+
+        canvas.addEventListener('click', (e) => {
+            handlePinTap(e.clientX, e.clientY);
+        });
+
+        let initialPinchDistance = null;
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            } else if (e.touches.length === 2) {
+                isDragging = false;
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                initialPinchDistance = Math.hypot(dx, dy);
+            }
+        }, { passive: true });
+
+        window.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                canvas.style.cursor = 'grab';
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+
+            const deltaMove = {
+                x: e.clientX - previousMousePosition.x,
+                y: e.clientY - previousMousePosition.y
+            };
+
+            userRotationOffset.y += deltaMove.x * 0.006;
+            userRotationOffset.x += deltaMove.y * 0.004;
+            userRotationOffset.x = Math.max(-0.8, Math.min(0.8, userRotationOffset.x));
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        });
+
+        window.addEventListener('touchend', (e) => {
+            if (isDragging && e.changedTouches && e.changedTouches.length === 1) {
+                handlePinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+            }
+            isDragging = false;
+            initialPinchDistance = null;
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && initialPinchDistance !== null) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const currentPinchDistance = Math.hypot(dx, dy);
+                const delta = initialPinchDistance - currentPinchDistance;
+
+                targetCameraZ += delta * 0.01;
+                targetCameraZ = Math.max(minCameraZ, Math.min(maxCameraZ, targetCameraZ));
+                initialPinchDistance = currentPinchDistance;
+                return;
+            }
+
+            if (!isDragging || e.touches.length !== 1) return;
+
+            const deltaMove = {
+                x: e.touches[0].clientX - previousMousePosition.x,
+                y: e.touches[0].clientY - previousMousePosition.y
+            };
+
+            userRotationOffset.y += deltaMove.x * 0.006;
+            userRotationOffset.x += deltaMove.y * 0.004;
+
+            previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }, { passive: true });
+
+        // 8. ANIMATION LOOP
+        let pulseTime = 0;
+        let deconstructProgress = 0;
+        let targetProgress = 0;
+        let currentProgress = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            pulseTime += 0.04;
+
+            cloudMesh.rotation.y += 0.0008;
+
+            camera.position.z += (targetCameraZ - camera.position.z) * 0.1;
+
+            beaconMeshes.forEach((b, i) => {
+                const s = 1 + (Math.sin(pulseTime + i) + 1) * 0.35;
+                b.ring.scale.set(s, s, s);
+                b.ring.material.opacity = 0.8 - (s - 1) * 0.5;
+            });
+
+            const diff = targetProgress - currentProgress;
+            if (Math.abs(diff) > 0.0003 || isDragging || Math.abs(camera.position.z - targetCameraZ) > 0.01) {
+                currentProgress += diff * 0.09;
+                deconstructProgress = currentProgress;
+
+                const activeIndex = Math.min(countryStops.length - 1, Math.floor(deconstructProgress * countryStops.length));
+                const currentStop = countryStops[activeIndex];
+                const targetRot = getRotationFor(currentStop.lat, currentStop.lon);
+
+                const finalTargetX = targetRot.x + userRotationOffset.x;
+                const finalTargetY = targetRot.y + userRotationOffset.y;
+
+                globeGroup.rotation.x += (finalTargetX - globeGroup.rotation.x) * 0.08;
+                globeGroup.rotation.y += (finalTargetY - globeGroup.rotation.y) * 0.08;
+
+                countryStops.forEach((_, i) => {
+                    const start = i / countryStops.length;
+                    const end = (i + 1) / countryStops.length;
+                    const el = document.getElementById(`explode-text-${i}`);
+                    const dot = document.getElementById(`dot-${i}`);
+                    if (deconstructProgress >= start && deconstructProgress < end + 0.01) {
+                        if (el) el.classList.add('active');
+                        if (dot) dot.classList.add('active');
+                    } else {
+                        if (el) el.classList.remove('active');
+                        if (dot) dot.classList.remove('active');
+                    }
+                });
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            updateCameraPos();
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        const explodeSection = document.getElementById('exploding-scroll');
+
+        window.addEventListener('scroll', () => {
+            const rect = explodeSection.getBoundingClientRect();
+            const sectionHeight = explodeSection.offsetHeight - window.innerHeight;
+            const scrolled = -rect.top;
+            targetProgress = Math.max(0, Math.min(0.99, scrolled / sectionHeight));
+        }, { passive: true });
+    </script>
+</body>
+</html>

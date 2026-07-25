@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>iCONSULT — Globe Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:'Outfit',sans-serif;background:#050D1A;color:white;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:#00AEEF;border-radius:2px}
+
+/* ── INTRO ── */
+#intro{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem}
+.intro-tag{display:inline-block;background:rgba(0,174,239,0.1);border:1px solid rgba(0,174,239,0.25);padding:.4rem 1.1rem;border-radius:50px;font-size:.78rem;color:#00AEEF;font-weight:600;letter-spacing:.5px;margin-bottom:1.5rem}
+.intro-h{font-size:clamp(3rem,7vw,5.5rem);font-weight:900;letter-spacing:-3px;line-height:1;margin-bottom:1.2rem}
+.intro-h .g{background:linear-gradient(135deg,#00AEEF,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.intro-sub{font-size:1.1rem;color:rgba(255,255,255,.45);font-weight:300;margin-bottom:2.5rem}
+.scroll-hint{display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.3);font-size:.7rem;letter-spacing:2px}
+.mouse{width:24px;height:38px;border:1.5px solid rgba(0,174,239,.4);border-radius:12px;display:flex;justify-content:center;padding-top:5px}
+.wheel{width:2px;height:7px;background:#00AEEF;border-radius:1px;animation:wh 2s infinite}
+@keyframes wh{0%{transform:translateY(0);opacity:1}100%{transform:translateY(12px);opacity:0}}
+
+/* ── GLOBE SECTION ── */
+#globe-section{height:700vh;position:relative}
+
+/* ── STICKY VIEWPORT ── */
+#globe-sticky{
+  position:sticky;top:0;
+  height:100vh;width:100%;
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ── THREE.JS CANVAS ── */
+#globe-canvas{
+  position:absolute;inset:0;
+  width:100%!important;height:100%!important;
+  z-index:0;
+}
+
+/* ── TOP LABEL ── */
+#globe-label{
+  position:absolute;top:3rem;left:50%;transform:translateX(-50%);
+  text-align:center;z-index:10;
+}
+#globe-label .tag{display:inline-block;background:rgba(0,174,239,.08);border:1px solid rgba(0,174,239,.2);padding:.35rem 1rem;border-radius:50px;font-size:.72rem;color:#00AEEF;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem}
+#globe-label h2{font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:800;letter-spacing:-1px}
+#globe-label h2 span{color:#00AEEF}
+#globe-label p{font-size:.8rem;color:rgba(255,255,255,.35);margin-top:.4rem}
+
+/* ── SCROLL PROGRESS (bottom bar) ── */
+#globe-progress{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:.75rem;z-index:10;
+}
+.prog-dot{
+  width:8px;height:8px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,.2);
+  cursor:pointer;transition:all .4s;
+}
+.prog-dot.on{
+  background:#00AEEF;border-color:#00AEEF;
+  box-shadow:0 0 12px rgba(0,174,239,.7);
+  transform:scale(1.5);
+}
+.prog-line{width:40px;height:1px;background:rgba(255,255,255,.12)}
+.prog-counter{font-size:.72rem;color:rgba(255,255,255,.35);letter-spacing:1px}
+
+/* ── INFO CARD ── */
+#info-card{
+  position:absolute;
+  right:3rem;top:50%;transform:translateY(-50%);
+  z-index:20;
+  width:300px;
+  background:rgba(10,22,40,.85);
+  border:1px solid rgba(0,174,239,.15);
+  border-radius:20px;
+  padding:1.75rem;
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(0,174,239,.05);
+  opacity:0;
+  pointer-events:none;
+  transition:none; /* GSAP handles this */
+}
+#info-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  border-radius:20px 20px 0 0;
+  background:linear-gradient(90deg,#00AEEF,#7C3AED);
+}
+.card-top{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
+.card-flag{font-size:2.2rem;line-height:1}
+.card-country-name{font-size:1.1rem;font-weight:800;letter-spacing:-.5px}
+.card-region{font-size:.72rem;color:rgba(255,255,255,.4);font-weight:400;margin-top:2px}
+
+.card-divider{height:1px;background:rgba(255,255,255,.07);margin-bottom:1.25rem}
+
+.card-label{font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(0,174,239,.7);margin-bottom:.35rem}
+.card-value{font-size:.95rem;font-weight:600;color:white;margin-bottom:1rem}
+.card-service-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(0,174,239,.1);border:1px solid rgba(0,174,239,.2);
+  padding:.35rem .9rem;border-radius:50px;font-size:.78rem;font-weight:600;color:#00AEEF;
+}
+.card-stat-row{display:flex;gap:.75rem;margin-top:1.25rem}
+.stat-pill{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.65rem .75rem;text-align:center}
+.stat-pill .n{font-size:1.3rem;font-weight:900;color:#00AEEF;letter-spacing:-1px;line-height:1}
+.stat-pill .l{font-size:.6rem;color:rgba(255,255,255,.35);margin-top:3px}
+
+/* ── SCROLL CUE (left side) ── */
+#scroll-cue{
+  position:absolute;left:3rem;top:50%;transform:translateY(-50%);
+  z-index:10;display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:rgba(255,255,255,.25);font-size:.65rem;letter-spacing:2px;writing-mode:vertical-rl;
+  opacity:1;transition:opacity .5s;
+}
+#scroll-cue .cue-line{width:1px;height:60px;background:linear-gradient(180deg,rgba(0,174,239,.5),transparent)}
+
+/* ── AFTER SECTION ── */
+#after{height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:2rem;background:rgba(0,0,0,.2)}
+.after-h{font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-2px;margin-bottom:1rem}
+.after-h .g{background:linear-gradient(135deg,#00AEEF,#7C3AED);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.after-sub{color:rgba(255,255,255,.4);font-size:1rem;margin-bottom:2.5rem;font-weight:300}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#00AEEF,#7C3AED);color:white;padding:1rem 2.5rem;border-radius:50px;font-weight:700;font-size:1rem;text-decoration:none;box-shadow:0 8px 30px rgba(0,174,239,.4);transition:all .3s}
+.cta-btn:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,174,239,.6)}
+
+/* MOBILE */
+@media(max-width:700px){
+  #info-card{right:1rem;left:1rem;width:auto;top:auto;bottom:1.5rem;transform:none}
+  #scroll-cue{display:none}
+  #globe-label h2{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<!-- INTRO -->
+<section id="intro">
+  <div>
+    <div class="intro-tag">🌍 Global Presence</div>
+    <h1 class="intro-h">iCONSULT<br/><span class="g">Goes Global</span></h1>
+    <p class="intro-sub">Scroll down to explore our presence across the world</p>
+    <div class="scroll-hint">
+      <div class="mouse"><div class="wheel"></div></div>
+      SCROLL DOWN
+    </div>
+  </div>
+</section>
+
+<!-- GLOBE SECTION (sticky) -->
+<div id="globe-section">
+  <div id="globe-sticky">
+
+    <!-- Three.js Canvas -->
+    <canvas id="globe-canvas"></canvas>
+
+    <!-- Top Label -->
+    <div id="globe-label">
+      <div class="tag">Global Outreach</div>
+      <h2>Clients <span>Across The World</span></h2>
+      <p>Scroll to explore each region ↓</p>
+    </div>
+
+    <!-- Left cue -->
+    <div id="scroll-cue">
+      <div class="cue-line"></div>
+      SCROLL
+      <div class="cue-line"></div>
+    </div>
+
+    <!-- Info Card (right side) -->
+    <div id="info-card">
+      <div class="card-top">
+        <span class="card-flag" id="cardFlag">🇪🇬</span>
+        <div>
+          <div class="card-country-name" id="cardCountry">Egypt</div>
+          <div class="card-region" id="cardRegion">Middle East & North Africa</div>
+        </div>
+      </div>
+      <div class="card-divider"></div>
+      <div class="card-label">Client</div>
+      <div class="card-value" id="cardClient">iCONSULT HQ</div>
+      <div class="card-label">Services</div>
+      <div class="card-service-tag" id="cardService">⚙️ HQ & Operations</div>
+      <div class="card-stat-row">
+        <div class="stat-pill">
+          <div class="n" id="statA">2019</div>
+          <div class="l">Since</div>
+        </div>
+        <div class="stat-pill">
+          <div class="n" id="statB">4</div>
+          <div class="l">Services</div>
+        </div>
+        <div class="stat-pill">
+          <div class="n" id="statC">200+</div>
+          <div class="l">Projects</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Dots -->
+    <div id="globe-progress"></div>
+
+  </div><!-- /sticky -->
+</div><!-- /globe-section -->
+
+<!-- AFTER GLOBE -->
+<section id="after">
+  <div>
+    <h2 class="after-h">Ready to Be<br/><span class="g">Our Next Client?</span></h2>
+    <p class="after-sub">Join hundreds of companies we've transformed across the globe.</p>
+    <a href="https://wa.me/+201015380800" class="cta-btn" target="_blank">💬 Start Your Journey</a>
+  </div>
+</section>
+
+
+<script>
+// ══════════════════════════════════════════════════════
+//  CLIENT DATA — stops
+// ══════════════════════════════════════════════════════
+const stops = [
+  {
+    lat: 30.0, lon: 31.2,
+    flag:'🇪🇬', country:'Egypt', region:'Middle East & North Africa',
+    client:'iCONSULT HQ', service:'⚙️ HQ & Operations',
+    statA:'2019', statB:'4', statC:'200+',
+    color: 0x00AEEF, labelA:'Since', labelB:'Services', labelC:'Projects'
+  },
+  {
+    lat: 24.7, lon: 46.7,
+    flag:'🇸🇦', country:'Saudi Arabia', region:'Arabian Peninsula',
+    client:'Al Faisaliah & Partners', service:'⚙️ Odoo ERP',
+    statA:'2020', statB:'12', statC:'98%',
+    color: 0x00D4FF, labelA:'Since', labelB:'Projects', labelC:'Satisfaction'
+  },
+  {
+    lat: 25.2, lon: 55.3,
+    flag:'🇦🇪', country:'UAE', region:'Gulf Region',
+    client:'Dubai Business Group', service:'📣 Digital Marketing',
+    statA:'2021', statB:'8', statC:'3x',
+    color: 0x7C3AED, labelA:'Since', labelB:'Campaigns', labelC:'ROI Growth'
+  },
+  {
+    lat: 29.3, lon: 47.7,
+    flag:'🇰🇼', country:'Kuwait', region:'Gulf Cooperation Council',
+    client:'Gulf Industries Co.', service:'🎯 Strategic Planning',
+    statA:'2022', statB:'5', statC:'40%',
+    color: 0x00AEEF, labelA:'Since', labelB:'Projects', labelC:'Growth'
+  },
+  {
+    lat: 48.9, lon: 2.3,
+    flag:'🇫🇷', country:'Europe', region:'Western Europe',
+    client:'European Partners', service:'🤝 Consulting',
+    statA:'2023', statB:'3', statC:'Global',
+    color: 0xA855F7, labelA:'Since', labelB:'Offices', labelC:'Reach'
+  },
+];
+
+// ══════════════════════════════════════════════════════
+//  THREE.JS SETUP
+// ══════════════════════════════════════════════════════
+const canvas = document.getElementById('globe-canvas');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+camera.position.set(0, 0, 5.5);
+
+function onResize() {
+  const el = document.getElementById('globe-sticky');
+  renderer.setSize(el.clientWidth, el.clientHeight);
+  camera.aspect = el.clientWidth / el.clientHeight;
+  camera.updateProjectionMatrix();
+}
+onResize();
+window.addEventListener('resize', onResize);
+
+// Ambient + directional lights
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const dirLight = new THREE.DirectionalLight(0x00AEEF, 1.5);
+dirLight.position.set(4, 2, 4);
+scene.add(dirLight);
+
+// ── GLOBE GROUP ──
+const globeGroup = new THREE.Group();
+scene.add(globeGroup);
+
+const R = 2; // globe radius
+
+// ── WIREFRAME GRID LINES ──
+const lineMat = new THREE.LineBasicMaterial({
+  color: 0x00AEEF, transparent: true, opacity: 0.2
+});
+
+// Latitude lines
+for (let lat = -80; lat <= 80; lat += 20) {
+  const r = R * Math.cos(lat * Math.PI / 180);
+  const y = R * Math.sin(lat * Math.PI / 180);
+  const pts = [];
+  for (let l = 0; l <= 361; l += 3) {
+    const theta = l * Math.PI / 180;
+    pts.push(new THREE.Vector3(r * Math.cos(theta), y, r * Math.sin(theta)));
+  }
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  globeGroup.add(new THREE.Line(geo, lineMat.clone()));
+}
+
+// Longitude lines (meridians)
+for (let lon = 0; lon < 360; lon += 30) {
+  const theta = lon * Math.PI / 180;
+  const pts = [];
+  for (let lat = -90; lat <= 90; lat += 3) {
+    const r = R * Math.cos(lat * Math.PI / 180);
+    const y = R * Math.sin(lat * Math.PI / 180);
+    pts.push(new THREE.Vector3(r * Math.cos(theta), y, r * Math.sin(theta)));
+  }
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  globeGroup.add(new THREE.Line(geo, lineMat.clone()));
+}
+
+// ── ATMOSPHERE SPHERE (transparent outer shell) ──
+const atmGeo = new THREE.SphereGeometry(R * 1.07, 32, 32);
+const atmMat = new THREE.MeshBasicMaterial({
+  color: 0x00AEEF, transparent: true, opacity: 0.04, side: THREE.BackSide
+});
+globeGroup.add(new THREE.Mesh(atmGeo, atmMat));
+
+// ── INNER DARK SPHERE ──
+const innerGeo = new THREE.SphereGeometry(R * 0.99, 32, 32);
+const innerMat = new THREE.MeshBasicMaterial({ color: 0x050D1A, transparent: true, opacity: 0.85 });
+globeGroup.add(new THREE.Mesh(innerGeo, innerMat));
+
+// ── EQUATOR LINE (highlight) ──
+const eqPts = [];
+for (let l = 0; l <= 361; l++) {
+  const theta = l * Math.PI / 180;
+  eqPts.push(new THREE.Vector3(R * Math.cos(theta), 0, R * Math.sin(theta)));
+}
+const eqGeo = new THREE.BufferGeometry().setFromPoints(eqPts);
+const eqMat = new THREE.LineBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.5 });
+globeGroup.add(new THREE.Line(eqGeo, eqMat));
+
+// ── CONVERT LAT/LON → 3D ──
+function ll3(lat, lon, r = R) {
+  const phi = lat * Math.PI / 180;
+  const theta = lon * Math.PI / 180;
+  return new THREE.Vector3(
+    r * Math.cos(phi) * Math.cos(theta),
+    r * Math.sin(phi),
+    r * Math.cos(phi) * Math.sin(theta)
+  );
+}
+
+// ── GLOBE ROTATION FOR LOCATION ──
+// We want (lat, lon) to face the camera (+Z)
+// Camera is at +Z, so we need the point to be at z > 0
+function getRotation(lat, lon) {
+  // Rotate around Y to bring lon to front (+X axis baseline → rotate to face +Z)
+  const rotY = -lon * Math.PI / 180 - Math.PI / 2;
+  // Rotate around X to bring lat to center
+  const rotX = -lat * Math.PI / 180;
+  return { x: rotX, y: rotY };
+}
+
+// ── CLIENT DOTS & RINGS ──
+const dotGroup = new THREE.Group();
+globeGroup.add(dotGroup);
+
+const dotMeshes = [];
+const ringMeshes = [];
+
+stops.forEach((stop, i) => {
+  const pos = ll3(stop.lat, stop.lon, R + 0.06);
+
+  // Dot
+  const dGeo = new THREE.SphereGeometry(0.06, 12, 12);
+  const dMat = new THREE.MeshBasicMaterial({ color: stop.color });
+  const dot = new THREE.Mesh(dGeo, dMat);
+  dot.position.copy(pos);
+  dotGroup.add(dot);
+  dotMeshes.push(dot);
+
+  // Outer glow ring
+  const rGeo = new THREE.TorusGeometry(0.12, 0.008, 6, 32);
+  const rMat = new THREE.MeshBasicMaterial({ color: stop.color, transparent: true, opacity: 0.5 });
+  const ring = new THREE.Mesh(rGeo, rMat);
+  ring.position.copy(pos);
+  ring.lookAt(0, 0, 0);
+  dotGroup.add(ring);
+  ringMeshes.push(ring);
+});
+
+// ── ORBIT RING ──
+const orbitGeo = new THREE.TorusGeometry(R * 1.18, 0.012, 6, 120);
+const orbitMat = new THREE.MeshBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.15 });
+const orbitRing = new THREE.Mesh(orbitGeo, orbitMat);
+orbitRing.rotation.x = Math.PI / 3;
+scene.add(orbitRing);
+
+// ── ANIMATION LOOP ──
+let autoRotate = true;
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = (e.clientX / window.innerWidth - 0.5) * 2;
+  my = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+let frame = 0;
+let pulsePhase = 0;
+
+function animate() {
+  requestAnimationFrame(animate);
+  frame++;
+  pulsePhase += 0.04;
+  orbitRing.rotation.z += 0.004;
+
+  // Mouse parallax (subtle, only when not scroll-controlled)
+  if (autoRotate) {
+    globeGroup.rotation.y += mx * 0.003;
+  }
+
+  // Pulse rings
+  ringMeshes.forEach((r, i) => {
+    const s = 1 + (Math.sin(pulsePhase + i * 1.2) + 1) * 0.4;
+    r.scale.setScalar(s);
+    r.material.opacity = 0.6 - (s - 1) * 0.4;
+  });
+
+  renderer.render(scene, camera);
+}
+animate();
+
+// ══════════════════════════════════════════════════════
+//  SCROLL LOGIC — STICKY GLOBE ROTATION
+// ══════════════════════════════════════════════════════
+
+// Build progress dots
+const progressEl = document.getElementById('globe-progress');
+stops.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'prog-dot' + (i === 0 ? ' on' : '');
+  d.onclick = () => goToStop(i, true);
+  progressEl.appendChild(d);
+  if (i < stops.length - 1) {
+    const line = document.createElement('div');
+    line.className = 'prog-line';
+    progressEl.appendChild(line);
+  }
+});
+
+// Counter label
+const counter = document.createElement('div');
+counter.className = 'prog-counter';
+counter.style.cssText = 'position:absolute;right:3rem;bottom:2.5rem;z-index:10;font-size:.75rem;color:rgba(255,255,255,.3);letter-spacing:1px';
+counter.textContent = '01 / 0' + stops.length;
+document.getElementById('globe-sticky').appendChild(counter);
+
+// Initial globe rotation
+const initRot = getRotation(stops[0].lat, stops[0].lon);
+globeGroup.rotation.x = initRot.x;
+globeGroup.rotation.y = initRot.y;
+dotGroup.rotation.x = initRot.x;
+dotGroup.rotation.y = initRot.y;
+
+let currentStop = -1;
+let isAnimating = false;
+
+function updateCard(i) {
+  const s = stops[i];
+  document.getElementById('cardFlag').textContent = s.flag;
+  document.getElementById('cardCountry').textContent = s.country;
+  document.getElementById('cardRegion').textContent = s.region;
+  document.getElementById('cardClient').textContent = s.client;
+  document.getElementById('cardService').textContent = s.service;
+  document.getElementById('statA').textContent = s.statA;
+  document.getElementById('statB').textContent = s.statB;
+  document.getElementById('statC').textContent = s.statC;
+
+  // Update top bar color
+  const card = document.getElementById('info-card');
+  const colorHex = '#' + stops[i].color.toString(16).padStart(6, '0');
+  card.style.borderColor = colorHex + '30';
+}
+
+function updateDots(i) {
+  document.querySelectorAll('.prog-dot').forEach((d, j) => d.classList.toggle('on', j === i));
+  counter.textContent = `0${i+1} / 0${stops.length}`;
+}
+
+function goToStop(i, smooth = true) {
+  if (i === currentStop || isAnimating) return;
+  isAnimating = true;
+
+  const card = document.getElementById('info-card');
+  const rot = getRotation(stops[i].lat, stops[i].lon);
+
+  autoRotate = false;
+
+  // 1. Slide card OUT
+  gsap.to(card, {
+    opacity: 0, x: 30,
+    duration: 0.3, ease: 'power2.in',
+    onComplete: () => {
+      // Update card content
+      updateCard(i);
+      updateDots(i);
+      currentStop = i;
+
+      // 2. Rotate globe
+      gsap.to(globeGroup.rotation, {
+        x: rot.x, y: rot.y,
+        duration: smooth ? 1.4 : 0.8,
+        ease: 'power3.inOut',
+      });
+      gsap.to(dotGroup.rotation, {
+        x: rot.x, y: rot.y,
+        duration: smooth ? 1.4 : 0.8,
+        ease: 'power3.inOut',
+        onComplete: () => { isAnimating = false; }
+      });
+
+      // 3. Slide card IN
+      gsap.fromTo(card,
+        { opacity: 0, x: 30 },
+        { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', delay: 0.6 }
+      );
+    }
+  });
+}
+
+// ── SCROLL DETECTION ──
+const globeSection = document.getElementById('globe-section');
+
+function onScroll() {
+  const rect = globeSection.getBoundingClientRect();
+  const sectionH = globeSection.offsetHeight - window.innerHeight;
+  const scrolled = -rect.top;
+
+  if (scrolled < 0 || scrolled > sectionH) return;
+
+  // Map scroll position to stop index
+  const progress = scrolled / sectionH;
+  const stopIndex = Math.min(
+    stops.length - 1,
+    Math.floor(progress * stops.length)
+  );
+
+  if (stopIndex !== currentStop) {
+    goToStop(stopIndex);
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// Initialize first stop
+setTimeout(() => goToStop(0, false), 300);
+
+</script>
+</body>
+</html>

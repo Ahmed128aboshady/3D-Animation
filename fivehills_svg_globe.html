@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iCONSULT | 3D Globe with User SVG Texture (FiveHills Style)</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* ---- FiveHills System ---- */
+        :root {
+            --color-bg-obsidian: #03070c;
+            --color-card-obsidian: rgba(8, 14, 24, 0.92);
+            --color-accent-green: #1b8243;
+            --color-gold-agency: #cfa15c;
+            --color-cyan-agency: #00AEEF;
+            --color-border-hairline: rgba(0, 174, 239, 0.25);
+            --color-text-bright: #FFFFFF;
+            --color-text-muted: #cbd5e1;
+            --color-outer-bezel-bg: rgba(255, 255, 255, 0.02);
+            --color-outer-bezel-border: rgba(255, 255, 255, 0.05);
+            --transition-spring: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--color-bg-obsidian);
+            color: var(--color-text-bright);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Film grain effect */
+        .film-grain {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Hero Header Space */
+        .hero-space {
+            height: 30vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background: radial-gradient(ellipse at 50% 30%, rgba(0, 174, 239, 0.08), transparent 70%);
+        }
+        .hero-tag {
+            font-size: 0.8rem;
+            color: var(--color-cyan-agency);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+            font-weight: 500;
+            color: var(--color-text-bright);
+            line-height: 1.15;
+            margin-bottom: 10px;
+        }
+        .hero-sub {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        /* ═════════════════════════════════════════════════════════
+           GIANT 3D GLOBE STICKY SECTION
+           ═════════════════════════════════════════════════════════ */
+        #exploding-scroll {
+            height: 600vh;
+            position: relative;
+        }
+
+        .sticky-wrapper {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Three.js Canvas */
+        #three-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* FiveHills Vignette Overlays */
+        .vignette-radial {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 75% 65% at center, transparent 25%, var(--color-bg-obsidian) 85%);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .fade-top {
+            position: absolute;
+            inset-x: 0; top: 0; height: 8rem;
+            background: linear-gradient(to bottom, var(--color-bg-obsidian), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+        .fade-bottom {
+            position: absolute;
+            inset-x: 0; bottom: 0; height: 8rem;
+            background: linear-gradient(to top, var(--color-bg-obsidian), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* COMPACT FLOATING CARD */
+        .compact-card-stage {
+            position: absolute;
+            right: 4vw;
+            bottom: 8vh;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+            padding: 0 10px;
+        }
+
+        /* Double-Bezel Card (FiveHills Doppelrand) */
+        .double-bezel-outer {
+            background: var(--color-outer-bezel-bg);
+            border: 1px solid var(--color-outer-bezel-border);
+            padding: 10px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            transition: var(--transition-spring);
+        }
+
+        .double-bezel-inner {
+            background: var(--color-card-obsidian);
+            border: 1px solid var(--color-border-hairline);
+            border-radius: calc(24px - 10px);
+            padding: 24px 22px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.15);
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .explode-text {
+            position: absolute;
+            width: calc(100% - 44px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+
+        .explode-text.active {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1) !important;
+            pointer-events: auto;
+        }
+
+        #explode-text-0 { transform: translate3d(0, 30px, 0); }
+        #explode-text-1 { transform: translate3d(80px, -40px, 0); }
+        #explode-text-2 { transform: translate3d(-80px, 40px, 0); }
+        #explode-text-3 { transform: translate3d(80px, 40px, 0); }
+        #explode-text-4 { transform: translate3d(-80px, -40px, 0); }
+
+        .card-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .card-flag-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.5rem;
+        }
+
+        .card-region-tag {
+            font-size: 0.68rem;
+            color: var(--color-cyan-agency);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .card-country-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.65rem;
+            color: var(--color-text-bright);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .card-body-text {
+            font-size: 0.86rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+            font-weight: 400;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .agency-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0, 174, 239, 0.1);
+            border: 1px solid rgba(0, 174, 239, 0.3);
+            color: var(--color-cyan-agency);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .agency-pill.green {
+            background: rgba(27, 130, 67, 0.12);
+            border-color: rgba(27, 130, 67, 0.35);
+            color: #25d366;
+        }
+        .agency-pill.gold {
+            background: rgba(207, 161, 92, 0.12);
+            border-color: rgba(207, 161, 92, 0.35);
+            color: #cfa15c;
+        }
+
+        /* Dots Indicator */
+        .progress-indicator {
+            position: absolute;
+            left: 4vw;
+            bottom: 8vh;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .dot-item {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(0, 174, 239, 0.3);
+            cursor: pointer;
+            transition: var(--transition-spring);
+        }
+        .dot-item.active {
+            background: var(--color-cyan-agency);
+            border-color: var(--color-cyan-agency);
+            transform: scale(1.5);
+            box-shadow: 0 0 14px rgba(0, 174, 239, 0.9);
+        }
+
+        /* Footer Section */
+        .footer-space {
+            height: 35vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-top: 1px solid var(--color-border-hairline);
+            background: var(--color-bg-obsidian);
+        }
+
+        @media (max-width: 768px) {
+            .compact-card-stage { right: 5%; left: 5%; bottom: 4vh; max-width: 90%; }
+            .progress-indicator { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="film-grain"></div>
+
+    <!-- HERO HEADER -->
+    <div class="hero-space">
+        <span class="hero-tag">Global Business Transformation</span>
+        <h1 class="hero-title">Our International Reach</h1>
+        <p class="hero-sub">Scroll to navigate the 3D globe with 158348.svg map texture</p>
+    </div>
+
+    <!-- STICKY SCROLL SECTION -->
+    <section id="exploding-scroll">
+        <div class="sticky-wrapper">
+
+            <!-- Three.js Canvas -->
+            <canvas id="three-canvas"></canvas>
+
+            <!-- Vignettes -->
+            <div class="vignette-radial"></div>
+            <div class="fade-top"></div>
+            <div class="fade-bottom"></div>
+
+            <!-- Left Dots Indicator -->
+            <div class="progress-indicator">
+                <div class="dot-item active" id="dot-0"></div>
+                <div class="dot-item" id="dot-1"></div>
+                <div class="dot-item" id="dot-2"></div>
+                <div class="dot-item" id="dot-3"></div>
+                <div class="dot-item" id="dot-4"></div>
+            </div>
+
+            <!-- COMPACT FLOATING CARD -->
+            <div class="compact-card-stage">
+                <div class="double-bezel-outer">
+                    <div class="double-bezel-inner">
+
+                        <!-- Panel 0: Egypt 🇪🇬 -->
+                        <div class="explode-text active" id="explode-text-0">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇪🇬</span> <strong>Egypt</strong></div>
+                                <span class="card-region-tag">Headquarters</span>
+                            </div>
+                            <h2 class="card-country-title">Cairo HQ Hub</h2>
+                            <p class="card-body-text">
+                                Cairo Headquarters leading business transformation across North Africa. Enterprise Odoo ERP & strategy consulting.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill green">⚙️ Odoo ERP</span>
+                                <span class="agency-pill gold">200+ Projects</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 1: Saudi Arabia 🇸🇦 -->
+                        <div class="explode-text" id="explode-text-1">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇸🇦</span> <strong>Saudi Arabia</strong></div>
+                                <span class="card-region-tag">Vision 2030</span>
+                            </div>
+                            <h2 class="card-country-title">Riyadh Operations</h2>
+                            <p class="card-body-text">
+                                Empowering enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill cyan">🎯 Strategic Planning</span>
+                                <span class="agency-pill green">98% Satisfaction</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 2: UAE 🇦🇪 -->
+                        <div class="explode-text" id="explode-text-2">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇦🇪</span> <strong>UAE</strong></div>
+                                <span class="card-region-tag">Innovation Hub</span>
+                            </div>
+                            <h2 class="card-country-title">Dubai Office</h2>
+                            <p class="card-body-text">
+                                Driving high-performance digital marketing, brand acceleration, and AI automation for Dubai corporations.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill">📣 Digital Marketing</span>
+                                <span class="agency-pill cyan">3x ROI Growth</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 3: Japan 🇯🇵 -->
+                        <div class="explode-text" id="explode-text-3">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇯🇵</span> <strong>Japan</strong></div>
+                                <span class="card-region-tag">Tech Alliance</span>
+                            </div>
+                            <h2 class="card-country-title">Tokyo Partner</h2>
+                            <p class="card-body-text">
+                                Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill green">🤖 AI Integration</span>
+                                <span class="agency-pill gold">Tokyo Office</span>
+                            </div>
+                        </div>
+
+                        <!-- Panel 4: Europe 🇪🇺 -->
+                        <div class="explode-text" id="explode-text-4">
+                            <div class="card-top-row">
+                                <div class="card-flag-badge"><span>🇪🇺</span> <strong>Europe</strong></div>
+                                <span class="card-region-tag">Global Network</span>
+                            </div>
+                            <h2 class="card-country-title">Western Europe</h2>
+                            <p class="card-body-text">
+                                Facilitating cross-border expansion and market localization for European firms targeting MENA regions.
+                            </p>
+                            <div class="badge-row">
+                                <span class="agency-pill cyan">👥 Human Resources</span>
+                                <span class="agency-pill">Global Network</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="footer-space">
+        <div>
+            <h2 style="font-family:'Playfair Display',serif; font-size:2rem; margin-bottom:15px; font-weight:500;">Ready to Transform Your Enterprise?</h2>
+            <a href="https://wa.me/+201015380800" target="_blank" style="display:inline-block; background:var(--color-accent-green); color:#FFF; padding:12px 30px; border-radius:50px; text-decoration:none; font-weight:600; font-size:0.88rem; box-shadow:0 8px 25px rgba(27,130,67,0.4)">💬 Talk to Our Experts</a>
+        </div>
+    </div>
+
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // THREE.JS ENGINE USING USER'S 158348.SVG TEXTURE MAP
+        // ═══════════════════════════════════════════════════════════════════════════
+        const canvas = document.getElementById('three-canvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(-0.8, 0, 6.2);
+
+        // Lighting
+        scene.add(new THREE.AmbientLight(0xffffff, 1.0));
+        const dirLight = new THREE.DirectionalLight(0x00AEEF, 2.0);
+        dirLight.position.set(5, 3, 5);
+        scene.add(dirLight);
+
+        const globeGroup = new THREE.Group();
+        scene.add(globeGroup);
+
+        const R = 2.65; // Giant Globe Radius
+
+        // Load 158348.svg onto an offscreen canvas texture with cyan/gold vector strokes
+        function createSvgTexture() {
+            const texCanvas = document.createElement('canvas');
+            texCanvas.width = 2048;
+            texCanvas.height = 1024;
+            const ctx = texCanvas.getContext('2d');
+
+            // Dark Obsidian background
+            ctx.fillStyle = '#060e20';
+            ctx.fillRect(0, 0, 2048, 1024);
+
+            // Vector grid lines
+            ctx.strokeStyle = 'rgba(0, 174, 239, 0.15)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < 2048; x += 64) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 1024); ctx.stroke();
+            }
+            for (let y = 0; y < 1024; y += 64) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(2048, y); ctx.stroke();
+            }
+
+            const img = new Image();
+            img.src = '158348.svg';
+            img.onload = () => {
+                // Draw 158348.svg on texture
+                ctx.drawImage(img, 0, 0, 2048, 1024);
+                globeTexture.needsUpdate = true;
+            };
+
+            const globeTexture = new THREE.CanvasTexture(texCanvas);
+            return globeTexture;
+        }
+
+        const textureMap = createSvgTexture();
+
+        // 1. GLOBE MESH WITH 158348.SVG TEXTURE MAP
+        const sphereGeo = new THREE.SphereGeometry(R, 64, 64);
+        const sphereMat = new THREE.MeshPhongMaterial({
+            map: textureMap,
+            color: 0x00AEEF,
+            emissive: 0x051528,
+            specular: 0xcfa15c,
+            shininess: 30,
+            transparent: true,
+            opacity: 0.95
+        });
+        const globeMesh = new THREE.Mesh(sphereGeo, sphereMat);
+        globeGroup.add(globeMesh);
+
+        // 2. ATMOSPHERE AURA
+        const atmGeo = new THREE.SphereGeometry(R * 1.1, 64, 64);
+        const atmMat = new THREE.MeshBasicMaterial({
+            color: 0x00AEEF,
+            transparent: true,
+            opacity: 0.1,
+            side: THREE.BackSide
+        });
+        globeGroup.add(new THREE.Mesh(atmGeo, atmMat));
+
+        // 3. WIREFRAME NEON OVERLAY RINGS
+        const gridGroup = new THREE.Group();
+        const gridMat = new THREE.LineBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.25 });
+        for (let lat = -60; lat <= 60; lat += 30) {
+            const r = R * Math.cos(lat * Math.PI / 180);
+            const y = R * Math.sin(lat * Math.PI / 180);
+            const pts = [];
+            for (let l = 0; l <= 360; l += 10) {
+                const theta = l * Math.PI / 180;
+                pts.push(new THREE.Vector3(r * Math.cos(theta), y, r * Math.sin(theta)));
+            }
+            gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
+        }
+        globeGroup.add(gridGroup);
+
+        // 4. COUNTRY STOPS & GLOWING BEACONS
+        const countryStops = [
+            { lat: 30.0, lon: 31.2, flag: '🇪🇬', country: 'Egypt', color: 0x1b8243 },
+            { lat: 24.7, lon: 46.7, flag: '🇸🇦', country: 'Saudi Arabia', color: 0xcfa15c },
+            { lat: 25.2, lon: 55.3, flag: '🇦🇪', country: 'UAE', color: 0x00AEEF },
+            { lat: 36.2, lon: 138.2, flag: '🇯🇵', country: 'Japan', color: 0xFFFFFF },
+            { lat: 48.8, lon: 2.3, flag: '🇪🇺', country: 'Europe', color: 0xcfa15c }
+        ];
+
+        function ll2xyz(lat, lon, radius = R + 0.05) {
+            const phi = (90 - lat) * Math.PI / 180;
+            const theta = (lon + 180) * Math.PI / 180;
+            return new THREE.Vector3(
+                -radius * Math.sin(phi) * Math.cos(theta),
+                 radius * Math.cos(phi),
+                 radius * Math.sin(phi) * Math.sin(theta)
+            );
+        }
+
+        const beaconGroup = new THREE.Group();
+        globeGroup.add(beaconGroup);
+
+        const beaconMeshes = [];
+        countryStops.forEach(st => {
+            const pos = ll2xyz(st.lat, st.lon);
+
+            const dot = new THREE.Mesh(
+                new THREE.SphereGeometry(0.06, 16, 16),
+                new THREE.MeshBasicMaterial({ color: st.color })
+            );
+            dot.position.copy(pos);
+            beaconGroup.add(dot);
+
+            const ring = new THREE.Mesh(
+                new THREE.TorusGeometry(0.12, 0.008, 8, 32),
+                new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.6 })
+            );
+            ring.position.copy(pos);
+            ring.lookAt(0, 0, 0);
+            beaconGroup.add(ring);
+            beaconMeshes.push({ dot, ring, pos, color: st.color });
+        });
+
+        // 5. 3D GLOWING ARCS & PHOTONS
+        const egyptPos = ll2xyz(countryStops[0].lat, countryStops[0].lon);
+        const arcPhotons = [];
+
+        function createArc(p1, p2, colorHex) {
+            const mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+            const dist = p1.distanceTo(p2);
+            mid.normalize().multiplyScalar(R + dist * 0.35);
+
+            const curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
+            const pts = curve.getPoints(50);
+            const arcGeo = new THREE.BufferGeometry().setFromPoints(pts);
+            const arcMat = new THREE.LineBasicMaterial({ color: colorHex, transparent: true, opacity: 0.45 });
+            globeGroup.add(new THREE.Line(arcGeo, arcMat));
+
+            const photon = new THREE.Mesh(
+                new THREE.SphereGeometry(0.04, 12, 12),
+                new THREE.MeshBasicMaterial({ color: colorHex })
+            );
+            globeGroup.add(photon);
+            arcPhotons.push({ mesh: photon, curve, progress: Math.random() });
+        }
+
+        for (let i = 1; i < countryStops.length; i++) {
+            createArc(egyptPos, ll2xyz(countryStops[i].lat, countryStops[i].lon), countryStops[i].color);
+        }
+
+        // 6. ROTATION HELPER
+        function getRotationFor(lat, lon) {
+            const rotY = (lon + 180) * Math.PI / 180 - Math.PI / 2;
+            const rotX = (lat) * Math.PI / 180 * 0.4;
+            return { x: rotX, y: rotY };
+        }
+
+        const initRot = getRotationFor(countryStops[0].lat, countryStops[0].lon);
+        globeGroup.rotation.x = initRot.x;
+        globeGroup.rotation.y = initRot.y;
+
+        // 7. RENDER & SCROLL ANIMATION LOOP
+        let pulseTime = 0;
+        let deconstructProgress = 0;
+        let targetProgress = 0;
+        let currentProgress = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            pulseTime += 0.04;
+
+            beaconMeshes.forEach((b, i) => {
+                const s = 1 + (Math.sin(pulseTime + i) + 1) * 0.3;
+                b.ring.scale.set(s, s, s);
+                b.ring.material.opacity = 0.7 - (s - 1) * 0.5;
+            });
+
+            arcPhotons.forEach(ph => {
+                ph.progress += 0.008;
+                if (ph.progress > 1) ph.progress = 0;
+                ph.mesh.position.copy(ph.curve.getPoint(ph.progress));
+            });
+
+            const diff = targetProgress - currentProgress;
+            if (Math.abs(diff) > 0.0005) {
+                currentProgress += diff * 0.1;
+                deconstructProgress = currentProgress;
+
+                const activeIndex = Math.min(4, Math.floor(deconstructProgress * 5));
+                const currentStop = countryStops[activeIndex];
+                const targetRot = getRotationFor(currentStop.lat, currentStop.lon);
+
+                globeGroup.rotation.x += (targetRot.x - globeGroup.rotation.x) * 0.08;
+                globeGroup.rotation.y += (targetRot.y - globeGroup.rotation.y) * 0.08;
+
+                explodeTexts.forEach((el, i) => {
+                    const start = i / 5;
+                    const end = (i + 1) / 5;
+                    if (deconstructProgress >= start && deconstructProgress < end + 0.02) {
+                        el.classList.add('active');
+                        if (dots[i]) dots[i].classList.add('active');
+                    } else {
+                        el.classList.remove('active');
+                        if (dots[i]) dots[i].classList.remove('active');
+                    }
+                });
+            }
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        const explodeTexts = [
+            document.getElementById('explode-text-0'),
+            document.getElementById('explode-text-1'),
+            document.getElementById('explode-text-2'),
+            document.getElementById('explode-text-3'),
+            document.getElementById('explode-text-4')
+        ];
+        const dots = [
+            document.getElementById('dot-0'),
+            document.getElementById('dot-1'),
+            document.getElementById('dot-2'),
+            document.getElementById('dot-3'),
+            document.getElementById('dot-4')
+        ];
+        const explodeSection = document.getElementById('exploding-scroll');
+
+        window.addEventListener('scroll', () => {
+            const rect = explodeSection.getBoundingClientRect();
+            const sectionHeight = explodeSection.offsetHeight - window.innerHeight;
+            const scrolled = -rect.top;
+            targetProgress = Math.max(0, Math.min(0.99, scrolled / sectionHeight));
+        }, { passive: true });
+    </script>
+</body>
+</html>
