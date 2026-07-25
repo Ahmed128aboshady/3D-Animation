@@ -1464,22 +1464,49 @@ footer ul a:hover { color: var(--coa-red); }
       </div>
       <div class="form-group">
         <label>الدولة *</label>
-        <select id="leadCountry" class="form-input" required>
-          <option value="جمهورية مصر العربية 🇪🇬">جمهورية مصر العربية 🇪🇬</option>
-          <option value="المملكة العربية السعودية 🇸🇦">المملكة العربية السعودية 🇸🇦</option>
-          <option value="الإمارات العربية المتحدة 🇦🇪">الإمارات العربية المتحدة 🇦🇪</option>
-          <option value="دولة الكويت 🇰🇼">دولة الكويت 🇰🇼</option>
-          <option value="دولة أخرى">دولة أخرى</option>
-        </select>
+        <input type="text" id="leadCountry" list="countriesList" class="form-input" required placeholder="ابحث أو اختر الدولة..."/>
+        <datalist id="countriesList">
+          <option value="جمهورية مصر العربية 🇪🇬">
+          <option value="المملكة العربية السعودية 🇸🇦">
+          <option value="الإمارات العربية المتحدة 🇦🇪">
+          <option value="دولة الكويت 🇰🇼">
+          <option value="دولة قطر 🇶🇦">
+          <option value="سلطنة عمان 🇴🇲">
+          <option value="مملكة البحرين 🇧🇭">
+          <option value="المملكة الأردنية الهاشمية 🇯🇴">
+          <option value="جمهورية العراق 🇮🇶">
+          <option value="الجمهورية اللبنانية 🇱🇧">
+          <option value="دولة ليبيا 🇱🇾">
+          <option value="الجمهورية التونسية 🇹🇳">
+          <option value="الجمهورية الجزائرية 🇩🇿">
+          <option value="المملكة المغربية 🇲🇦">
+          <option value="جمهورية السودان 🇸🇩">
+          <option value="الجمهورية اليمنية 🇾🇪">
+          <option value="دولة فلسطين 🇵🇸">
+          <option value="الجمهورية التركية 🇹🇷">
+          <option value="الولايات المتحدة الأمريكية 🇺🇸">
+          <option value="المملكة المتحدة 🇬🇧">
+          <option value="ألمانيا 🇩🇪">
+          <option value="فرنسا 🇫🇷">
+          <option value="كندا 🇨🇦">
+          <option value="إيطاليا 🇮🇹">
+          <option value="الصين 🇨🇳">
+          <option value="دولة أخرى">
+        </datalist>
       </div>
       <div class="form-group full">
-        <label>الموديول المطلوب في Odoo</label>
-        <select id="leadModule" class="form-input">
-          <option value="نظام متكامل (حسابات + مبيعات + مخازن + HR)">نظام متكامل (حسابات + مبيعات + مخازن + HR)</option>
-          <option value="الحسابات والمالية والفاتورة الإلكترونية">الحسابات والمالية والفاتورة الإلكترونية</option>
-          <option value="التصنيع وسلاسل الإمداد (MRP)">التصنيع وسلاسل الإمداد (MRP)</option>
-          <option value="الموارد البشرية والمرتبات (HR &amp; Payroll)">الموارد البشرية والمرتبات (HR &amp; Payroll)</option>
-        </select>
+        <label>الموديول / المطلوب في Odoo</label>
+        <input type="text" id="leadModule" list="modulesList" class="form-input" placeholder="اختر أو اكتب المطلوب بالتفصيل (مثال: سيستم كامل، تعديل سيستم حالي...)"/>
+        <datalist id="modulesList">
+          <option value="نظام متكامل جديد (حسابات + مبيعات + مخازن + HR)">
+          <option value="تعديل وتطوير سيستم أودو موجود بالفعل (Customization)">
+          <option value="الحسابات والمالية والفاتورة الإلكترونية">
+          <option value="التصنيع وسلاسل الإمداد (MRP)">
+          <option value="الموارد البشرية والمرتبات (HR &amp; Payroll)">
+          <option value="نقاط البيع وإدارة التجزئة والمطاعم (POS)">
+          <option value="ربط المتاجر الإلكترونية والـ APIs">
+          <option value="استشارة مخصصة / موديول خاص آخر">
+        </datalist>
       </div>
       <button type="submit" class="submit-btn">🚀 تأكيد طلب العرض بخصم 20% والديمو المجاني</button>
     </form>
