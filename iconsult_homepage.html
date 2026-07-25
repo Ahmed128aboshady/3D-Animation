@@ -361,7 +361,7 @@ nav ul a:hover { color: white; }
   overflow: hidden;
 }
 
-/* VIBRANT RED HIGH-TECH FLOATING GLASS BADGES */
+/* VIBRANT RED HIGH-TECH FLOATING GLASS BADGES (ANCHORED ZERO-JUMP CSS) */
 .floating-glass-badge {
   position: absolute;
   top: 0; left: 0;
@@ -369,7 +369,7 @@ nav ul a:hover { color: white; }
   align-items: center;
   gap: 7px;
   background: rgba(14, 5, 8, 0.92);
-  border: 1px solid rgba(255, 45, 85, 0.5);
+  border: 1.5px solid rgba(255, 45, 85, 0.5);
   color: #FFFFFF;
   padding: 6px 14px;
   border-radius: 20px;
@@ -381,18 +381,20 @@ nav ul a:hover { color: white; }
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 45, 85, 0.3);
   pointer-events: auto;
   cursor: pointer;
-  transition: opacity 0.25s ease, transform 0.1s linear, border-color 0.3s, background 0.3s;
+  transition: opacity 0.25s ease, border-color 0.3s, background 0.3s, box-shadow 0.3s;
   white-space: nowrap;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  will-change: transform;
 }
+
 .floating-glass-badge:hover, .floating-glass-badge.active {
   background: rgba(255, 45, 85, 0.95);
   border-color: #FF6B8B;
   color: #FFFFFF;
-  box-shadow: 0 8px 30px rgba(255, 45, 85, 0.85);
-  transform: translate(-50%, -100%) scale(1.08) !important;
+  box-shadow: 0 8px 30px rgba(255, 45, 85, 0.9);
 }
+
 .floating-glass-badge .badge-dot {
   width: 7px; height: 7px;
   background: var(--red);
@@ -1284,7 +1286,7 @@ globeCanvas.addEventListener('wheel', e => {
 
 let targetGlobeProgress = 0, currentGlobeProgress = 0;
 
-// Dynamic Three.js 3D Screen Projection for ALL Floating Glass Badges
+// Dynamic Three.js 3D Screen Projection for ALL Floating Glass Badges (ANCHORED WITH SMOOTH SCALE)
 const tempVec = new THREE.Vector3();
 function updateAllFloatingBadges() {
     beaconMeshes.forEach((bm, i) => {
@@ -1310,9 +1312,12 @@ function updateAllFloatingBadges() {
         const x = (tempVec.x * 0.5 + 0.5) * window.innerWidth;
         const y = -(tempVec.y * 0.5 - 0.5) * window.innerHeight;
 
+        const isBadgeActive = (i === activePinIdx);
+        const scaleVal = isBadgeActive ? 'scale(1.12)' : 'scale(1)';
+
         badge.style.opacity = '1';
         badge.style.pointerEvents = 'auto';
-        badge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 12}px)`;
+        badge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 12}px) ${scaleVal}`;
     });
 }
 
