@@ -1913,25 +1913,24 @@ ScrollTrigger.create({ trigger: '#s-cta', start:'top 60%', onEnter:() => setDot(
 // 6. REAL THREE.JS 3D WEBGL TEAM STAGE ANIMATION ENGINE
 const teamData = [
   // 1. CEO & Leadership
-  { dept: 'management', avatar: '👔', photo: 'ibrahim_ramadan.png', badge: 'CEO & Founder', name: 'Ibrahim Ramadan', role: 'Chief Executive Officer & Founder', desc: 'Leading strategic growth and enterprise Odoo ERP transformations for major corporations across EMEA.', skills: ['Strategic Leadership', 'Odoo ERP Consulting', 'Business Development'], color: 0xE52531 },
-  // 2. ERP Management
+  { dept: 'management', avatar: '👔', photo: 'ibrahim_ramadan.png', badge: 'CEO & Founder', name: 'Eng. Ibrahim Ramadan', role: 'Chief Executive Officer & Founder', desc: 'Leading strategic growth and enterprise Odoo ERP transformations for major corporations across EMEA.', skills: ['Strategic Leadership', 'Odoo ERP Consulting', 'Business Development'], color: 0xE52531 },
+  // 2. ERP Management & Team Leadership
   { dept: 'management', avatar: '⚙️', photo: 'esmail_elhareef.jpg', badge: 'ERP Manager', name: 'Eng. Esmail Elhareef', role: 'ERP Operations Manager', desc: 'Overseeing project delivery, operational quality, and technical execution for Odoo ERP client portfolios.', skills: ['ERP Project Mgmt', 'Quality Assurance', 'Operations Lead'], color: 0x0D334E },
-  // 3. Team Leaders
   { dept: 'teamlead', avatar: '👑', badge: 'Team Leader', name: 'Eng. Ekramy', role: 'Technical & Implementation Team Leader', desc: 'Directing technical squads, custom development pipelines, and client implementation milestones.', skills: ['Team Leadership', 'Odoo Architecture', 'ERP Solutions'], color: 0xE52531 },
   { dept: 'teamlead', avatar: '👑', badge: 'Team Leader', name: 'Eng. Omar Abdelaziz', role: 'Implementation Team Leader', desc: 'Managing implementation engineers, process analysis, and custom workflow architectures.', skills: ['Execution Lead', 'Workflow Analysis', 'Odoo Solutions'], color: 0x0D334E },
-  // 4. Sales
-  { dept: 'sales', avatar: '🎯', badge: 'Sales Lead', name: 'Aya Mohamed', role: 'Sales & Business Development Lead', desc: 'Building key client relationships and aligning corporate ERP requirements with tailored Odoo solutions.', skills: ['Business Development', 'Sales Strategy', 'Client Success'], color: 0xE52531 },
-  // 5. Senior Implementors
-  { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Abdelrahman Ashraf', role: 'Senior Odoo Implementor', desc: 'Deploying advanced enterprise modules, complex data migrations, and system configuration.', skills: ['Odoo Deployment', 'Data Migration', 'Module Architecture'], color: 0xE52531 },
-  { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Hesham Hendy', role: 'Senior Odoo Implementor', desc: 'On-site module implementation, accounting workflow restructuring, and seamless API integrations.', skills: ['Module Structuring', 'On-site Delivery', 'Odoo Integration'], color: 0x0D334E },
-  { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Omar Ahmed', role: 'Senior Odoo Implementor', desc: 'Enterprise system deployment, staff training programs, and strategic module configuration.', skills: ['Odoo Implementation', 'Staff Training', 'System Settings'], color: 0xE52531 },
-  // 6. Odoo Implementors
-  { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Aya Ahmed', role: 'Odoo Implementor', desc: 'Configuring core Odoo modules, system QA testing, and supporting daily client operations.', skills: ['Module Configuration', 'System QA', 'On-site Support'], color: 0x0D334E },
-  { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Abdelrahman Gamal', role: 'Odoo Implementor', desc: 'Executing module deployments, legacy data onboarding, and team training workshops.', skills: ['Odoo Deployment', 'Data Onboarding', 'User Training'], color: 0xE52531 },
-  { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Dina Amin', role: 'Odoo Implementor', desc: 'Precision data entry management, inventory, sales, and accounting module fine-tuning.', skills: ['Accounting Tuning', 'Odoo Setup', 'Process Tracking'], color: 0x0D334E },
-  // 7. Odoo Developers
-  { dept: 'dev', avatar: '💻', photo: 'ahmed_aboshady.png', badge: 'Odoo Developer', name: 'Ahmed Abo Shady', role: 'Odoo Developer', desc: 'Developing specialized web modules, UI extensions, and multi-system API bridges.', skills: ['Odoo Development', 'Custom Modules', 'Technical Bridges'], color: 0x0D334E },
-  { dept: 'dev', avatar: '💻', badge: 'Senior Developer', name: 'Eslam Tarek', role: 'Senior Odoo Developer', desc: 'Custom module engineering, REST API integrations, backend architecture, and automated reports.', skills: ['Custom Python/Odoo', 'REST API', 'Backend Architecture'], color: 0xE52531 }
+  // 3. Sales
+  { dept: 'sales', avatar: '🎯', badge: 'Sales Lead', name: 'Eng. Aya Mohamed', role: 'Sales & Business Development Lead', desc: 'Building key client relationships and aligning corporate ERP requirements with tailored Odoo solutions.', skills: ['Business Development', 'Sales Strategy', 'Client Success'], color: 0xE52531 },
+  // 4. Senior Implementors
+  { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Eng. Abdelrahman Ashraf', role: 'Senior Odoo Implementor', desc: 'Deploying advanced enterprise modules, complex data migrations, and system configuration.', skills: ['Odoo Deployment', 'Data Migration', 'Module Architecture'], color: 0xE52531 },
+  { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Eng. Hesham Hendy', role: 'Senior Odoo Implementor', desc: 'On-site module implementation, accounting workflow restructuring, and seamless API integrations.', skills: ['Module Structuring', 'On-site Delivery', 'Odoo Integration'], color: 0x0D334E },
+  { dept: 'snrimple', avatar: '🛠️', badge: 'Senior Implementor', name: 'Eng. Omar Ahmed', role: 'Senior Odoo Implementor', desc: 'Enterprise system deployment, staff training programs, and strategic module configuration.', skills: ['Odoo Implementation', 'Staff Training', 'System Settings'], color: 0xE52531 },
+  // 5. Odoo Implementors
+  { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Eng. Aya Ahmed', role: 'Odoo Implementor', desc: 'Configuring core Odoo modules, system QA testing, and supporting daily client operations.', skills: ['Module Configuration', 'System QA', 'On-site Support'], color: 0x0D334E },
+  { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Eng. Abdelrahman Gamal', role: 'Odoo Implementor', desc: 'Executing module deployments, legacy data onboarding, and team training workshops.', skills: ['Odoo Deployment', 'Data Onboarding', 'User Training'], color: 0xE52531 },
+  { dept: 'imple', avatar: '📋', badge: 'Odoo Implementor', name: 'Eng. Dina Amin', role: 'Odoo Implementor', desc: 'Precision data entry management, inventory, sales, and accounting module fine-tuning.', skills: ['Accounting Tuning', 'Odoo Setup', 'Process Tracking'], color: 0x0D334E },
+  // 6. Odoo Developers
+  { dept: 'dev', avatar: '💻', photo: 'ahmed_aboshady.png', badge: 'Odoo Developer', name: 'Eng. Ahmed Abo Shady', role: 'Odoo Developer', desc: 'Developing specialized web modules, UI extensions, and multi-system API bridges.', skills: ['Odoo Development', 'Custom Modules', 'Technical Bridges'], color: 0x0D334E },
+  { dept: 'dev', avatar: '💻', badge: 'Senior Developer', name: 'Eng. Eslam Tarek', role: 'Senior Odoo Developer', desc: 'Custom module engineering, REST API integrations, backend architecture, and automated reports.', skills: ['Custom Python/Odoo', 'REST API', 'Backend Architecture'], color: 0xE52531 }
 ];
 
 let activeTeamIdx = 0;
