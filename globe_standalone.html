@@ -536,8 +536,12 @@ window.addEventListener('mousemove', e => {
     const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.005);
     targetQuaternion.premultiply(qY).premultiply(qX);
 
-    prevM = { x: e.clientX, y: e.clientY };
-});
+    globeCanvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    const zoomSpeed = 0.0025;
+    const newZ = globeCamera.position.z + e.deltaY * zoomSpeed;
+    globeCamera.position.z = Math.max(3.2, Math.min(9.5, newZ));
+}, { passive: false });
 
 let touchStartCoords = { x: 0, y: 0 };
 
