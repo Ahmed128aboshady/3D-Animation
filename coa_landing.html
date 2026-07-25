@@ -1526,14 +1526,8 @@ function selectTeam3D(idx) {
     const coreMesh = new THREE.Mesh(cardGeo, materials);
     meshGroup.add(coreMesh);
 
-    // Sleek Orbiting Torus Ring
-    const ringMat = new THREE.MeshBasicMaterial({ color: td.color, transparent: true, opacity: 0.5 });
-    const ringMesh = new THREE.Mesh(new THREE.TorusGeometry(2.4, 0.03, 8, 32), ringMat);
-    ringMesh.rotation.x = Math.PI / 3;
-    meshGroup.add(ringMesh);
-
     teamStageGroup.add(meshGroup);
-    teamMeshes.push({ group: meshGroup, core: coreMesh, ring: ringMesh, photoTex: photoTex, angle: angle });
+    teamMeshes.push({ group: meshGroup, core: coreMesh, photoTex: photoTex, angle: angle });
   });
 
   let mouseX = 0, mouseY = 0;
@@ -1553,9 +1547,8 @@ function selectTeam3D(idx) {
       // Keep 3D Portrait Standees facing forward toward camera
       tm.group.rotation.y = -teamStageGroup.rotation.y;
       
-      // Floating Y-bobbing & spinning torus ring
+      // Floating Y-bobbing animation
       tm.core.position.y = Math.sin(Date.now() * 0.002 + i) * 0.15;
-      tm.ring.rotation.z += 0.015;
 
       const isCurrent = (i === activeTeamIdx);
       const targetScale = isCurrent ? 1.35 : 0.85;
