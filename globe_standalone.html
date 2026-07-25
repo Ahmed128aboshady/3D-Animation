@@ -94,17 +94,25 @@ html, body {
 }
 
 .floating-glass-badge:hover, .floating-glass-badge.active {
-  background: rgba(0, 174, 239, 0.95);
-  border-color: #00D4FF;
-  color: #FFFFFF;
-  box-shadow: 0 8px 30px rgba(0, 174, 239, 0.9);
+  background: var(--blue) !important;
+  border-color: var(--blue2) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 8px 30px rgba(0, 174, 239, 0.9) !important;
 }
 
 .floating-glass-badge .badge-dot {
   width: 7px; height: 7px;
-  background: var(--blue);
+  background: white;
   border-radius: 50%;
-  box-shadow: 0 0 8px var(--blue);
+  box-shadow: 0 0 8px white;
+}
+
+.explode-text.active {
+  position: relative !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translate3d(0, 0, 0) scale(1) !important;
+  pointer-events: auto !important;
 }
 
 /* Zoom Controls (+ / -) on Left Side */
@@ -241,13 +249,6 @@ html, body {
 }
 .agency-pill.green { background: rgba(27, 130, 67, 0.12); border-color: rgba(27, 130, 67, 0.35); color: #25d366; }
 .agency-pill.gold { background: rgba(207, 161, 92, 0.12); border-color: rgba(207, 161, 92, 0.35); color: #cfa15c; }
-.agency-pill.explode-text.active {
-  position: relative !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: translate3d(0, 0, 0) scale(1) !important;
-  pointer-events: auto !important;
-}
 
 @media(max-width:850px){
   #globe-badges-container, .floating-glass-badge { display: none !important; }
