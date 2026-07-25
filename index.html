@@ -353,6 +353,43 @@ nav ul a:hover { color: white; }
   touch-action: pan-y !important;
 }
 
+/* Floating 3D/CSS Tooltip Badge above the active Pin */
+#pin-tooltip-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: #0e2031;
+  border: 1.5px solid var(--blue);
+  color: #FFFFFF;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 8px 25px rgba(0, 174, 239, 0.5);
+  pointer-events: none;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: opacity 0.2s ease, transform 0.1s linear;
+  white-space: nowrap;
+}
+#pin-tooltip-badge::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--blue);
+}
+
 /* Mobile Floating Zoom & Scroll Controls (+ / - / ↓) on Left Side */
 .mobile-zoom-controls {
   position: absolute;
@@ -728,6 +765,9 @@ footer ul a:hover { color: var(--blue); }
     <!-- Three.js Interactive 3D Earth Canvas -->
     <canvas id="globe-canvas"></canvas>
 
+    <!-- Floating 3D Screen-Projected Pin Tooltip Badge -->
+    <div id="pin-tooltip-badge"></div>
+
     <!-- Mobile Zoom & Scroll Controls (+ / - / ↓) on Left Side -->
     <div class="mobile-zoom-controls">
       <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
@@ -892,20 +932,23 @@ animateBg();
 // 2. PHOTOREALISTIC 3D EARTH GLOBE ENGINE (SECTION 5)
 // ═════════════════════════════════════════════════════════
 const countryStops = [
-    { lat: 30.0, lon: 31.2, flag: '🇪🇬', country: 'Egypt', tag: 'Headquarters', title: 'Cairo HQ Hub', desc: 'Cairo Headquarters leading business transformation across North Africa. Specialized in Odoo ERP, strategic consulting & AI automation.', p1: '⚙️ Odoo ERP', p2: '200+ Projects', color: 0x1b8243 },
-    { lat: 24.7, lon: 46.7, flag: '🇸🇦', country: 'Saudi Arabia', tag: 'Vision 2030', title: 'Riyadh Operations', desc: 'Empowering major enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.', p1: '🎯 Strategic Planning', p2: '98% Satisfaction', color: 0xcfa15c },
-    { lat: 25.2, lon: 55.3, flag: '🇦🇪', country: 'UAE', tag: 'Innovation Hub', title: 'Dubai Office', desc: 'Driving high-performance digital marketing, brand acceleration, and AI workflow automation for Dubai corporations.', p1: '📣 Digital Marketing', p2: '3x ROI Growth', color: 0x00AEEF },
-    { lat: 29.3, lon: 47.7, flag: '🇰🇼', country: 'Kuwait', tag: 'GCC Region', title: 'Kuwait City', desc: 'Providing specialized ERP automation and workforce management solutions for industrial & commercial groups.', p1: '👥 Human Resources', p2: 'GCC Growth', color: 0x25d366 },
-    { lat: 51.5, lon: -0.1, flag: '🇬🇧', country: 'United Kingdom', tag: 'European Gateway', title: 'London Partner', desc: 'Connecting European firms with Middle Eastern markets through seamless IT architecture and compliance consulting.', p1: '🌐 Global Tech', p2: 'UK Network', color: 0xcfa15c },
-    { lat: 52.5, lon: 13.4, flag: '🇩🇪', country: 'Germany', tag: 'Central Europe', title: 'Berlin Office', desc: 'Delivering Industry 4.0 data integration and cross-border ERP synchronization for German manufacturing firms.', p1: '⚙️ Industry 4.0', p2: 'Data Integration', color: 0x00AEEF },
-    { lat: 36.2, lon: 138.2, flag: '🇯🇵', country: 'Japan', tag: 'Tech Alliance', title: 'Tokyo Alliance', desc: 'Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.', p1: '🤖 AI Integration', p2: 'Tokyo Office', color: 0xFFFFFF },
-    { lat: 1.3, lon: 103.8, flag: '🇸🇬', country: 'Singapore', tag: 'APAC Hub', title: 'Singapore Centre', desc: 'Expanding digital transformation and fintech integration for Asian multinational enterprises.', p1: '🚀 APAC Expansion', p2: 'Fintech ERP', color: 0x25d366 },
-    { lat: 40.7, lon: -74.0, flag: '🇺🇸', country: 'United States', tag: 'Americas Hub', title: 'New York Office', desc: 'Providing US corporations expanding into MENA with strategic market entry, ERP migration, and localization.', p1: '🗽 Market Entry', p2: 'US Alliance', color: 0x00AEEF },
-    { lat: -23.5, lon: -46.6, flag: '🇧🇷', country: 'Brazil', tag: 'Latin America', title: 'São Paulo Partner', desc: 'Supporting South American agritech and industrial leaders with cloud ERP infrastructure and analytics.', p1: '🌱 Agritech ERP', p2: 'LATAM Reach', color: 0xcfa15c }
+    { lat: 30.0, lon: 31.2, flag: '🇪🇬', country: 'Egypt', tag: 'Headquarters', title: 'Cairo HQ Hub', desc: 'Cairo Headquarters leading business transformation across North Africa. Specialized in Odoo ERP, strategic consulting & AI automation.', p1: '⚙️ Odoo ERP', p2: '200+ Projects' },
+    { lat: 24.7, lon: 46.7, flag: '🇸🇦', country: 'Saudi Arabia', tag: 'Vision 2030', title: 'Riyadh Operations', desc: 'Empowering major enterprise partners in Riyadh & Jeddah with strategic digitalization and custom ERP integration.', p1: '🎯 Strategic Planning', p2: '98% Satisfaction' },
+    { lat: 25.2, lon: 55.3, flag: '🇦🇪', country: 'UAE', tag: 'Innovation Hub', title: 'Dubai Office', desc: 'Driving high-performance digital marketing, brand acceleration, and AI workflow automation for Dubai corporations.', p1: '📣 Digital Marketing', p2: '3x ROI Growth' },
+    { lat: 29.3, lon: 47.7, flag: '🇰🇼', country: 'Kuwait', tag: 'GCC Region', title: 'Kuwait City', desc: 'Providing specialized ERP automation and workforce management solutions for industrial & commercial groups.', p1: '👥 Human Resources', p2: 'GCC Growth' },
+    { lat: 51.5, lon: -0.1, flag: '🇬🇧', country: 'United Kingdom', tag: 'European Gateway', title: 'London Partner', desc: 'Connecting European firms with Middle Eastern markets through seamless IT architecture and compliance consulting.', p1: '🌐 Global Tech', p2: 'UK Network' },
+    { lat: 52.5, lon: 13.4, flag: '🇩🇪', country: 'Germany', tag: 'Central Europe', title: 'Berlin Office', desc: 'Delivering Industry 4.0 data integration and cross-border ERP synchronization for German manufacturing firms.', p1: '⚙️ Industry 4.0', p2: 'Data Integration' },
+    { lat: 36.2, lon: 138.2, flag: '🇯🇵', country: 'Japan', tag: 'Tech Alliance', title: 'Tokyo Alliance', desc: 'Cross-continental technology partnership with Tokyo manufacturing & IT leaders for enterprise data integration.', p1: '🤖 AI Integration', p2: 'Tokyo Office' },
+    { lat: 1.3, lon: 103.8, flag: '🇸🇬', country: 'Singapore', tag: 'APAC Hub', title: 'Singapore Centre', desc: 'Expanding digital transformation and fintech integration for Asian multinational enterprises.', p1: '🚀 APAC Expansion', p2: 'Fintech ERP' },
+    { lat: 40.7, lon: -74.0, flag: '🇺🇸', country: 'United States', tag: 'Americas Hub', title: 'New York Office', desc: 'Providing US corporations expanding into MENA with strategic market entry, ERP migration, and localization.', p1: '🗽 Market Entry', p2: 'US Alliance' },
+    { lat: -23.5, lon: -46.6, flag: '🇧🇷', country: 'Brazil', tag: 'Latin America', title: 'São Paulo Partner', desc: 'Supporting South American agritech and industrial leaders with cloud ERP infrastructure and analytics.', p1: '🌱 Agritech ERP', p2: 'LATAM Reach' }
 ];
 
 const globeCardInner = document.getElementById('globe-card-inner');
 const globeCardStage = document.getElementById('globe-card-stage');
+const pinTooltipBadge = document.getElementById('pin-tooltip-badge');
+
+let activePinIdx = 0; // Tracks active tapped Pin for floating text badge
 
 countryStops.forEach((st, i) => {
     const panel = document.createElement('div');
@@ -985,13 +1028,30 @@ function ll2xyz(lat, lon, radius = R + 0.04) {
     return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta));
 }
 
-function create3DPin(colorHex) {
+// Custom 3D Pin styled with requested navy color #0e2031 & glowing cyan accent
+function create3DPin() {
     const pg = new THREE.Group();
-    const h = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.5 }));
+    const pinNavyColor = 0x0e2031;
+
+    // Pin head (sphere) with #0e2031 color
+    const h = new THREE.Mesh(
+        new THREE.SphereGeometry(0.14, 16, 16),
+        new THREE.MeshPhongMaterial({ color: pinNavyColor, emissive: 0x00AEEF, emissiveIntensity: 0.3, shininess: 30 })
+    );
     h.position.y = 0.28; pg.add(h);
-    const e = new THREE.Mesh(new THREE.SphereGeometry(0.06, 12, 12), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+
+    // Pin center eye (glowing white-cyan center)
+    const e = new THREE.Mesh(
+        new THREE.SphereGeometry(0.065, 12, 12),
+        new THREE.MeshBasicMaterial({ color: 0x00D4FF })
+    );
     e.position.set(0, 0.28, 0.1); pg.add(e);
-    const c = new THREE.Mesh(new THREE.ConeGeometry(0.11, 0.28, 16), new THREE.MeshPhongMaterial({ color: colorHex, emissive: colorHex, emissiveIntensity: 0.5 }));
+
+    // Pin cone stem
+    const c = new THREE.Mesh(
+        new THREE.ConeGeometry(0.11, 0.28, 16),
+        new THREE.MeshPhongMaterial({ color: pinNavyColor, emissive: 0x00AEEF, emissiveIntensity: 0.2 })
+    );
     c.position.y = 0.14; c.rotation.x = Math.PI; pg.add(c);
 
     // Large invisible hit sphere for 100% reliable tap detection
@@ -1011,12 +1071,12 @@ const beaconMeshes = [];
 
 countryStops.forEach(st => {
     const pos = ll2xyz(st.lat, st.lon);
-    const pin = create3DPin(st.color);
+    const pin = create3DPin();
     pin.position.copy(pos);
     pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), pos.clone().normalize());
     beaconGroup.add(pin);
 
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.015, 8, 32), new THREE.MeshBasicMaterial({ color: st.color, transparent: true, opacity: 0.85 }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.015, 8, 32), new THREE.MeshBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.85 }));
     ring.position.copy(pos); ring.lookAt(0,0,0); beaconGroup.add(ring);
     beaconMeshes.push({ pin, ring, pos });
 });
@@ -1038,6 +1098,8 @@ const raycaster = new THREE.Raycaster();
 const mouseVec = new THREE.Vector2();
 
 function triggerPinCard(idx) {
+    activePinIdx = idx;
+
     // INSTANTLY display card without force-rotating the globe!
     countryStops.forEach((_, i) => {
         const el = document.getElementById(`globe-panel-${i}`);
@@ -1155,6 +1217,42 @@ globeCanvas.addEventListener('wheel', e => {
 
 let targetGlobeProgress = 0, currentGlobeProgress = 0;
 
+// Dynamic 3D screen-projected country label update directly above the active Pin
+const tempVec = new THREE.Vector3();
+function updatePinTooltipBadge() {
+    if (activePinIdx === null || activePinIdx < 0 || activePinIdx >= beaconMeshes.length) {
+        pinTooltipBadge.style.display = 'none';
+        return;
+    }
+    const bm = beaconMeshes[activePinIdx];
+    if (!bm) return;
+
+    // Get 3D world position of the pin
+    tempVec.copy(bm.pos);
+    globeGroup.localToWorld(tempVec);
+
+    // Dot product to hide badge if pin rotates to the back of the Earth
+    const camDir = globeCamera.position.clone().sub(tempVec).normalize();
+    const pinNorm = tempVec.clone().normalize();
+    const dot = pinNorm.dot(camDir);
+
+    if (dot < 0.12) {
+        pinTooltipBadge.style.opacity = '0';
+        return;
+    }
+
+    // Project 3D coordinate to 2D screen coordinates
+    tempVec.project(globeCamera);
+    const x = (tempVec.x * 0.5 + 0.5) * window.innerWidth;
+    const y = -(tempVec.y * 0.5 - 0.5) * window.innerHeight;
+
+    const st = countryStops[activePinIdx];
+    pinTooltipBadge.style.display = 'flex';
+    pinTooltipBadge.style.opacity = '1';
+    pinTooltipBadge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 32}px)`;
+    pinTooltipBadge.innerHTML = `<span>${st.flag}</span> <strong>${st.country}</strong>`;
+}
+
 function animateGlobe() {
     requestAnimationFrame(animateGlobe);
     cloudMesh.rotation.y += 0.0008;
@@ -1171,6 +1269,8 @@ function animateGlobe() {
 
             globeGroup.rotation.x += (tr.x + rotOff.x - globeGroup.rotation.x) * 0.08;
             globeGroup.rotation.y += (tr.y + rotOff.y - globeGroup.rotation.y) * 0.08;
+
+            activePinIdx = activeIdx;
 
             countryStops.forEach((_, i) => {
                 const start = i / countryStops.length;
@@ -1189,6 +1289,7 @@ function animateGlobe() {
         globeGroup.rotation.y += (rotOff.y - globeGroup.rotation.y) * 0.1;
     }
 
+    updatePinTooltipBadge();
     globeRenderer.render(globeScene, globeCamera);
 }
 animateGlobe();
