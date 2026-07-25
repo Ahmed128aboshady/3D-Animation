@@ -1674,6 +1674,7 @@ function selectTeam3D(idx) {
 })();
 </script>
 
+<script>
 // 4. FORM & MODAL HANDLER
 function handleFormSubmit(e) {
   e.preventDefault();
@@ -1692,6 +1693,8 @@ setInterval(() => {
   const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
   document.getElementById('timer').textContent = `${h<10?'0'+h:h} : ${m<10?'0'+m:m} : ${s<10?'0'+s:s}`;
+}, 1000);
+
 // 6. 3D GYROSCOPE PERSPECTIVE TILT FOR TEAM CARDS
 function handle3DTilt(e, cardEl) {
   const inner = cardEl.querySelector('.w-card-inner-3d');
@@ -1699,13 +1702,10 @@ function handle3DTilt(e, cardEl) {
   const rect = cardEl.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
-  
   const centerX = rect.width / 2;
   const centerY = rect.height / 2;
-  
   const rotateX = ((y - centerY) / centerY) * -16;
   const rotateY = ((x - centerX) / centerX) * 16;
-  
   inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(15px)`;
 }
 
@@ -1714,6 +1714,9 @@ function reset3DTilt(cardEl) {
   if (!inner) return;
   inner.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0px)`;
 }
+
+// 7. Init team showcase on page load
+window.addEventListener('DOMContentLoaded', () => { selectTeam3D(0); });
 </script>
 </body>
 </html>
