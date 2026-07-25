@@ -910,7 +910,7 @@ footer ul a:hover { color: var(--coa-red); }
   justify-content: center; text-align: right;
 }
 .profile-modal-name {
-  font-size: clamp(1.8rem, 3vw, 2.3rem); font-weight: 900;
+  font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 900;
   color: var(--text-dark); margin-bottom: 0.3rem;
 }
 .profile-modal-role {
@@ -921,9 +921,26 @@ footer ul a:hover { color: var(--coa-red); }
 }
 
 @media(max-width: 768px) {
-  .profile-modal-grid { grid-template-columns: 1fr; }
-  .profile-modal-photo-col { height: 260px; }
-  .profile-modal-info-col { padding: 2rem 1.5rem; }
+  .profile-modal-overlay {
+    padding: 1rem 0.8rem;
+    align-items: flex-end;
+  }
+  .profile-modal-box {
+    max-height: 88vh;
+    overflow-y: auto;
+    border-radius: 28px 28px 20px 20px;
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+  }
+  .profile-modal-grid { grid-template-columns: 1fr; min-height: auto; }
+  .profile-modal-photo-col { height: 220px; min-height: 220px; }
+  .profile-modal-info-col { padding: 1.5rem 1.2rem; text-align: center; }
+  .profile-modal-info-col .team-badge-pill { margin-right: auto; margin-left: auto; }
+  .profile-modal-info-col .team-skills-row { justify-content: center; }
+  .profile-modal-close {
+    top: 12px; left: 12px;
+    background: rgba(0,0,0,0.6);
+    width: 32px; height: 32px;
+  }
 }
 
 /* ══════════════════════════════════════════════
