@@ -1492,11 +1492,14 @@ function selectTeam3D(idx) {
     const texture = new THREE.CanvasTexture(canvas);
 
     if (member.photo) {
+      drawBadge(null);
+      texture.needsUpdate = true;
       const img = new Image();
       img.onload = () => {
         drawBadge(img);
         texture.needsUpdate = true;
       };
+      img.onerror = (err) => console.log('Photo load error:', err);
       img.src = member.photo;
     } else {
       drawBadge(null);
