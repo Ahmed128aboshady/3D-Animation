@@ -1133,17 +1133,11 @@ footer ul a:hover { color: var(--coa-red); }
   </div>
 </section>
 
-<!-- SECTION 5: CORPORATE 3D EARTH ENGINE (16 CLIENT COMPANIES) -->
+<!-- SECTION 5: 3D INTERACTIVE GLOBE — COA EGYPT CLIENTS -->
 <section id="s-globe">
   <div class="globe-sticky-wrapper">
     <canvas id="globe-canvas"></canvas>
     <div id="globe-badges-container"></div>
-
-    <!-- Mobile Globe Header (hidden on desktop) -->
-    <div class="globe-mobile-header">
-      <div class="section-tag" style="margin-bottom:6px">عملاؤنا والتواجد الدولي</div>
-      <p style="font-size:0.8rem;color:var(--text-sub);margin:0">اضغط على أي نقطة لمعرفة العميل 👆</p>
-    </div>
 
     <div class="mobile-zoom-controls">
       <button type="button" class="zoom-btn" id="btn-zoom-in" aria-label="Zoom In">+</button>
@@ -1153,8 +1147,9 @@ footer ul a:hover { color: var(--coa-red); }
     <div class="globe-card-stage" id="globe-card-stage">
       <div class="double-bezel-outer">
         <div class="double-bezel-inner" id="globe-card-inner">
+          <div class="mobile-card-handle"></div>
           <button type="button" class="mobile-card-close" id="btn-close-card">✕</button>
-          <!-- Explode panels dynamically generated -->
+          <!-- Panels generated dynamically -->
         </div>
       </div>
     </div>
@@ -1375,24 +1370,24 @@ function animateBg() {
 }
 animateBg();
 
-// 2. 3D GLOBE WITH ALL 16 CLIENT COMPANIES FROM COA EGYPT
+// 2. 3D INTERACTIVE GLOBE — COA EGYPT CLIENTS (iconsult engine)
 const countryStops = [
-  { lat: 30.0, lon: 31.2, country: 'أرفاد (Arfad)', tag: 'القاهرة - مصر', title: 'شركة أرفاد', desc: 'تطبيق موديولات Odoo ERP للحسابات والمقاولات والتوريدات.', p1: 'Odoo.sh Enterprise', p2: 'القاهرة' },
-  { lat: 29.9, lon: 31.1, country: 'الرملة (Al-Ramlaa)', tag: 'الجيزة - مصر', title: 'مجموعة الرملة', desc: 'نظام إدارة الزراعة والمخازن وسلاسل الإمداد على أودو.', p1: 'Odoo.sh Enterprise', p2: 'الجيزة' },
-  { lat: 30.1, lon: 31.3, country: 'CFC Egypt (v18)', tag: 'التصنيع - مصر', title: 'CFC Egypt', desc: 'تطبيق أودو إصدار v18 للتصنيع وتتبع خطوط الإنتاج والضرائب.', p1: 'Odoo.sh Enterprise', p2: 'v18 Enterprise' },
-  { lat: 31.2, lon: 29.9, country: 'Punalu (eng-coa)', tag: 'الإسكندرية', title: 'Punalu الهندسة', desc: 'نظام إدارة المشاريع والاستشارات الهندسية والحسابات.', p1: 'Odoo.sh Enterprise', p2: 'الإسكندرية' },
-  { lat: 29.8, lon: 30.9, country: 'أطياف الغذائية', tag: '6 أكتوبر', title: 'أطياف للصناعات', desc: 'إدارة مصانع الأغذية، الحسابات، وتكاليف الإنتاج في أودو.', p1: 'Odoo.sh Enterprise', p2: 'أغذية' },
-  { lat: 24.7, lon: 46.7, country: 'Odoo for Oud (عود)', tag: 'الرياض - السعودية', title: 'عود للتجارة', desc: 'ربط نقاط البيع POS والمتاجر والمخازن في السعودية.', p1: 'Odoo.sh Enterprise', p2: 'الرياض 🇸🇦' },
-  { lat: 21.5, lon: 39.1, country: 'شفاء الدواء (Shefa)', tag: 'جدة - السعودية', title: 'شفاء الدواء', desc: 'إدارة المستلزمات الطبية والأدوية وتأهيل الفاتورة السعودية.', p1: 'Odoo.sh Enterprise', p2: 'جدة 🇸🇦' },
-  { lat: 26.4, lon: 50.1, country: 'Tornado KSA', tag: 'الدمام - السعودية', title: 'تورنيدو السعودية', desc: 'نظام التوزيع والتجارة وإدارة علاقات العملاء CRM.', p1: 'Odoo.sh Enterprise', p2: 'الشرقية 🇸🇦' },
-  { lat: 25.2, lon: 55.3, country: 'Wheat & Butter', tag: 'دبي - الإمارات', title: 'Wheat & Butter', desc: 'نظام المطاعم والأغذية والتوريد والمخازن.', p1: 'Odoo.sh Enterprise', p2: 'دبي 🇦🇪' },
-  { lat: 29.3, lon: 47.7, country: 'بيكون (Beacon)', tag: 'الكويت', title: 'شركة بيكون', desc: 'إدارة شبكات الاتصالات والحلول التقنية والحسابات.', p1: 'VPS Enterprise', p2: 'الكويت 🇰🇼' },
-  { lat: 30.05, lon: 31.25, country: 'عرب باك (Arab Pack)', tag: 'التعبئة - مصر', title: 'عرب باك', desc: 'نظام إدارة مصانع التعبئة والتغليف وحسابات التكاليف.', p1: 'VPS Enterprise', p2: 'مصر' },
-  { lat: 51.5, lon: -0.1, country: 'Cofinance', tag: 'لندن - بريطانيا', title: 'Cofinance', desc: 'الخدمات المالية وحسابات التمويل والاستشارات.', p1: 'VPS Enterprise', p2: 'لندن 🇬🇧' },
-  { lat: 52.5, lon: 13.4, country: 'Dottopia', tag: 'برلين - ألمانيا', title: 'Dottopia', desc: 'ربط الأنظمة البرمجية وموديولات أودو المخصصة.', p1: 'VPS Enterprise', p2: 'برلين 🇩🇪' },
-  { lat: 31.0, lon: 31.3, country: 'الرضا (El-Reda)', tag: 'المنصورة - مصر', title: 'مؤسسة الرضا', desc: 'التجارة العامة ونقاط البيع وإدارة المخزون.', p1: 'VPS Enterprise', p2: 'الدقهلية' },
-  { lat: 24.6, lon: 46.6, country: 'المخلف (El-Mokhalaf)', tag: 'الرياض - السعودية', title: 'المخلف للمقاولات', desc: 'متابعة المستخلصات وعقود المقاولات والحسابات.', p1: 'VPS Enterprise', p2: 'الرياض 🇸🇦' },
-  { lat: 40.7, lon: -74.0, country: 'حلال ماركت', tag: 'أمريكا', title: 'Halal Market', desc: 'نظام السوبر ماركت والتجزئة والربط السحابي.', p1: 'VPS Enterprise', p2: 'أمريكا 🇺🇸' }
+  { lat: 30.0,  lon: 31.2,   country: 'مصر — المركز الرئيسي', tag: 'Cairo HQ',        title: 'أرفاد (Arfad)',            desc: 'تطبيق موديولات Odoo ERP للحسابات والمقاولات والتوريدات — مدينة نصر، القاهرة.',   p1: '⚙️ Odoo.sh Enterprise', p2: '200+ مشروع', isHq: true },
+  { lat: 29.9,  lon: 31.1,   country: 'مصر — الجيزة',         tag: 'Giza, Egypt',      title: 'مجموعة الرملة',            desc: 'نظام إدارة الزراعة والمخازن وسلاسل الإمداد بالكامل على أودو.',                     p1: '🌾 Odoo Enterprise',     p2: 'الجيزة 🇪🇬' },
+  { lat: 30.1,  lon: 31.3,   country: 'مصر — التصنيع',        tag: 'Manufacturing',    title: 'CFC Egypt v18',            desc: 'تطبيق أودو إصدار v18 للتصنيع وتتبع خطوط الإنتاج والضرائب الإلكترونية.',         p1: '🏭 Odoo v18 Enterprise', p2: 'مصر 🇪🇬' },
+  { lat: 31.2,  lon: 29.9,   country: 'مصر — الإسكندرية',     tag: 'Alexandria',       title: 'Punalu الهندسة',           desc: 'نظام إدارة المشاريع والاستشارات الهندسية والحسابات المتكاملة.',                   p1: '🔧 Project Management',  p2: 'الإسكندرية 🇪🇬' },
+  { lat: 29.8,  lon: 30.9,   country: 'مصر — أكتوبر',         tag: '6 October, Egypt', title: 'أطياف للصناعات الغذائية', desc: 'إدارة مصانع الأغذية والحسابات وتكاليف الإنتاج وسلاسل الإمداد في أودو.',         p1: '🍃 Odoo Manufacturing',  p2: 'أغذية 🇪🇬' },
+  { lat: 30.05, lon: 31.25,  country: 'مصر — التعبئة',         tag: 'Packaging, Egypt', title: 'عرب باك (Arab Pack)',      desc: 'نظام إدارة مصانع التعبئة والتغليف وحسابات التكاليف والضرائب.',                    p1: '📦 Odoo ERP',            p2: 'مصر 🇪🇬' },
+  { lat: 31.0,  lon: 31.3,   country: 'مصر — الدقهلية',       tag: 'Mansoura, Egypt',  title: 'مؤسسة الرضا (El-Reda)',   desc: 'التجارة العامة ونقاط البيع POS وإدارة المخزون والحسابات.',                        p1: '🛒 Odoo POS & ERP',      p2: 'الدقهلية 🇪🇬' },
+  { lat: 24.7,  lon: 46.7,   country: 'السعودية — الرياض',    tag: 'Riyadh, KSA',      title: 'عود للتجارة (Oud)',        desc: 'ربط نقاط البيع POS والمتاجر والمخازن وإدارة السلاسل في السعودية.',               p1: '🎯 Odoo.sh Enterprise',  p2: 'الرياض 🇸🇦' },
+  { lat: 21.5,  lon: 39.1,   country: 'السعودية — جدة',       tag: 'Jeddah, KSA',      title: 'شفاء الدواء',             desc: 'إدارة المستلزمات الطبية والأدوية وتأهيل الفاتورة الإلكترونية السعودية.',         p1: '💊 Healthcare Odoo',     p2: 'جدة 🇸🇦' },
+  { lat: 26.4,  lon: 50.1,   country: 'السعودية — الدمام',    tag: 'Dammam, KSA',      title: 'تورنيدو السعودية',        desc: 'نظام التوزيع والتجارة وإدارة علاقات العملاء CRM في المنطقة الشرقية.',           p1: '🚛 Distribution ERP',    p2: 'الشرقية 🇸🇦' },
+  { lat: 24.6,  lon: 46.6,   country: 'السعودية — مقاولات',   tag: 'Riyadh, KSA',      title: 'المخلف للمقاولات',        desc: 'متابعة المستخلصات وعقود المقاولات والحسابات والموارد البشرية.',                  p1: '🏗️ Contracting ERP',    p2: 'الرياض 🇸🇦' },
+  { lat: 25.2,  lon: 55.3,   country: 'الإمارات — دبي',       tag: 'Dubai, UAE',       title: 'Wheat & Butter',          desc: 'نظام إدارة المطاعم والأغذية والتوريد والمخازن وPOS.',                            p1: '🍽️ F&B Odoo ERP',       p2: 'دبي 🇦🇪' },
+  { lat: 29.3,  lon: 47.7,   country: 'الكويت',               tag: 'Kuwait City',      title: 'شركة بيكون (Beacon)',     desc: 'إدارة شبكات الاتصالات والحلول التقنية والحسابات والعمليات.',                     p1: '📡 Telecom Odoo',        p2: 'الكويت 🇰🇼' },
+  { lat: 51.5,  lon: -0.1,   country: 'المملكة المتحدة',      tag: 'London, UK',       title: 'Cofinance',               desc: 'الخدمات المالية وحسابات التمويل والاستشارات المحاسبية المتخصصة.',                p1: '💼 Finance Consulting',  p2: 'لندن 🇬🇧' },
+  { lat: 52.5,  lon: 13.4,   country: 'ألمانيا',              tag: 'Berlin, Germany',  title: 'Dottopia',                desc: 'ربط الأنظمة البرمجية وتطوير موديولات أودو المخصصة وتكامل الـ API.',              p1: '🖥️ Custom Dev Odoo',    p2: 'برلين 🇩🇪' },
+  { lat: 40.7,  lon: -74.0,  country: 'الولايات المتحدة',     tag: 'New York, USA',    title: 'Halal Market',            desc: 'نظام إدارة السوبر ماركت والتجزئة والربط السحابي الكامل.',                        p1: '🏪 Retail Odoo ERP',     p2: 'أمريكا 🇺🇸' }
 ];
 
 const globeCardInner = document.getElementById('globe-card-inner');
@@ -1404,7 +1399,7 @@ const badgeElements = [];
 
 countryStops.forEach((st, i) => {
   const panel = document.createElement('div');
-  panel.className = `explode-text` + (i === 0 ? ' active' : '');
+  panel.className = 'explode-text' + (i === 0 ? ' active' : '');
   panel.id = `globe-panel-${i}`;
   panel.innerHTML = `
     <div class="card-top-row">
@@ -1415,13 +1410,13 @@ countryStops.forEach((st, i) => {
     <p class="card-body-text">${st.desc}</p>
     <div class="badge-row">
       <span class="agency-pill green">${st.p1}</span>
-      <span class="agency-pill">${st.p2}</span>
+      <span class="agency-pill gold">${st.p2}</span>
     </div>
   `;
   globeCardInner.appendChild(panel);
 
   const badge = document.createElement('div');
-  badge.className = `floating-glass-badge` + (i === 0 ? ' active' : '');
+  badge.className = 'floating-glass-badge' + (i === 0 ? ' active' : '');
   badge.id = `glass-badge-${i}`;
   badge.innerHTML = `<span class="badge-dot"></span><span>${st.country}</span>`;
   badge.addEventListener('click', (e) => { e.stopPropagation(); triggerPinCard(i); });
@@ -1432,101 +1427,122 @@ countryStops.forEach((st, i) => {
 const globeCanvas = document.getElementById('globe-canvas');
 const globeRenderer = new THREE.WebGLRenderer({ canvas: globeCanvas, alpha: true, antialias: true });
 globeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-// Use actual canvas container size, not window size
-function getGlobeSize() {
-  const wrapper = document.querySelector('.globe-sticky-wrapper');
-  if (wrapper) {
-    return { w: wrapper.clientWidth || window.innerWidth, h: wrapper.clientHeight || window.innerHeight };
-  }
-  return { w: window.innerWidth, h: window.innerHeight };
-}
-
-const gs0 = getGlobeSize();
-globeRenderer.setSize(gs0.w, gs0.h);
+globeRenderer.setSize(window.innerWidth, window.innerHeight);
 
 const globeScene = new THREE.Scene();
-const globeCamera = new THREE.PerspectiveCamera(45, gs0.w / gs0.h, 0.1, 1000);
+const globeCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 globeCamera.position.set(0, 0, 5.8);
 
-const ambL = new THREE.AmbientLight(0xffffff, 0.95); globeScene.add(ambL);
-const dirL = new THREE.DirectionalLight(0xffffff, 1.4); dirL.position.set(5, 3, 5); globeScene.add(dirL);
+const ambL = new THREE.AmbientLight(0xffffff, 0.65); globeScene.add(ambL);
+const dirL = new THREE.DirectionalLight(0xffffff, 1.8); dirL.position.set(5, 3, 5); globeScene.add(dirL);
+const rimL = new THREE.DirectionalLight(0x00AEEF, 0.8); rimL.position.set(-5, -2, -3); globeScene.add(rimL);
 
 const globeGroup = new THREE.Group();
-globeGroup.position.set(1.7, 0, 0);
+globeGroup.position.set(-1.7, 0, 0);
 globeScene.add(globeGroup);
 
 function updateGlobeCam() {
-  const isMobile = window.innerWidth < 850;
-  const { w, h } = getGlobeSize();
-  globeRenderer.setSize(w, h);
-  globeCamera.aspect = w / h;
-  globeCamera.updateProjectionMatrix();
-  if (isMobile) {
-    globeGroup.position.set(0, 0, 0);
-    globeCamera.position.set(0, 0, 7.2);
+  if (window.innerWidth < 850) {
+    globeGroup.position.set(0, 0.5, 0);
+    globeCamera.position.set(0, 0, 6.8);
   } else {
-    globeGroup.position.set(1.7, 0, 0);
+    globeGroup.position.set(-1.7, 0, 0);
     globeCamera.position.set(0, 0, 5.8);
   }
+  globeCamera.aspect = window.innerWidth / window.innerHeight;
+  globeCamera.updateProjectionMatrix();
+  globeRenderer.setSize(window.innerWidth, window.innerHeight);
 }
 updateGlobeCam();
 
-// Re-run on resize
-window.addEventListener('resize', updateGlobeCam);
-
 const R = 2.45;
 const texLoader = new THREE.TextureLoader();
-const dayMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+const dayMap  = texLoader.load('https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg');
+const bumpMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_normal_2048.jpg');
+const specMap = texLoader.load('https://threejs.org/examples/textures/planets/earth_specular_2048.jpg');
+const cldMap  = texLoader.load('https://threejs.org/examples/textures/planets/earth_clouds_1024.png');
 
 const earthMesh = new THREE.Mesh(
   new THREE.SphereGeometry(R, 64, 64),
-  new THREE.MeshPhongMaterial({ map: dayMap, shininess: 15 })
+  new THREE.MeshPhongMaterial({ map: dayMap, normalMap: bumpMap, normalScale: new THREE.Vector2(0.85, 0.85), specularMap: specMap, specular: new THREE.Color(0x333333), shininess: 15 })
 );
 globeGroup.add(earthMesh);
 
+const cloudMesh = new THREE.Mesh(
+  new THREE.SphereGeometry(R * 1.015, 64, 64),
+  new THREE.MeshStandardMaterial({ map: cldMap, transparent: true, opacity: 0.4 })
+);
+globeGroup.add(cloudMesh);
+
+const atmMesh = new THREE.Mesh(
+  new THREE.SphereGeometry(R * 1.1, 64, 64),
+  new THREE.MeshBasicMaterial({ color: 0x00AEEF, transparent: true, opacity: 0.12, side: THREE.BackSide })
+);
+globeGroup.add(atmMesh);
+
 function ll2xyz(lat, lon, radius = R + 0.02) {
-  const phi = (90 - lat) * Math.PI / 180;
+  const phi   = (90 - lat) * Math.PI / 180;
   const theta = (lon + 180) * Math.PI / 180;
   return new THREE.Vector3(-radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.sin(theta));
 }
 
 function createRedLocationMarker() {
   const group = new THREE.Group();
-  const coreNode = new THREE.Mesh(new THREE.SphereGeometry(0.048, 16, 16), new THREE.MeshBasicMaterial({ color: 0xE52531 }));
+  const coreNode = new THREE.Mesh(new THREE.SphereGeometry(0.048, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFF2D55 }));
   group.add(coreNode);
-  const ringInner = new THREE.Mesh(new THREE.TorusGeometry(0.085, 0.009, 8, 32), new THREE.MeshBasicMaterial({ color: 0xE52531, transparent: true, opacity: 0.9 }));
+  const ringInner = new THREE.Mesh(new THREE.TorusGeometry(0.085, 0.009, 8, 32), new THREE.MeshBasicMaterial({ color: 0xFF2D55, transparent: true, opacity: 0.9 }));
   ringInner.lookAt(0, 0, 0); group.add(ringInner);
+  const ringOuter = new THREE.Mesh(new THREE.TorusGeometry(0.145, 0.005, 8, 32), new THREE.MeshBasicMaterial({ color: 0xFF3B30, transparent: true, opacity: 0.45 }));
+  ringOuter.lookAt(0, 0, 0); group.add(ringOuter);
+  const hitSphere = new THREE.Mesh(new THREE.SphereGeometry(0.38, 16, 16), new THREE.MeshBasicMaterial({ visible: false }));
+  group.add(hitSphere);
   return group;
+}
+
+function create3DNetworkArc(v1, v2, color = 0xFF2D55) {
+  const distance = v1.distanceTo(v2);
+  const mid = v1.clone().add(v2).multiplyScalar(0.5);
+  mid.normalize().multiplyScalar(mid.length() + distance * 0.32);
+  const curve = new THREE.QuadraticBezierCurve3(v1, mid, v2);
+  const geometry = new THREE.BufferGeometry().setFromPoints(curve.getPoints(45));
+  return new THREE.Line(geometry, new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.48 }));
 }
 
 const beaconGroup = new THREE.Group();
 globeGroup.add(beaconGroup);
 const beaconMeshes = [];
+const hqPos = ll2xyz(countryStops[0].lat, countryStops[0].lon);
 
-countryStops.forEach((st) => {
+countryStops.forEach((st, idx) => {
   const pos = ll2xyz(st.lat, st.lon);
   const marker = createRedLocationMarker();
   marker.position.copy(pos);
   beaconGroup.add(marker);
+  if (idx > 0) {
+    const arcLine = create3DNetworkArc(hqPos, pos, idx % 2 === 0 ? 0xFF2D55 : 0xE52531);
+    globeGroup.add(arcLine);
+  }
   beaconMeshes.push({ marker, pos });
 });
 
 const targetQuaternion = new THREE.Quaternion();
-
 function getQuaternionForPos(pos) {
   const norm = pos.clone().normalize();
-  const cameraDir = new THREE.Vector3(0, 0, 1);
-  return new THREE.Quaternion().setFromUnitVectors(norm, cameraDir);
+  return new THREE.Quaternion().setFromUnitVectors(norm, new THREE.Vector3(0, 0, 1));
 }
-
 targetQuaternion.copy(getQuaternionForPos(beaconMeshes[0].pos));
 globeGroup.quaternion.copy(targetQuaternion);
+
+let isDrag = false, prevM = { x: 0, y: 0 };
+let targetCamZ2 = 5.8;
+let touchPinchDist = null;
+let touchStartCoords = { x: 0, y: 0 };
+const raycaster = new THREE.Raycaster();
+const mouseVec = new THREE.Vector2();
 
 function triggerPinCard(idx) {
   activePinIdx = idx;
   targetQuaternion.copy(getQuaternionForPos(beaconMeshes[idx].pos));
-
   countryStops.forEach((_, i) => {
     const panel = document.getElementById(`globe-panel-${i}`);
     if (panel) panel.classList.toggle('active', i === idx);
@@ -1535,36 +1551,6 @@ function triggerPinCard(idx) {
   });
   globeCardStage.classList.add('mobile-open');
 }
-
-document.getElementById('btn-close-card').addEventListener('click', () => { globeCardStage.classList.remove('mobile-open'); });
-document.getElementById('btn-zoom-in').addEventListener('click', e => { e.preventDefault(); globeCamera.position.z = Math.max(3.5, globeCamera.position.z - 0.7); });
-document.getElementById('btn-zoom-out').addEventListener('click', e => { e.preventDefault(); globeCamera.position.z = Math.min(9.5, globeCamera.position.z + 0.7); });
-
-const tempVec = new THREE.Vector3();
-function updateAllFloatingBadges() {
-  beaconMeshes.forEach((bm, i) => {
-    const badge = badgeElements[i];
-    if (!badge) return;
-    tempVec.copy(bm.pos);
-    globeGroup.localToWorld(tempVec);
-    const camDir = globeCamera.position.clone().sub(tempVec).normalize();
-    const pinNorm = tempVec.clone().normalize();
-    if (pinNorm.dot(camDir) < 0.12) { badge.style.opacity = '0'; badge.style.pointerEvents = 'none'; return; }
-    tempVec.project(globeCamera);
-    const x = (tempVec.x * 0.5 + 0.5) * window.innerWidth;
-    const y = -(tempVec.y * 0.5 - 0.5) * window.innerHeight;
-    const isBadgeActive = (i === activePinIdx);
-    const scaleVal = isBadgeActive ? 'scale(1.1)' : 'scale(1)';
-    badge.style.opacity = '1'; badge.style.pointerEvents = 'auto';
-    badge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 12}px) ${scaleVal}`;
-  });
-}
-
-// Full 360 Mouse and Touch Rotation Handlers
-let isDrag = false, prevM = { x: 0, y: 0 };
-let touchStartCoords = { x: 0, y: 0 };
-const raycaster = new THREE.Raycaster();
-const mouseVec = new THREE.Vector2();
 
 function checkPinTap(clientX, clientY) {
   const rect = globeCanvas.getBoundingClientRect();
@@ -1575,97 +1561,87 @@ function checkPinTap(clientX, clientY) {
   if (intersects.length > 0) {
     const hitObj = intersects[0].object;
     beaconMeshes.forEach((bm, idx) => {
-      if (bm.marker === hitObj || bm.marker.children.includes(hitObj)) {
-        triggerPinCard(idx);
-      }
+      if (bm.marker === hitObj || bm.marker.children.includes(hitObj)) triggerPinCard(idx);
     });
   }
 }
 
 globeCanvas.addEventListener('mousedown', e => { isDrag = true; prevM = { x: e.clientX, y: e.clientY }; });
 window.addEventListener('mouseup', () => { isDrag = false; });
+globeCanvas.addEventListener('click', e => { checkPinTap(e.clientX, e.clientY); });
+
 window.addEventListener('mousemove', e => {
   if (!isDrag) return;
-  const deltaX = e.clientX - prevM.x;
-  const deltaY = e.clientY - prevM.y;
-  const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.005);
-  const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.005);
+  const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), (e.clientX - prevM.x) * 0.005);
+  const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), (e.clientY - prevM.y) * 0.005);
   targetQuaternion.premultiply(qY).premultiply(qX);
   prevM = { x: e.clientX, y: e.clientY };
 });
-globeCanvas.addEventListener('click', e => { checkPinTap(e.clientX, e.clientY); });
 
 globeCanvas.addEventListener('touchstart', e => {
   if (e.touches.length === 1) {
     isDrag = true;
     touchStartCoords = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  } else if (e.touches.length === 2) {
+    isDrag = false;
+    touchPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
   }
 }, { passive: true });
 
 globeCanvas.addEventListener('touchmove', e => {
   if (e.touches.length === 1 && isDrag) {
-    const deltaX = e.touches[0].clientX - prevM.x;
-    const deltaY = e.touches[0].clientY - prevM.y;
-    const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), deltaX * 0.006);
-    const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), deltaY * 0.006);
+    const qY = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), (e.touches[0].clientX - prevM.x) * 0.006);
+    const qX = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), (e.touches[0].clientY - prevM.y) * 0.006);
     targetQuaternion.premultiply(qY).premultiply(qX);
     prevM = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  } else if (e.touches.length === 2 && touchPinchDist !== null) {
+    const curDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    targetCamZ2 = Math.max(3.0, Math.min(9.5, targetCamZ2 + (touchPinchDist - curDist) * 0.015));
+    touchPinchDist = curDist;
   }
 }, { passive: true });
 
 window.addEventListener('touchend', e => {
   if (e.changedTouches && e.changedTouches.length === 1) {
     const moveDist = Math.hypot(e.changedTouches[0].clientX - touchStartCoords.x, e.changedTouches[0].clientY - touchStartCoords.y);
-    if (moveDist < 12) { checkPinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY); }
+    if (moveDist < 12) checkPinTap(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
   }
-  isDrag = false;
+  isDrag = false; touchPinchDist = null;
 });
 
-// Smooth Mouse Wheel Zoom In / Zoom Out on 3D Globe
-globeCanvas.addEventListener('wheel', e => {
-  e.preventDefault();
-  const zoomSpeed = 0.0025;
-  const newZ = globeCamera.position.z + e.deltaY * zoomSpeed;
-  globeCamera.position.z = Math.max(3.2, Math.min(9.5, newZ));
-}, { passive: false });
+document.getElementById('btn-close-card').addEventListener('click', () => { globeCardStage.classList.remove('mobile-open'); });
+document.getElementById('btn-zoom-in').addEventListener('click', e => { e.preventDefault(); targetCamZ2 = Math.max(3.0, targetCamZ2 - 0.7); });
+document.getElementById('btn-zoom-out').addEventListener('click', e => { e.preventDefault(); targetCamZ2 = Math.min(9.5, targetCamZ2 + 0.7); });
+globeCanvas.addEventListener('wheel', e => { targetCamZ2 = Math.max(3.0, Math.min(9.5, targetCamZ2 + e.deltaY * 0.003)); }, { passive: true });
 
-let targetGlobeProgress = 0, currentGlobeProgress = 0;
+const tempVec = new THREE.Vector3();
+function updateAllFloatingBadges() {
+  beaconMeshes.forEach((bm, i) => {
+    const badge = badgeElements[i];
+    if (!badge) return;
+    tempVec.copy(bm.pos);
+    globeGroup.localToWorld(tempVec);
+    const camDir = globeCamera.position.clone().sub(tempVec).normalize();
+    const dot = tempVec.clone().normalize().dot(camDir);
+    if (dot < 0.12) { badge.style.opacity = '0'; badge.style.pointerEvents = 'none'; return; }
+    tempVec.project(globeCamera);
+    const x = (tempVec.x * 0.5 + 0.5) * window.innerWidth;
+    const y = -(tempVec.y * 0.5 - 0.5) * window.innerHeight;
+    badge.style.opacity = '1'; badge.style.pointerEvents = 'auto';
+    badge.style.transform = `translate(-50%, -100%) translate(${x}px, ${y - 12}px) ${i === activePinIdx ? 'scale(1.12)' : 'scale(1)'}`;
+  });
+}
+
 function animateGlobe() {
   requestAnimationFrame(animateGlobe);
-  if (window.innerWidth >= 850 && !isDrag) {
-    const diff = targetGlobeProgress - currentGlobeProgress;
-    if (Math.abs(diff) > 0.0003) {
-      currentGlobeProgress += diff * 0.09;
-      const activeIdx = Math.min(countryStops.length - 1, Math.floor(currentGlobeProgress * countryStops.length));
-      targetQuaternion.copy(getQuaternionForPos(beaconMeshes[activeIdx].pos));
-      activePinIdx = activeIdx;
-      countryStops.forEach((_, i) => {
-        const start = i / countryStops.length; const end = (i + 1) / countryStops.length;
-        const panel = document.getElementById(`globe-panel-${i}`);
-        const badge = badgeElements[i];
-        if (currentGlobeProgress >= start && currentGlobeProgress < end + 0.01) {
-          if (panel) panel.classList.add('active'); if (badge) badge.classList.add('active');
-        } else {
-          if (panel) panel.classList.remove('active'); if (badge) badge.classList.remove('active');
-        }
-      });
-    }
-  }
+  cloudMesh.rotation.y += 0.0008;
+  globeCamera.position.z += (targetCamZ2 - globeCamera.position.z) * 0.1;
   globeGroup.quaternion.slerp(targetQuaternion, 0.08);
   updateAllFloatingBadges();
   globeRenderer.render(globeScene, globeCamera);
 }
 animateGlobe();
-
-const globeSec = document.getElementById('s-globe');
-window.addEventListener('scroll', () => {
-  if (window.innerWidth >= 850) {
-    const rect = globeSec.getBoundingClientRect();
-    const secH = globeSec.offsetHeight - window.innerHeight;
-    targetGlobeProgress = Math.max(0, Math.min(0.99, -rect.top / secH));
-  }
-}, { passive: true });
 
 // 3. GSAP ANIMATIONS & COUNTERS
 gsap.registerPlugin(ScrollTrigger);
