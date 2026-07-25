@@ -1409,46 +1409,94 @@ function selectTeam3D(idx) {
   const radius = 6.5;
   const numMembers = teamData.length;
 
-  const geometries = [
-    new THREE.IcosahedronGeometry(1.4, 0),
-    new THREE.OctahedronGeometry(1.4, 0),
-    new THREE.DodecahedronGeometry(1.3, 0),
-    new THREE.TorusKnotGeometry(0.9, 0.35, 64, 16),
-    new THREE.IcosahedronGeometry(1.4, 1),
-    new THREE.OctahedronGeometry(1.4, 1)
-  ];
+  // Function to create dynamic 3D Photo Badge Textures
+  function create3DPhotoTexture(member) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+
+    // Background Gradient
+    const grad = ctx.createLinearGradient(0, 0, 512, 512);
+    grad.addColorStop(0, member.color === 0xE52531 ? '#E52531' : '#0D334E');
+    grad.addColorStop(1, '#081D2C');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 512, 512);
+
+    // Glowing Border Circle
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 12;
+    ctx.beginPath();
+    ctx.arc(256, 210, 140, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Inner Circle for Avatar / Photo
+    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+    ctx.beginPath();
+    ctx.arc(256, 210, 134, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Avatar Emoji or Photo Placeholder
+    ctx.font = '120px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(member.avatar, 256, 215);
+
+    // Name Tag Box
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    ctx.roundRect(40, 390, 432, 85, 20);
+    ctx.fill();
+
+    // Name Text
+    ctx.fillStyle = '#0D334E';
+    ctx.font = 'bold 36px "Tajawal", sans-serif';
+    ctx.fillText(member.name, 256, 430);
+
+    // Role Text
+    ctx.fillStyle = '#E52531';
+    ctx.font = 'bold 22px "Tajawal", sans-serif';
+    ctx.fillText(member.role, 256, 460);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }
 
   teamData.forEach((td, i) => {
     const angle = (i / numMembers) * Math.PI * 2;
     const meshGroup = new THREE.Group();
     meshGroup.position.set(Math.sin(angle) * radius, 0, Math.cos(angle) * radius);
 
-    const coreMat = new THREE.MeshStandardMaterial({
-      color: td.color,
-      roughness: 0.15,
-      metalness: 0.85,
-      wireframe: false
-    });
-    const coreMesh = new THREE.Mesh(geometries[i], coreMat);
+    // 3D Photo Badge Mesh (Front & Back Photo Disc)
+    const photoTex = create3DPhotoTexture(td);
+    const discGeo = new THREE.CylinderGeometry(1.6, 1.6, 0.15, 32);
+    
+    const matSide = new THREE.MeshStandardMaterial({ color: td.color, roughness: 0.2, metalness: 0.8 });
+    const matCap = new THREE.MeshStandardMaterial({ map: photoTex, roughness: 0.1 });
+    
+    const materials = [matSide, matCap, matCap];
+    const coreMesh = new THREE.Mesh(discGeo, materials);
+    coreMesh.rotation.x = Math.PI / 2;
     meshGroup.add(coreMesh);
 
+    // Outer Glowing Wireframe Octahedron Cage
     const cageMat = new THREE.MeshBasicMaterial({
       color: td.color === 0xE52531 ? 0x0D334E : 0xE52531,
       wireframe: true,
       transparent: true,
       opacity: 0.45
     });
-    const cageMesh = new THREE.Mesh(geometries[i], cageMat);
-    cageMesh.scale.set(1.25, 1.25, 1.25);
+    const cageMesh = new THREE.Mesh(new THREE.OctahedronGeometry(2.0, 1), cageMat);
     meshGroup.add(cageMesh);
 
+    // Orbiting Torus Ring
     const ringMat = new THREE.MeshBasicMaterial({ color: td.color, transparent: true, opacity: 0.6 });
-    const ringMesh = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.03, 8, 32), ringMat);
+    const ringMesh = new THREE.Mesh(new THREE.TorusGeometry(2.3, 0.035, 8, 32), ringMat);
     ringMesh.rotation.x = Math.PI / 3;
     meshGroup.add(ringMesh);
 
     teamStageGroup.add(meshGroup);
-    teamMeshes.push({ group: meshGroup, core: coreMesh, cage: cageMesh, ring: ringMesh });
+    teamMeshes.push({ group: meshGroup, core: coreMesh, cage: cageMesh, ring: ringMesh, photoTex: photoTex });
   });
 
   let mouseX = 0, mouseY = 0;
